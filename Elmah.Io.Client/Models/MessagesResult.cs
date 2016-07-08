@@ -11,19 +11,17 @@ namespace Elmah.Io.Client.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
-    public partial class ElmahIoApiModelsMessagesResult
+    public partial class MessagesResult
     {
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsMessagesResult
-        /// class.
+        /// Initializes a new instance of the MessagesResult class.
         /// </summary>
-        public ElmahIoApiModelsMessagesResult() { }
+        public MessagesResult() { }
 
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsMessagesResult
-        /// class.
+        /// Initializes a new instance of the MessagesResult class.
         /// </summary>
-        public ElmahIoApiModelsMessagesResult(IList<ElmahIoApiModelsMessagesResultMessage> messages = default(IList<ElmahIoApiModelsMessagesResultMessage>), int? total = default(int?))
+        public MessagesResult(IList<MessageOverview> messages = default(IList<MessageOverview>), int? total = default(int?))
         {
             Messages = messages;
             Total = total;
@@ -32,7 +30,7 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "messages")]
-        public IList<ElmahIoApiModelsMessagesResultMessage> Messages { get; set; }
+        public IList<MessageOverview> Messages { get; set; }
 
         /// <summary>
         /// </summary>

@@ -11,17 +11,17 @@ namespace Elmah.Io.Client.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
-    public partial class ElmahIoApiModelsItem
+    public partial class Item
     {
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsItem class.
+        /// Initializes a new instance of the Item class.
         /// </summary>
-        public ElmahIoApiModelsItem() { }
+        public Item() { }
 
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsItem class.
+        /// Initializes a new instance of the Item class.
         /// </summary>
-        public ElmahIoApiModelsItem(string key = default(string), string value = default(string))
+        public Item(string key = default(string), string value = default(string))
         {
             Key = key;
             Value = value;

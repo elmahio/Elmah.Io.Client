@@ -8,7 +8,7 @@ namespace Elmah.Io.Client
 {
     public static class ExceptionExtensions
     {
-        public static List<ElmahIoApiModelsItem> ToDataList(this Exception exception)
+        public static List<Item> ToDataList(this Exception exception)
         {
             if (exception == null || exception.Data.Count == 0) return null;
 
@@ -17,7 +17,7 @@ namespace Elmah.Io.Client
                 .Keys
                 .Cast<object>()
                 .Where(k => !string.IsNullOrWhiteSpace(k.ToString()))
-                .Select(k => new ElmahIoApiModelsItem { Key = k.ToString(), Value = Value(exception.Data, k)})
+                .Select(k => new Item { Key = k.ToString(), Value = Value(exception.Data, k)})
                 .ToList();
         }
 

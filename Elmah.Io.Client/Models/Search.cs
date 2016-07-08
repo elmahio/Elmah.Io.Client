@@ -11,17 +11,17 @@ namespace Elmah.Io.Client.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
-    public partial class ElmahIoApiModelsSearch
+    public partial class Search
     {
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsSearch class.
+        /// Initializes a new instance of the Search class.
         /// </summary>
-        public ElmahIoApiModelsSearch() { }
+        public Search() { }
 
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsSearch class.
+        /// Initializes a new instance of the Search class.
         /// </summary>
-        public ElmahIoApiModelsSearch(string query = default(string), DateTime? fromProperty = default(DateTime?), DateTime? to = default(DateTime?))
+        public Search(string query = default(string), DateTime? fromProperty = default(DateTime?), DateTime? to = default(DateTime?))
         {
             Query = query;
             FromProperty = fromProperty;

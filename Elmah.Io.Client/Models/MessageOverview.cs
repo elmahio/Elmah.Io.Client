@@ -11,19 +11,17 @@ namespace Elmah.Io.Client.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
-    public partial class ElmahIoApiModelsMessagesResultMessage
+    public partial class MessageOverview
     {
         /// <summary>
-        /// Initializes a new instance of the
-        /// ElmahIoApiModelsMessagesResultMessage class.
+        /// Initializes a new instance of the MessageOverview class.
         /// </summary>
-        public ElmahIoApiModelsMessagesResultMessage() { }
+        public MessageOverview() { }
 
         /// <summary>
-        /// Initializes a new instance of the
-        /// ElmahIoApiModelsMessagesResultMessage class.
+        /// Initializes a new instance of the MessageOverview class.
         /// </summary>
-        public ElmahIoApiModelsMessagesResultMessage(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), DateTime? dateTime = default(DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string version = default(string))
+        public MessageOverview(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), DateTime? dateTime = default(DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string version = default(string))
         {
             Id = id;
             Application = application;

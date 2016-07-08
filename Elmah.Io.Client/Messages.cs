@@ -74,7 +74,7 @@ namespace Elmah.Io.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<ElmahIoApiModelsMessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<MessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (logId == null)
             {
@@ -183,7 +183,7 @@ namespace Elmah.Io.Client
                 throw ex;
             }
             // Create Result
-            var _result = new HttpOperationResponse<ElmahIoApiModelsMessagesResult>();
+            var _result = new HttpOperationResponse<MessagesResult>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -192,7 +192,7 @@ namespace Elmah.Io.Client
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = SafeJsonConvert.DeserializeObject<ElmahIoApiModelsMessagesResult>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = SafeJsonConvert.DeserializeObject<MessagesResult>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -229,7 +229,7 @@ namespace Elmah.Io.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse> CreateWithHttpMessagesAsync(string logId, ElmahIoApiModelsCreateMessage message, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse> CreateWithHttpMessagesAsync(string logId, CreateMessage message, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (logId == null)
             {
@@ -347,7 +347,7 @@ namespace Elmah.Io.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse> DeleteAllWithHttpMessagesAsync(string logId, ElmahIoApiModelsSearch search, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse> DeleteAllWithHttpMessagesAsync(string logId, Search search, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (logId == null)
             {
@@ -465,7 +465,7 @@ namespace Elmah.Io.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<ElmahIoApiModelsMessage>> GetWithHttpMessagesAsync(string id, string logId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<Message>> GetWithHttpMessagesAsync(string id, string logId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (id == null)
             {
@@ -550,7 +550,7 @@ namespace Elmah.Io.Client
                 throw ex;
             }
             // Create Result
-            var _result = new HttpOperationResponse<ElmahIoApiModelsMessage>();
+            var _result = new HttpOperationResponse<Message>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -559,7 +559,7 @@ namespace Elmah.Io.Client
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = SafeJsonConvert.DeserializeObject<ElmahIoApiModelsMessage>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = SafeJsonConvert.DeserializeObject<Message>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {

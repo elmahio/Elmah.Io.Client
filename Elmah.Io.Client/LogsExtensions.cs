@@ -23,7 +23,7 @@ namespace Elmah.Io.Client
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            public static IList<ElmahIoApiModelsLog> GetAll(this ILogs operations)
+            public static IList<Log> GetAll(this ILogs operations)
             {
                 return Task.Factory.StartNew(s => ((ILogs)s).GetAllAsync(), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -37,7 +37,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<IList<ElmahIoApiModelsLog>> GetAllAsync(this ILogs operations, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IList<Log>> GetAllAsync(this ILogs operations, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetAllWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
                 {
@@ -54,9 +54,9 @@ namespace Elmah.Io.Client
             /// <param name='log'>
             /// The log object to create.
             /// </param>
-            public static object Create(this ILogs operations, ElmahIoApiModelsCreateLog log)
+            public static void Create(this ILogs operations, CreateLog log)
             {
-                return Task.Factory.StartNew(s => ((ILogs)s).CreateAsync(log), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                Task.Factory.StartNew(s => ((ILogs)s).CreateAsync(log), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -71,12 +71,9 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> CreateAsync(this ILogs operations, ElmahIoApiModelsCreateLog log, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task CreateAsync(this ILogs operations, CreateLog log, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateWithHttpMessagesAsync(log, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                await operations.CreateWithHttpMessagesAsync(log, null, cancellationToken).ConfigureAwait(false);
             }
 
             /// <summary>
@@ -88,7 +85,7 @@ namespace Elmah.Io.Client
             /// <param name='id'>
             /// The ID of the log to fetch.
             /// </param>
-            public static ElmahIoApiModelsLog Get(this ILogs operations, string id)
+            public static Log Get(this ILogs operations, string id)
             {
                 return Task.Factory.StartNew(s => ((ILogs)s).GetAsync(id), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -105,7 +102,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ElmahIoApiModelsLog> GetAsync(this ILogs operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Log> GetAsync(this ILogs operations, string id, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
                 {

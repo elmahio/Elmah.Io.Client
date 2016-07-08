@@ -41,7 +41,7 @@ namespace Elmah.Io.Client
             /// <param name='to'>
             /// An end date and time to search to (not included).
             /// </param>
-            public static ElmahIoApiModelsMessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?))
+            public static MessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?))
             {
                 return Task.Factory.StartNew(s => ((IMessages)s).GetAllAsync(logId, pageIndex, pageSize, query, fromParameter, to), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -73,7 +73,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ElmahIoApiModelsMessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetAllWithHttpMessagesAsync(logId, pageIndex, pageSize, query, fromParameter, to, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -93,7 +93,7 @@ namespace Elmah.Io.Client
             /// <param name='message'>
             /// The message object to create.
             /// </param>
-            public static void Create(this IMessages operations, string logId, ElmahIoApiModelsCreateMessage message)
+            public static void Create(this IMessages operations, string logId, CreateMessage message)
             {
                 Task.Factory.StartNew(s => ((IMessages)s).CreateAsync(logId, message), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -113,7 +113,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task CreateAsync(this IMessages operations, string logId, ElmahIoApiModelsCreateMessage message, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task CreateAsync(this IMessages operations, string logId, CreateMessage message, CancellationToken cancellationToken = default(CancellationToken))
             {
                 await operations.CreateWithHttpMessagesAsync(logId, message, null, cancellationToken).ConfigureAwait(false);
             }
@@ -130,7 +130,7 @@ namespace Elmah.Io.Client
             /// <param name='search'>
             /// A search object containing query, time filters etc.
             /// </param>
-            public static void DeleteAll(this IMessages operations, string logId, ElmahIoApiModelsSearch search)
+            public static void DeleteAll(this IMessages operations, string logId, Search search)
             {
                 Task.Factory.StartNew(s => ((IMessages)s).DeleteAllAsync(logId, search), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -150,7 +150,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAllAsync(this IMessages operations, string logId, ElmahIoApiModelsSearch search, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAllAsync(this IMessages operations, string logId, Search search, CancellationToken cancellationToken = default(CancellationToken))
             {
                 await operations.DeleteAllWithHttpMessagesAsync(logId, search, null, cancellationToken).ConfigureAwait(false);
             }
@@ -167,7 +167,7 @@ namespace Elmah.Io.Client
             /// <param name='logId'>
             /// The ID of the log containing the message.
             /// </param>
-            public static ElmahIoApiModelsMessage Get(this IMessages operations, string id, string logId)
+            public static Message Get(this IMessages operations, string id, string logId)
             {
                 return Task.Factory.StartNew(s => ((IMessages)s).GetAsync(id, logId), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -187,7 +187,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ElmahIoApiModelsMessage> GetAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Message> GetAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false))
                 {

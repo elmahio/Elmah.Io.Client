@@ -11,17 +11,17 @@ namespace Elmah.Io.Client.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
-    public partial class ElmahIoApiModelsLog
+    public partial class Log
     {
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsLog class.
+        /// Initializes a new instance of the Log class.
         /// </summary>
-        public ElmahIoApiModelsLog() { }
+        public Log() { }
 
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsLog class.
+        /// Initializes a new instance of the Log class.
         /// </summary>
-        public ElmahIoApiModelsLog(string id = default(string), string name = default(string))
+        public Log(string id = default(string), string name = default(string))
         {
             Id = id;
             Name = name;

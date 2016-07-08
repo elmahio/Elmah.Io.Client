@@ -67,7 +67,7 @@ namespace Elmah.Io.Client
 
         public void Log(Guid logId, Exception exception, Severity severity, string messageTemplate, params object[] propertyValues)
         {
-            var message = new ElmahIoApiModelsCreateMessage
+            var message = new CreateMessage
             {
                 Title = string.Format(messageTemplate, propertyValues),
                 Severity = SeverityToString(severity)

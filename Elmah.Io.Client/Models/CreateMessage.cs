@@ -11,19 +11,18 @@ namespace Elmah.Io.Client.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
-    public partial class ElmahIoApiModelsMessage
+    public partial class CreateMessage
     {
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsMessage class.
+        /// Initializes a new instance of the CreateMessage class.
         /// </summary>
-        public ElmahIoApiModelsMessage() { }
+        public CreateMessage() { }
 
         /// <summary>
-        /// Initializes a new instance of the ElmahIoApiModelsMessage class.
+        /// Initializes a new instance of the CreateMessage class.
         /// </summary>
-        public ElmahIoApiModelsMessage(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), DateTime? dateTime = default(DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string version = default(string), IList<ElmahIoApiModelsItem> cookies = default(IList<ElmahIoApiModelsItem>), IList<ElmahIoApiModelsItem> form = default(IList<ElmahIoApiModelsItem>), IList<ElmahIoApiModelsItem> queryString = default(IList<ElmahIoApiModelsItem>), IList<ElmahIoApiModelsItem> serverVariables = default(IList<ElmahIoApiModelsItem>), IList<ElmahIoApiModelsItem> data = default(IList<ElmahIoApiModelsItem>))
+        public CreateMessage(string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), DateTime? dateTime = default(DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
         {
-            Id = id;
             Application = application;
             Detail = detail;
             Hostname = hostname;
@@ -42,12 +41,6 @@ namespace Elmah.Io.Client.Models
             ServerVariables = serverVariables;
             Data = data;
         }
-
-        /// <summary>
-        /// The ID of this message.
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
 
         /// <summary>
         /// Used to identify which application logged this message. You can
@@ -146,7 +139,7 @@ namespace Elmah.Io.Client.Models
         /// logging messages related to web requests.
         /// </summary>
         [JsonProperty(PropertyName = "cookies")]
-        public IList<ElmahIoApiModelsItem> Cookies { get; set; }
+        public IList<Item> Cookies { get; set; }
 
         /// <summary>
         /// A key/value pair of form fields and their values. This property
@@ -154,14 +147,14 @@ namespace Elmah.Io.Client.Models
         /// a form.
         /// </summary>
         [JsonProperty(PropertyName = "form")]
-        public IList<ElmahIoApiModelsItem> Form { get; set; }
+        public IList<Item> Form { get; set; }
 
         /// <summary>
         /// A key/value pair of query string parameters. This property makes
         /// sense if logging message related to a HTTP request.
         /// </summary>
         [JsonProperty(PropertyName = "queryString")]
-        public IList<ElmahIoApiModelsItem> QueryString { get; set; }
+        public IList<Item> QueryString { get; set; }
 
         /// <summary>
         /// A key/value pair of server values. Server variables are typically
@@ -169,7 +162,7 @@ namespace Elmah.Io.Client.Models
         /// other types of information as well.
         /// </summary>
         [JsonProperty(PropertyName = "serverVariables")]
-        public IList<ElmahIoApiModelsItem> ServerVariables { get; set; }
+        public IList<Item> ServerVariables { get; set; }
 
         /// <summary>
         /// A key/value pair of user-defined fields and their values. When
@@ -180,7 +173,7 @@ namespace Elmah.Io.Client.Models
         /// key/values to this API.
         /// </summary>
         [JsonProperty(PropertyName = "data")]
-        public IList<ElmahIoApiModelsItem> Data { get; set; }
+        public IList<Item> Data { get; set; }
 
     }
 }

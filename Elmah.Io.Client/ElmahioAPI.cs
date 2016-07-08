@@ -237,7 +237,7 @@ namespace Elmah.Io.Client
         {
             this.Logs = new Logs(this);
             this.Messages = new Messages(this);
-            this.BaseUri = new Uri("http://localhost:32672");
+            this.BaseUri = new Uri("https://api.elmah.io");
             SerializationSettings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,

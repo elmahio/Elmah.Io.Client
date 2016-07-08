@@ -44,7 +44,7 @@ namespace Elmah.Io.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<ElmahIoApiModelsMessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), DateTime? fromParameter = default(DateTime?), DateTime? to = default(DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Create a new message.
         /// </summary>
@@ -60,7 +60,7 @@ namespace Elmah.Io.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> CreateWithHttpMessagesAsync(string logId, ElmahIoApiModelsCreateMessage message, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> CreateWithHttpMessagesAsync(string logId, CreateMessage message, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Deletes a list of messages by logid and query.
         /// </summary>
@@ -76,7 +76,7 @@ namespace Elmah.Io.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> DeleteAllWithHttpMessagesAsync(string logId, ElmahIoApiModelsSearch search, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> DeleteAllWithHttpMessagesAsync(string logId, Search search, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Fetch a message by its ID.
         /// </summary>
@@ -92,7 +92,7 @@ namespace Elmah.Io.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<ElmahIoApiModelsMessage>> GetWithHttpMessagesAsync(string id, string logId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<Message>> GetWithHttpMessagesAsync(string id, string logId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Delete a message by its ID.
         /// </summary>
