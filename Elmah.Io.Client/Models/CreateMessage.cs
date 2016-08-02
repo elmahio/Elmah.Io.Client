@@ -21,7 +21,7 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Initializes a new instance of the CreateMessage class.
         /// </summary>
-        public CreateMessage(string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), DateTime? dateTime = default(DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
+        public CreateMessage(string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), DateTime? dateTime = default(DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
         {
             Application = application;
             Detail = detail;
@@ -34,6 +34,7 @@ namespace Elmah.Io.Client.Models
             User = user;
             Severity = severity;
             Url = url;
+            Method = method;
             Version = version;
             Cookies = cookies;
             Form = form;
@@ -123,6 +124,14 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
+
+        /// <summary>
+        /// If message relates to a HTTP request, you may send the HTTP method
+        /// of that request. If you don't provide us with a method, we will
+        /// try to find a key named REQUEST_METHOD in serverVariables.
+        /// </summary>
+        [JsonProperty(PropertyName = "method")]
+        public string Method { get; set; }
 
         /// <summary>
         /// Versions can be used to distinguish messages from different

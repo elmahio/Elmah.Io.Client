@@ -69,6 +69,7 @@ namespace Elmah.Io.Client
         {
             var message = new CreateMessage
             {
+                DateTime = DateTime.UtcNow,
                 Title = string.Format(messageTemplate, propertyValues),
                 Severity = SeverityToString(severity)
             };
