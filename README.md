@@ -1,5 +1,8 @@
 # Elmah.Io.Client
 
+[![Build status](https://ci.appveyor.com/api/projects/status/n55vjuwgohy66mlc?svg=true)](https://ci.appveyor.com/project/ThomasArdal/elmah-io-client)
+[![NuGet](https://img.shields.io/nuget/vpre/Elmah.Io.Client.svg)](https://www.nuget.org/packages/Elmah.Io.Client)
+
 Raw client for communicating with the [elmah.io API](https://elmah.io/api/v3).
 
 ## Usage
