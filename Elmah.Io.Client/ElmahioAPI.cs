@@ -43,6 +43,11 @@ namespace Elmah.Io.Client
         public ServiceClientCredentials Credentials { get; private set; }
 
         /// <summary>
+        /// Gets the IDeployments.
+        /// </summary>
+        public virtual IDeployments Deployments { get; private set; }
+
+        /// <summary>
         /// Gets the ILogs.
         /// </summary>
         public virtual ILogs Logs { get; private set; }
@@ -235,6 +240,7 @@ namespace Elmah.Io.Client
         /// </summary>
         private void Initialize()
         {
+            this.Deployments = new Deployments(this);
             this.Logs = new Logs(this);
             this.Messages = new Messages(this);
             this.BaseUri = new Uri("https://api.elmah.io");

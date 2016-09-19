@@ -40,6 +40,11 @@ namespace Elmah.Io.Client
 
 
         /// <summary>
+        /// Gets the IDeployments.
+        /// </summary>
+        IDeployments Deployments { get; }
+
+        /// <summary>
         /// Gets the ILogs.
         /// </summary>
         ILogs Logs { get; }
