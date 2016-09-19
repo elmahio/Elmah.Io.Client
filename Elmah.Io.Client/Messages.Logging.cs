@@ -79,6 +79,7 @@ namespace Elmah.Io.Client
             {
                 message.Detail = exception.ToString();
                 message.Data = exception.ToDataList();
+                message.Type = exception.GetType().Name;
             }
 
             CreateAndNotify(logId.ToString(), message);
