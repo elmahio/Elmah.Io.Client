@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Elmah.Io.Client.Models;
 
 namespace Elmah.Io.Client
 {
     public partial class Messages
     {
+        public event EventHandler<MessageEventArgs> OnMessage;
+        public event EventHandler<FailEventArgs> OnMessageFail;
+
         public void Verbose(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Verbose(logId, null, messageTemplate, propertyValues);
@@ -78,9 +83,22 @@ namespace Elmah.Io.Client
                 message.Detail = exception.ToString();
                 message.Data = exception.ToDataList();
             }
-//            if (OnMessage != null) OnMessage(this, new MessageEventArgs(message)); // TODO
 
-            this.Create(logId.ToString(), message);
+            CreateAndNotify(logId.ToString(), message);
+        }
+
+        public void CreateAndNotify(string logId, CreateMessage message)
+        {
+            OnMessage?.Invoke(this, new MessageEventArgs(message));
+            this
+                .CreateAsync(logId, message, CancellationToken.None)
+                .ContinueWith(a =>
+                {
+                    if (a.Status != TaskStatus.RanToCompletion)
+                    {
+                        OnMessageFail?.Invoke(this, new FailEventArgs(message, a.Exception));
+                    }
+                });
         }
 
         private string SeverityToString(Severity severity)
