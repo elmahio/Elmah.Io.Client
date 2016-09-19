@@ -7,9 +7,6 @@ namespace Elmah.Io.Client
 {
     public partial class Messages
     {
-        public event EventHandler<MessageEventArgs> OnMessage;
-        public event EventHandler<FailEventArgs> OnMessageFail;
-
         public void Verbose(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Verbose(logId, null, messageTemplate, propertyValues);
