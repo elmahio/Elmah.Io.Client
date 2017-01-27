@@ -88,8 +88,9 @@ namespace Elmah.Io.Client.Models
         public int? StatusCode { get; set; }
 
         /// <summary>
-        /// The date and time of the message. If you don't provide us with a
-        /// value in dateTime, we will set the current date and time in UTC.
+        /// The date and time in UTC of the message. If you don't provide us
+        /// with a value in dateTime, we will set the current date and time
+        /// in UTC.
         /// </summary>
         [JsonProperty(PropertyName = "dateTime")]
         public DateTime? DateTime { get; set; }
