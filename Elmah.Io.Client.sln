@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Elmah.Io.Client", "Elmah.Io.Client\Elmah.Io.Client.xproj", "{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.Client.Test", "Elmah.Io.Client.Test\Elmah.Io.Client.Test.csproj", "{4321DE9D-1A52-491F-B20F-AED522BCDDFF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4321DE9D-1A52-491F-B20F-AED522BCDDFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4321DE9D-1A52-491F-B20F-AED522BCDDFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4321DE9D-1A52-491F-B20F-AED522BCDDFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4321DE9D-1A52-491F-B20F-AED522BCDDFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
