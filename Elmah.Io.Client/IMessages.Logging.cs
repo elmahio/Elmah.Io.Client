@@ -1,5 +1,6 @@
-﻿using System;
-using Elmah.Io.Client.Models;
+﻿using Elmah.Io.Client.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
@@ -70,10 +71,15 @@ namespace Elmah.Io.Client
         /// </summary>
         void Log(Guid logId, Exception exception, Severity severity, string messageTemplate, params object[] propertyValues);
 
+        [Obsolete("Use the overload that takes log ID as a GUID.")]
+        void CreateAndNotify(string logId, CreateMessage message);
+
         /// <summary>
         /// Low level log method, which all other methods wanting to log a log message should ideally call.
         /// The CreateAndNotify method triggers event handlers of the OnMessage and OnMessageFail events.
         /// </summary>
-        void CreateAndNotify(string logId, CreateMessage message);
+        void CreateAndNotify(Guid logId, CreateMessage message);
+
+        Task CreateAndNotifyAsync(Guid logId, CreateMessage message);
     }
 }

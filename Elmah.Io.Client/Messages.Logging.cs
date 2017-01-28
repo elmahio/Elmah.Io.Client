@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Elmah.Io.Client.Models;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Elmah.Io.Client
 {
@@ -82,21 +82,32 @@ namespace Elmah.Io.Client
                 message.Type = exception.GetType().Name;
             }
 
-            CreateAndNotify(logId.ToString(), message);
+            CreateAndNotify(logId, message);
         }
 
+        [Obsolete]
         public void CreateAndNotify(string logId, CreateMessage message)
         {
+            CreateAndNotify(new Guid(logId), message);
+        }
+
+        public void CreateAndNotify(Guid logId, CreateMessage message)
+        {
+            Task.Factory.StartNew(s => ((IMessages)s).CreateAndNotifyAsync(logId, message), this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+        }
+
+        public async Task CreateAndNotifyAsync(Guid logId, CreateMessage message)
+        {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
-            this
-                .CreateAsync(logId, message, CancellationToken.None)
-                .ContinueWith(a =>
-                {
-                    if (a.Status != TaskStatus.RanToCompletion)
-                    {
-                        OnMessageFail?.Invoke(this, new FailEventArgs(message, a.Exception));
-                    }
-                });
+            await this
+               .CreateAsync(logId.ToString(), message, CancellationToken.None)
+               .ContinueWith(a =>
+               {
+                   if (a.Status != TaskStatus.RanToCompletion)
+                   {
+                       OnMessageFail?.Invoke(this, new FailEventArgs(message, a.Exception));
+                   }
+               });
         }
 
         private string SeverityToString(Severity severity)
