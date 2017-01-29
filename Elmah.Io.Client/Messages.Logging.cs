@@ -91,23 +91,32 @@ namespace Elmah.Io.Client
             CreateAndNotify(new Guid(logId), message);
         }
 
-        public void CreateAndNotify(Guid logId, CreateMessage message)
+        public Message CreateAndNotify(Guid logId, CreateMessage message)
         {
-            Task.Factory.StartNew(s => ((IMessages)s).CreateAndNotifyAsync(logId, message), this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            return Task.Factory.StartNew(s => ((IMessages)s).CreateAndNotifyAsync(logId, message), this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
         }
 
-        public async Task CreateAndNotifyAsync(Guid logId, CreateMessage message)
+        public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
-            await this
-               .CreateAsync(logId.ToString(), message, CancellationToken.None)
-               .ContinueWith(a =>
+            return await this
+               .CreateWithHttpMessagesAsync(logId.ToString(), message)
+               .ContinueWith<Message>(a =>
                {
                    if (a.Status != TaskStatus.RanToCompletion)
                    {
                        OnMessageFail?.Invoke(this, new FailEventArgs(message, a.Exception));
                    }
-               });
+
+                   var location = a.Result?.Response?.Headers?.Location;
+                   var id = location?.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
+
+                   return new Message(id, message.Application, message.Detail, message.Hostname, message.Title,
+                       message.Source, message.StatusCode, message.DateTime, message.Type, message.User,
+                       message.Severity, message.Url, message.Method, message.Version, message.Cookies, message.Form,
+                       message.QueryString, message.ServerVariables, message.Data);
+               })
+               .ConfigureAwait(false);
         }
 
         private string SeverityToString(Severity severity)

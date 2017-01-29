@@ -78,8 +78,8 @@ namespace Elmah.Io.Client
         /// Low level log method, which all other methods wanting to log a log message should ideally call.
         /// The CreateAndNotify method triggers event handlers of the OnMessage and OnMessageFail events.
         /// </summary>
-        void CreateAndNotify(Guid logId, CreateMessage message);
+        Message CreateAndNotify(Guid logId, CreateMessage message);
 
-        Task CreateAndNotifyAsync(Guid logId, CreateMessage message);
+        Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message);
     }
 }
