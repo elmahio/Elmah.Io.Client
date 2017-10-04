@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appveyor.yml = appveyor.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.Client.Console", "samples\Elmah.Io.Client.Console\Elmah.Io.Client.Console.csproj", "{7FA18E8F-76E0-4E16-A6CB-24185E1E6950}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,12 +26,17 @@ Global
 		{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FA18E8F-76E0-4E16-A6CB-24185E1E6950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA18E8F-76E0-4E16-A6CB-24185E1E6950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA18E8F-76E0-4E16-A6CB-24185E1E6950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA18E8F-76E0-4E16-A6CB-24185E1E6950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D} = {F6FC33FB-1E68-4C90-8272-3CD685D9DB25}
+		{7FA18E8F-76E0-4E16-A6CB-24185E1E6950} = {75CA8873-5C54-419A-9107-7B7BFAFC2FEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55701C32-7FA7-4018-A029-6210CEEE93A4}
