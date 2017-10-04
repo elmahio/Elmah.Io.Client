@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>.NET Core client for communicating with the elmah.io REST API</Description>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <Authors>elmah.io</Authors>
+    <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
+    <AssemblyName>Elmah.Io.Client</AssemblyName>
+    <PackageId>Elmah.Io.Client</PackageId>
+    <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing</PackageTags>
+    <PackageIconUrl>https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=32</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/elmahio/Elmah.Io.Client</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.1' ">$(PackageTargetFallback);portable-net45+wp80+win8+wpa81+dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
+    <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
+    <Exec Command="dotnet pack --no-build --configuration Debug -o c:/nuget" />
+  </Target>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
