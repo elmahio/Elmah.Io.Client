@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Description>.NET Core client for communicating with the elmah.io REST API</Description>
-    <VersionPrefix>3.0.0</VersionPrefix>
     <Authors>elmah.io</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <AssemblyName>Elmah.Io.Client</AssemblyName>
@@ -23,10 +22,6 @@
     <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
-
-  <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
-    <Exec Command="dotnet pack --no-build --configuration Debug -o c:/nuget" />
-  </Target>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.2" />
