@@ -8,8 +8,8 @@ namespace Elmah.Io.Client.Console
     {
         static void Main(string[] args)
         {
-            var client = ElmahioAPI.Create("ae1a610d55ea42bb81ecbe363d192a46");
-            var logId = new Guid("c5ce56c5-cd3c-4635-85ef-f5113d1c4c83");
+            var client = ElmahioAPI.Create("API_KEY");
+            var logId = new Guid("LOG_ID");
 
             // Examples of severity helper methods
             client.Messages.Fatal(logId, new ApplicationException("A fatal exception"), "Fatal message");
