@@ -75,5 +75,28 @@ namespace Elmah.Io.Client
         /// Thrown when a required parameter is null
         /// </exception>
         Task<HttpOperationResponse<Deployment>> GetWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Delete a deployment by its ID.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint doesn't clear the version number of messages already
+        /// annotated with this deployment version.
+        /// </remarks>
+        /// <param name='id'>
+        /// The ID of the deployment to delete.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<HttpOperationResponse> DeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

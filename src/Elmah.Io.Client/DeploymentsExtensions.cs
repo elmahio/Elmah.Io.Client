@@ -110,5 +110,44 @@ namespace Elmah.Io.Client
                 }
             }
 
+            /// <summary>
+            /// Delete a deployment by its ID.
+            /// </summary>
+            /// <remarks>
+            /// This endpoint doesn't clear the version number of messages already
+            /// annotated with this deployment version.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// The ID of the deployment to delete.
+            /// </param>
+            public static void Delete(this IDeployments operations, string id)
+            {
+                operations.DeleteAsync(id).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Delete a deployment by its ID.
+            /// </summary>
+            /// <remarks>
+            /// This endpoint doesn't clear the version number of messages already
+            /// annotated with this deployment version.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// The ID of the deployment to delete.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task DeleteAsync(this IDeployments operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.DeleteWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
     }
 }
