@@ -24,6 +24,8 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Initializes a new instance of the MessagesResult class.
         /// </summary>
+        /// <param name="messages">Log messages.</param>
+        /// <param name="total">The total number of log messages found.</param>
         public MessagesResult(IList<MessageOverview> messages = default(IList<MessageOverview>), int? total = default(int?))
         {
             Messages = messages;
@@ -37,11 +39,13 @@ namespace Elmah.Io.Client.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets log messages.
         /// </summary>
         [JsonProperty(PropertyName = "messages")]
         public IList<MessageOverview> Messages { get; set; }
 
         /// <summary>
+        /// Gets or sets the total number of log messages found.
         /// </summary>
         [JsonProperty(PropertyName = "total")]
         public int? Total { get; set; }

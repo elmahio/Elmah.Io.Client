@@ -22,6 +22,9 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Initializes a new instance of the Search class.
         /// </summary>
+        /// <param name="query">Lucene query.</param>
+        /// <param name="fromProperty">Search from this date.</param>
+        /// <param name="to">Search to this date.</param>
         public Search(string query = default(string), System.DateTime? fromProperty = default(System.DateTime?), System.DateTime? to = default(System.DateTime?))
         {
             Query = query;
@@ -36,16 +39,19 @@ namespace Elmah.Io.Client.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets lucene query.
         /// </summary>
         [JsonProperty(PropertyName = "Query")]
         public string Query { get; set; }
 
         /// <summary>
+        /// Gets or sets search from this date.
         /// </summary>
         [JsonProperty(PropertyName = "From")]
         public System.DateTime? FromProperty { get; set; }
 
         /// <summary>
+        /// Gets or sets search to this date.
         /// </summary>
         [JsonProperty(PropertyName = "To")]
         public System.DateTime? To { get; set; }

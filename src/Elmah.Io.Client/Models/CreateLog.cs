@@ -22,6 +22,7 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Initializes a new instance of the CreateLog class.
         /// </summary>
+        /// <param name="name">Name of the new log.</param>
         public CreateLog(string name = default(string))
         {
             Name = name;
@@ -34,6 +35,7 @@ namespace Elmah.Io.Client.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets name of the new log.
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }

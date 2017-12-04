@@ -22,6 +22,8 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Initializes a new instance of the Log class.
         /// </summary>
+        /// <param name="id">ID of the log.</param>
+        /// <param name="name">Name of the log.</param>
         public Log(string id = default(string), string name = default(string))
         {
             Id = id;
@@ -35,11 +37,13 @@ namespace Elmah.Io.Client.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets ID of the log.
         /// </summary>
         [JsonProperty(PropertyName = "Id")]
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets name of the log.
         /// </summary>
         [JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }

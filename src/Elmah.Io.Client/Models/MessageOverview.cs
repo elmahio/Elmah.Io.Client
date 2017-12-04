@@ -7,6 +7,8 @@
 namespace Elmah.Io.Client.Models
 {
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     public partial class MessageOverview
@@ -40,9 +42,9 @@ namespace Elmah.Io.Client.Models
         /// probably only be relevant for errors,
         /// but could be used for logging successful status codes as
         /// well.</param>
-        /// <param name="dateTime">The date and time of the message. If you
-        /// don't provide us with a value in dateTime, we will set the current
-        /// date and time in UTC.</param>
+        /// <param name="dateTime">The date and time in UTC of the message. If
+        /// you don't provide us with a value in dateTime, we will set the
+        /// current date and time in UTC.</param>
         /// <param name="type">The type of message. If logging an error, the
         /// type of the exception would go into type but you can put anything
         /// in there, that makes sense for your domain.</param>
@@ -63,7 +65,26 @@ namespace Elmah.Io.Client.Models
         /// from different versions of your software. The value of version can
         /// be a SemVer compliant string or any other
         /// syntax that you are using as your version numbering scheme.</param>
-        public MessageOverview(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string))
+        /// <param name="cookies">A key/value pair of cookies. This property
+        /// only makes sense for logging messages related to web
+        /// requests.</param>
+        /// <param name="form">A key/value pair of form fields and their
+        /// values. This property makes sense if logging message related to
+        /// users inputting data in a form.</param>
+        /// <param name="queryString">A key/value pair of query string
+        /// parameters. This property makes sense if logging message related to
+        /// a HTTP request.</param>
+        /// <param name="serverVariables">A key/value pair of server values.
+        /// Server variables are typically related to handling requests in a
+        /// webserver but could be used for other types of information as
+        /// well.</param>
+        /// <param name="data">A key/value pair of user-defined fields and
+        /// their values. When logging an exception, the Data dictionary of
+        /// the exception is copied to this property. You can add additional
+        /// key/value pairs, by modifying the Data
+        /// dictionary on the exception or by supplying additional key/values
+        /// to this API.</param>
+        public MessageOverview(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
         {
             Id = id;
             Application = application;
@@ -79,6 +100,11 @@ namespace Elmah.Io.Client.Models
             Url = url;
             Method = method;
             Version = version;
+            Cookies = cookies;
+            Form = form;
+            QueryString = queryString;
+            ServerVariables = serverVariables;
+            Data = data;
             CustomInit();
         }
 
@@ -138,9 +164,9 @@ namespace Elmah.Io.Client.Models
         public int? StatusCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the date and time of the message. If you don't provide
-        /// us with a value in dateTime, we will set the current date and time
-        /// in UTC.
+        /// Gets or sets the date and time in UTC of the message. If you don't
+        /// provide us with a value in dateTime, we will set the current date
+        /// and time in UTC.
         /// </summary>
         [JsonProperty(PropertyName = "dateTime")]
         public System.DateTime? DateTime { get; set; }
@@ -193,6 +219,47 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }
+
+        /// <summary>
+        /// Gets or sets a key/value pair of cookies. This property only makes
+        /// sense for logging messages related to web requests.
+        /// </summary>
+        [JsonProperty(PropertyName = "cookies")]
+        public IList<Item> Cookies { get; set; }
+
+        /// <summary>
+        /// Gets or sets a key/value pair of form fields and their values. This
+        /// property makes sense if logging message related to users inputting
+        /// data in a form.
+        /// </summary>
+        [JsonProperty(PropertyName = "form")]
+        public IList<Item> Form { get; set; }
+
+        /// <summary>
+        /// Gets or sets a key/value pair of query string parameters. This
+        /// property makes sense if logging message related to a HTTP request.
+        /// </summary>
+        [JsonProperty(PropertyName = "queryString")]
+        public IList<Item> QueryString { get; set; }
+
+        /// <summary>
+        /// Gets or sets a key/value pair of server values. Server variables
+        /// are typically related to handling requests in a webserver but could
+        /// be used for other types of information as well.
+        /// </summary>
+        [JsonProperty(PropertyName = "serverVariables")]
+        public IList<Item> ServerVariables { get; set; }
+
+        /// <summary>
+        /// Gets or sets a key/value pair of user-defined fields and their
+        /// values. When logging an exception, the Data dictionary of
+        /// the exception is copied to this property. You can add additional
+        /// key/value pairs, by modifying the Data
+        /// dictionary on the exception or by supplying additional key/values
+        /// to this API.
+        /// </summary>
+        [JsonProperty(PropertyName = "data")]
+        public IList<Item> Data { get; set; }
 
     }
 }

@@ -39,6 +39,10 @@ namespace Elmah.Io.Client
         /// <param name='to'>
         /// An end date and time to search to (not included).
         /// </param>
+        /// <param name='includeHeaders'>
+        /// Include headers like server variables and cookies in the result
+        /// (slower).
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -54,7 +58,7 @@ namespace Elmah.Io.Client
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<HttpOperationResponse<MessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<MessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Create a new message.
         /// </summary>

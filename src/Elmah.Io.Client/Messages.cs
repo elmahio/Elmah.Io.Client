@@ -66,6 +66,9 @@ namespace Elmah.Io.Client
         /// <param name='to'>
         /// An end date and time to search to (not included).
         /// </param>
+        /// <param name='includeHeaders'>
+        /// Include headers like server variables and cookies in the result (slower).
+        /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -87,7 +90,7 @@ namespace Elmah.Io.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<MessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<MessagesResult>> GetAllWithHttpMessagesAsync(string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (logId == null)
             {
@@ -106,6 +109,7 @@ namespace Elmah.Io.Client
                 tracingParameters.Add("query", query);
                 tracingParameters.Add("fromParameter", fromParameter);
                 tracingParameters.Add("to", to);
+                tracingParameters.Add("includeHeaders", includeHeaders);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "GetAll", tracingParameters);
             }
@@ -133,6 +137,10 @@ namespace Elmah.Io.Client
             if (to != null)
             {
                 _queryParameters.Add(string.Format("to={0}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(to, Client.SerializationSettings).Trim('"'))));
+            }
+            if (includeHeaders != null)
+            {
+                _queryParameters.Add(string.Format("includeHeaders={0}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(includeHeaders, Client.SerializationSettings).Trim('"'))));
             }
             if (_queryParameters.Count > 0)
             {

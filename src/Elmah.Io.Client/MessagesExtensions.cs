@@ -39,9 +39,12 @@ namespace Elmah.Io.Client
             /// <param name='to'>
             /// An end date and time to search to (not included).
             /// </param>
-            public static MessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?))
+            /// <param name='includeHeaders'>
+            /// Include headers like server variables and cookies in the result (slower).
+            /// </param>
+            public static MessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?))
             {
-                return operations.GetAllAsync(logId, pageIndex, pageSize, query, fromParameter, to).GetAwaiter().GetResult();
+                return operations.GetAllAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -68,12 +71,15 @@ namespace Elmah.Io.Client
             /// <param name='to'>
             /// An end date and time to search to (not included).
             /// </param>
+            /// <param name='includeHeaders'>
+            /// Include headers like server variables and cookies in the result (slower).
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.GetAllWithHttpMessagesAsync(logId, pageIndex, pageSize, query, fromParameter, to, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetAllWithHttpMessagesAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

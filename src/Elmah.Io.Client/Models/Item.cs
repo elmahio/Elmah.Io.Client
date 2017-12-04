@@ -9,6 +9,9 @@ namespace Elmah.Io.Client.Models
     using Newtonsoft.Json;
     using System.Linq;
 
+    /// <summary>
+    /// Represents a key value pair.
+    /// </summary>
     public partial class Item
     {
         /// <summary>
@@ -22,6 +25,8 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Initializes a new instance of the Item class.
         /// </summary>
+        /// <param name="key">The key of the item.</param>
+        /// <param name="value">The value of the item.</param>
         public Item(string key = default(string), string value = default(string))
         {
             Key = key;
@@ -35,11 +40,13 @@ namespace Elmah.Io.Client.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets the key of the item.
         /// </summary>
         [JsonProperty(PropertyName = "key")]
         public string Key { get; set; }
 
         /// <summary>
+        /// Gets or sets the value of the item.
         /// </summary>
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
