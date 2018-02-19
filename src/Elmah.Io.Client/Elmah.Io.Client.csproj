@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>.NET Core client for communicating with the elmah.io REST API</Description>
     <Authors>elmah.io</Authors>
-    <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.1;netstandard1.4;net45</TargetFrameworks>
     <AssemblyName>Elmah.Io.Client</AssemblyName>
     <PackageId>Elmah.Io.Client</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing</PackageTags>
@@ -19,13 +19,17 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
     <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.2" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.6" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.10" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.2" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.6" />
   </ItemGroup>
 
 </Project>
