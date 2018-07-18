@@ -93,30 +93,41 @@ namespace Elmah.Io.Client
 
         public Message CreateAndNotify(Guid logId, CreateMessage message)
         {
-            return Task.Factory.StartNew(s => ((IMessages)s).CreateAndNotifyAsync(logId, message), this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            OnMessage?.Invoke(this, new MessageEventArgs(message));
+            return Task.Factory.StartNew(s =>
+            {
+                return
+                   CreateWithHttpMessagesAsync(logId.ToString(), message)
+                   .ContinueWith(MessagesCreated(message));
+            }, this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
         }
 
         public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
-            return await this
-               .CreateWithHttpMessagesAsync(logId.ToString(), message)
-               .ContinueWith<Message>(a =>
-               {
-                   if (a.Status != TaskStatus.RanToCompletion)
-                   {
-                       OnMessageFail?.Invoke(this, new FailEventArgs(message, a.Exception));
-                   }
-
-                   var location = a.Result?.Response?.Headers?.Location;
-                   var id = location?.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
-
-                   return new Message(id, message.Application, message.Detail, message.Hostname, message.Title,
-                       message.Source, message.StatusCode, message.DateTime, message.Type, message.User,
-                       message.Severity, message.Url, message.Method, message.Version, message.Cookies, message.Form,
-                       message.QueryString, message.ServerVariables, message.Data);
-               })
+            return await
+               CreateWithHttpMessagesAsync(logId.ToString(), message)
+               .ContinueWith(MessagesCreated(message))
                .ConfigureAwait(false);
+        }
+
+        private Func<Task<Microsoft.Rest.HttpOperationResponse>, Message> MessagesCreated(CreateMessage message)
+        {
+            return a =>
+            {
+                if (a.Status != TaskStatus.RanToCompletion)
+                {
+                    OnMessageFail?.Invoke(this, new FailEventArgs(message, a.Exception));
+                }
+
+                var location = a.Result?.Response?.Headers?.Location;
+                var id = location?.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
+
+                return new Message(id, message.Application, message.Detail, message.Hostname, message.Title,
+                    message.Source, message.StatusCode, message.DateTime, message.Type, message.User,
+                    message.Severity, message.Url, message.Method, message.Version, message.Cookies, message.Form,
+                    message.QueryString, message.ServerVariables, message.Data);
+            };
         }
 
         private string SeverityToString(Severity severity)
