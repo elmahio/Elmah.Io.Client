@@ -94,6 +94,7 @@ namespace Elmah.Io.Client
         public Message CreateAndNotify(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
+            message = message.ObfuscatePasswords(Client.ObfuscatePasswords);
             return Task.Factory.StartNew(s =>
             {
                 return
@@ -105,6 +106,7 @@ namespace Elmah.Io.Client
         public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
+            message = message.ObfuscatePasswords(Client.ObfuscatePasswords);
             return await
                CreateWithHttpMessagesAsync(logId.ToString(), message)
                .ContinueWith(MessagesCreated(message))

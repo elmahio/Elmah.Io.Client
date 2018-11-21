@@ -15,263 +15,263 @@ namespace Elmah.Io.Client
     /// </summary>
     public static partial class MessagesExtensions
     {
-            /// <summary>
-            /// Fetch messages from a log.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the messages.
-            /// </param>
-            /// <param name='pageIndex'>
-            /// The page number of the result.
-            /// </param>
-            /// <param name='pageSize'>
-            /// The number of messages to load (max 100) or 15 if not set.
-            /// </param>
-            /// <param name='query'>
-            /// A full-text or Lucene query to limit the messages by.
-            /// </param>
-            /// <param name='fromParameter'>
-            /// A start date and time to search from (not included).
-            /// </param>
-            /// <param name='to'>
-            /// An end date and time to search to (not included).
-            /// </param>
-            /// <param name='includeHeaders'>
-            /// Include headers like server variables and cookies in the result (slower).
-            /// </param>
-            public static MessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?))
-            {
-                return operations.GetAllAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders).GetAwaiter().GetResult();
-            }
+        /// <summary>
+        /// Fetch messages from a log.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the messages.
+        /// </param>
+        /// <param name='pageIndex'>
+        /// The page number of the result.
+        /// </param>
+        /// <param name='pageSize'>
+        /// The number of messages to load (max 100) or 15 if not set.
+        /// </param>
+        /// <param name='query'>
+        /// A full-text or Lucene query to limit the messages by.
+        /// </param>
+        /// <param name='fromParameter'>
+        /// A start date and time to search from (not included).
+        /// </param>
+        /// <param name='to'>
+        /// An end date and time to search to (not included).
+        /// </param>
+        /// <param name='includeHeaders'>
+        /// Include headers like server variables and cookies in the result (slower).
+        /// </param>
+        public static MessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?))
+        {
+            return operations.GetAllAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders).GetAwaiter().GetResult();
+        }
 
-            /// <summary>
-            /// Fetch messages from a log.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the messages.
-            /// </param>
-            /// <param name='pageIndex'>
-            /// The page number of the result.
-            /// </param>
-            /// <param name='pageSize'>
-            /// The number of messages to load (max 100) or 15 if not set.
-            /// </param>
-            /// <param name='query'>
-            /// A full-text or Lucene query to limit the messages by.
-            /// </param>
-            /// <param name='fromParameter'>
-            /// A start date and time to search from (not included).
-            /// </param>
-            /// <param name='to'>
-            /// An end date and time to search to (not included).
-            /// </param>
-            /// <param name='includeHeaders'>
-            /// Include headers like server variables and cookies in the result (slower).
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<MessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+        /// <summary>
+        /// Fetch messages from a log.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the messages.
+        /// </param>
+        /// <param name='pageIndex'>
+        /// The page number of the result.
+        /// </param>
+        /// <param name='pageSize'>
+        /// The number of messages to load (max 100) or 15 if not set.
+        /// </param>
+        /// <param name='query'>
+        /// A full-text or Lucene query to limit the messages by.
+        /// </param>
+        /// <param name='fromParameter'>
+        /// A start date and time to search from (not included).
+        /// </param>
+        /// <param name='to'>
+        /// An end date and time to search to (not included).
+        /// </param>
+        /// <param name='includeHeaders'>
+        /// Include headers like server variables and cookies in the result (slower).
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static async Task<MessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+        {
+            using (var _result = await operations.GetAllWithHttpMessagesAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders, null, cancellationToken).ConfigureAwait(false))
             {
-                using (var _result = await operations.GetAllWithHttpMessagesAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                return _result.Body;
             }
+        }
 
-            /// <summary>
-            /// Create a new message.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log which should contain the new message.
-            /// </param>
-            /// <param name='message'>
-            /// The message object to create.
-            /// </param>
-            public static void Create(this IMessages operations, string logId, CreateMessage message)
-            {
-                operations.CreateAsync(logId, message).GetAwaiter().GetResult();
-            }
+        /// <summary>
+        /// Create a new message.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log which should contain the new message.
+        /// </param>
+        /// <param name='message'>
+        /// The message object to create.
+        /// </param>
+        public static void Create(this IMessages operations, string logId, CreateMessage message)
+        {
+            operations.CreateAsync(logId, message).GetAwaiter().GetResult();
+        }
 
-            /// <summary>
-            /// Create a new message.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log which should contain the new message.
-            /// </param>
-            /// <param name='message'>
-            /// The message object to create.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task CreateAsync(this IMessages operations, string logId, CreateMessage message, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.CreateWithHttpMessagesAsync(logId, message, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
+        /// <summary>
+        /// Create a new message.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log which should contain the new message.
+        /// </param>
+        /// <param name='message'>
+        /// The message object to create.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static async Task CreateAsync(this IMessages operations, string logId, CreateMessage message, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            (await operations.CreateWithHttpMessagesAsync(logId, message, null, cancellationToken).ConfigureAwait(false)).Dispose();
+        }
 
-            /// <summary>
-            /// Deletes a list of messages by logid and query.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            /// <param name='search'>
-            /// A search object containing query, time filters etc.
-            /// </param>
-            public static void DeleteAll(this IMessages operations, string logId, Search search)
-            {
-                operations.DeleteAllAsync(logId, search).GetAwaiter().GetResult();
-            }
+        /// <summary>
+        /// Deletes a list of messages by logid and query.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        /// <param name='search'>
+        /// A search object containing query, time filters etc.
+        /// </param>
+        public static void DeleteAll(this IMessages operations, string logId, Search search)
+        {
+            operations.DeleteAllAsync(logId, search).GetAwaiter().GetResult();
+        }
 
-            /// <summary>
-            /// Deletes a list of messages by logid and query.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            /// <param name='search'>
-            /// A search object containing query, time filters etc.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task DeleteAllAsync(this IMessages operations, string logId, Search search, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.DeleteAllWithHttpMessagesAsync(logId, search, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
+        /// <summary>
+        /// Deletes a list of messages by logid and query.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        /// <param name='search'>
+        /// A search object containing query, time filters etc.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static async Task DeleteAllAsync(this IMessages operations, string logId, Search search, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            (await operations.DeleteAllWithHttpMessagesAsync(logId, search, null, cancellationToken).ConfigureAwait(false)).Dispose();
+        }
 
-            /// <summary>
-            /// Fetch a message by its ID.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The ID of the message to fetch.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            public static Message Get(this IMessages operations, string id, string logId)
-            {
-                return operations.GetAsync(id, logId).GetAwaiter().GetResult();
-            }
+        /// <summary>
+        /// Fetch a message by its ID.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='id'>
+        /// The ID of the message to fetch.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        public static Message Get(this IMessages operations, string id, string logId)
+        {
+            return operations.GetAsync(id, logId).GetAwaiter().GetResult();
+        }
 
-            /// <summary>
-            /// Fetch a message by its ID.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The ID of the message to fetch.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<Message> GetAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
+        /// <summary>
+        /// Fetch a message by its ID.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='id'>
+        /// The ID of the message to fetch.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static async Task<Message> GetAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            using (var _result = await operations.GetWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false))
             {
-                using (var _result = await operations.GetWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                return _result.Body;
             }
+        }
 
-            /// <summary>
-            /// Delete a message by its ID.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The ID of the message to delete.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            public static void Delete(this IMessages operations, string id, string logId)
-            {
-                operations.DeleteAsync(id, logId).GetAwaiter().GetResult();
-            }
+        /// <summary>
+        /// Delete a message by its ID.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='id'>
+        /// The ID of the message to delete.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        public static void Delete(this IMessages operations, string id, string logId)
+        {
+            operations.DeleteAsync(id, logId).GetAwaiter().GetResult();
+        }
 
-            /// <summary>
-            /// Delete a message by its ID.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The ID of the message to delete.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task DeleteAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.DeleteWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
+        /// <summary>
+        /// Delete a message by its ID.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='id'>
+        /// The ID of the message to delete.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static async Task DeleteAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            (await operations.DeleteWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false)).Dispose();
+        }
 
-            /// <summary>
-            /// Hide a message by its ID.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The ID of the message to hide.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            public static void Hide(this IMessages operations, string id, string logId)
-            {
-                operations.HideAsync(id, logId).GetAwaiter().GetResult();
-            }
+        /// <summary>
+        /// Hide a message by its ID.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='id'>
+        /// The ID of the message to hide.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        public static void Hide(this IMessages operations, string id, string logId)
+        {
+            operations.HideAsync(id, logId).GetAwaiter().GetResult();
+        }
 
-            /// <summary>
-            /// Hide a message by its ID.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// The ID of the message to hide.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task HideAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.HideWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
+        /// <summary>
+        /// Hide a message by its ID.
+        /// </summary>
+        /// <param name='operations'>
+        /// The operations group for this extension method.
+        /// </param>
+        /// <param name='id'>
+        /// The ID of the message to hide.
+        /// </param>
+        /// <param name='logId'>
+        /// The ID of the log containing the message.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static async Task HideAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            (await operations.HideWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false)).Dispose();
+        }
 
     }
 }

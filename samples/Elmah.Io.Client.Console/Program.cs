@@ -35,6 +35,10 @@ namespace Elmah.Io.Client.Console
                 Data = new List<Item>
                 {
                     new Item {Key = "Username", Value = "Man in black"}
+                },
+                Form = new List<Item>
+                {
+                    new Item {Key = "Password", Value = "SecretPassword"}
                 }
             });
         }
