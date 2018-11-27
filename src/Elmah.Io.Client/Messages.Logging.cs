@@ -2,6 +2,7 @@
 using Elmah.Io.Client.Models;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace Elmah.Io.Client
 {
@@ -94,6 +95,7 @@ namespace Elmah.Io.Client
         public Message CreateAndNotify(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
+            message = Obfuscate(message);
             return Task.Factory.StartNew(s =>
             {
                 return
@@ -105,10 +107,28 @@ namespace Elmah.Io.Client
         public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
+            message = Obfuscate(message);
             return await
                CreateWithHttpMessagesAsync(logId.ToString(), message)
                .ContinueWith(MessagesCreated(message))
                .ConfigureAwait(false);
+        }
+
+        private CreateMessage Obfuscate(CreateMessage message)
+        {
+            if (message == null) return message;
+            if (message.Form == null || !message.Form.Any()) return message;
+            if (Client?.Options?.FormKeysToObfuscate == null) return message;
+
+            foreach (var key in Client.Options.FormKeysToObfuscate.Select(x => x.ToLower()))
+            {
+                foreach (var f in message.Form.Where(f => f.Key.ToLower().Equals(key) && !string.IsNullOrWhiteSpace(f.Value)))
+                {
+                    f.Value = new string('*', f.Value.Length);
+                }
+            }
+
+            return message;
         }
 
         private Func<Task<Microsoft.Rest.HttpOperationResponse>, Message> MessagesCreated(CreateMessage message)
