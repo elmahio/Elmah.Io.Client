@@ -8,8 +8,8 @@ namespace Elmah.Io.Client.Console
     {
         static void Main(string[] args)
         {
-            var client = ElmahioAPI.Create("fae92b2af86146e69079b081ad75e1d1");
-            var logId = new Guid("b4cb36a9-a272-45e8-8ca6-a48e1728a8d5");
+            var client = ElmahioAPI.Create("API_KEY");
+            var logId = new Guid("LOG_ID");
 
             // Examples of severity helper methods
             client.Messages.Fatal(logId, new ApplicationException("A fatal exception"), "Fatal message");
@@ -44,7 +44,7 @@ namespace Elmah.Io.Client.Console
                 }
             });
 
-            var client2 = ElmahioAPI.Create("fae92b2af86146e69079b081ad75e1d1");
+            var client2 = ElmahioAPI.Create("API_KEY");
             client2.Options.FormKeysToObfuscate.Add("visible form item");
 
             client2.Messages.CreateAndNotify(logId, new CreateMessage
