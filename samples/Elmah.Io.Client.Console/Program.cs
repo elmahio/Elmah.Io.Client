@@ -8,8 +8,8 @@ namespace Elmah.Io.Client.Console
     {
         static void Main(string[] args)
         {
-            var client = ElmahioAPI.Create("API_KEY");
-            var logId = new Guid("LOG_ID");
+            var client = ElmahioAPI.Create("fae92b2af86146e69079b081ad75e1d1");
+            var logId = new Guid("b4cb36a9-a272-45e8-8ca6-a48e1728a8d5");
 
             // Examples of severity helper methods
             client.Messages.Fatal(logId, new ApplicationException("A fatal exception"), "Fatal message");
@@ -41,6 +41,20 @@ namespace Elmah.Io.Client.Console
                     new Item {Key = "Password", Value = "SecretPassword"},
                     new Item {Key = "pwd", Value = "Other secret value"},
                     new Item {Key = "visible form item", Value = "With a value"}
+                }
+            });
+
+            var client2 = ElmahioAPI.Create("fae92b2af86146e69079b081ad75e1d1");
+            client2.Options.FormKeysToObfuscate.Add("visible form item");
+
+            client2.Messages.CreateAndNotify(logId, new CreateMessage
+            {
+                Title = "Hello World",
+                Form = new List<Item>
+                {
+                    new Item {Key = "Password", Value = "SecretPassword"},
+                    new Item {Key = "pwd", Value = "Other secret value"},
+                    new Item {Key = "visible form item", Value = "Now this is obfuscated too"}
                 }
             });
         }
