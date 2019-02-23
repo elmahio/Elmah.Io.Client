@@ -1,4 +1,8 @@
-﻿namespace Elmah.Io.Client
+﻿using System;
+using System.Net.Http.Headers;
+using System.Reflection;
+
+namespace Elmah.Io.Client
 {
     public partial class ElmahioAPI
     {
@@ -6,10 +10,14 @@
 
         public static IElmahioAPI Create(string apiKey, ElmahIoOptions options)
         {
-            return new ElmahioAPI(new ApiKeyCredentials(apiKey))
+            var client = new ElmahioAPI(new ApiKeyCredentials(apiKey))
             {
                 Options = options ?? new ElmahIoOptions()
             };
+            client.HttpClient.Timeout = new TimeSpan(0, 0, 5);
+            client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
+            client.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.Client", $"{typeof(ElmahioAPI).GetTypeInfo().Assembly.GetName().Version}")));
+            return client;
         }
 
         public static IElmahioAPI Create(string apiKey)
