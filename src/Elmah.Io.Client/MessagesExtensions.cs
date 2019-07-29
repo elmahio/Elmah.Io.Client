@@ -7,6 +7,8 @@
 namespace Elmah.Io.Client
 {
     using Models;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -271,6 +273,46 @@ namespace Elmah.Io.Client
             public static async Task HideAsync(this IMessages operations, string id, string logId, CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.HideWithHttpMessagesAsync(id, logId, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
+            /// Create one or more new messages.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='logId'>
+            /// The ID of the log which should contain the new messages.
+            /// </param>
+            /// <param name='messages'>
+            /// The messages to create.
+            /// </param>
+            public static IList<CreateBulkMessageResult> CreateBulk(this IMessages operations, string logId, IList<CreateMessage> messages)
+            {
+                return operations.CreateBulkAsync(logId, messages).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create one or more new messages.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='logId'>
+            /// The ID of the log which should contain the new messages.
+            /// </param>
+            /// <param name='messages'>
+            /// The messages to create.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<IList<CreateBulkMessageResult>> CreateBulkAsync(this IMessages operations, string logId, IList<CreateMessage> messages, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.CreateBulkWithHttpMessagesAsync(logId, messages, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
     }

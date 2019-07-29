@@ -3,6 +3,8 @@ using Elmah.Io.Client.Models;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using System.Collections.Generic;
+using Microsoft.Rest;
 
 namespace Elmah.Io.Client
 {
@@ -86,10 +88,39 @@ namespace Elmah.Io.Client
             CreateAndNotify(logId, message);
         }
 
-        [Obsolete]
-        public void CreateAndNotify(string logId, CreateMessage message)
+        public IList<CreateBulkMessageResult> CreateBulkAndNotify(Guid logId, IList<CreateMessage> messages)
         {
-            CreateAndNotify(new Guid(logId), message);
+            var obfuscated = new List<CreateMessage>();
+            foreach (var message in messages)
+            {
+                OnMessage?.Invoke(this, new MessageEventArgs(message));
+                obfuscated.Add(Obfuscate(message));
+            }
+
+            messages = obfuscated;
+
+            return Task.Factory.StartNew(s =>
+            {
+                return
+                   CreateBulkWithHttpMessagesAsync(logId.ToString(), messages)
+                   .ContinueWith(BulkMessagesCreated(messages));
+            }, this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+        }
+
+        public async Task<IList<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages)
+        {
+            var obfuscated = new List<CreateMessage>();
+            foreach (var message in messages)
+            {
+                OnMessage?.Invoke(this, new MessageEventArgs(message));
+                obfuscated.Add(Obfuscate(message));
+            }
+
+            messages = obfuscated;
+
+            return await CreateBulkWithHttpMessagesAsync(logId.ToString(), messages)
+                .ContinueWith(BulkMessagesCreated(messages))
+                .ConfigureAwait(false);
         }
 
         public Message CreateAndNotify(Guid logId, CreateMessage message)
@@ -148,6 +179,23 @@ namespace Elmah.Io.Client
                     message.Source, message.StatusCode, message.DateTime, message.Type, message.User,
                     message.Severity, message.Url, message.Method, message.Version, message.Cookies, message.Form,
                     message.QueryString, message.ServerVariables, message.Data);
+            };
+        }
+
+        private Func<Task<HttpOperationResponse<IList<CreateBulkMessageResult>>>, IList<CreateBulkMessageResult>> BulkMessagesCreated(IList<CreateMessage> messages)
+        {
+            return a =>
+            {
+                if (a.Status != TaskStatus.RanToCompletion)
+                {
+                    foreach (var msg in messages)
+                    {
+                        OnMessageFail?.Invoke(this, new FailEventArgs(msg, a.Exception));
+                    }
+                    return null;
+                }
+
+                return a.Result?.Body;
             };
         }
 

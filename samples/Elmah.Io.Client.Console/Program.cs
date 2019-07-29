@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Elmah.Io.Client.Models;
 
 namespace Elmah.Io.Client.Console
@@ -43,6 +44,12 @@ namespace Elmah.Io.Client.Console
                     new Item {Key = "visible form item", Value = "With a value"}
                 }
             });
+
+            client.Messages.CreateBulkAndNotify(logId, new[]
+            {
+                new CreateMessage { Title = "This is a bulk message" },
+                new CreateMessage { Title = "This is another bulk message" },
+            }.ToList());
 
             var client2 = ElmahioAPI.Create("API_KEY");
             client2.Options.FormKeysToObfuscate.Add("visible form item");

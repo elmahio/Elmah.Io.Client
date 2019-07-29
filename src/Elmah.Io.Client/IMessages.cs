@@ -172,5 +172,30 @@ namespace Elmah.Io.Client
         /// Thrown when a required parameter is null
         /// </exception>
         Task<HttpOperationResponse> HideWithHttpMessagesAsync(string id, string logId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Create one or more new messages.
+        /// </summary>
+        /// <param name='logId'>
+        /// The ID of the log which should contain the new messages.
+        /// </param>
+        /// <param name='messages'>
+        /// The messages to create.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<HttpOperationResponse<IList<CreateBulkMessageResult>>> CreateBulkWithHttpMessagesAsync(string logId, IList<CreateMessage> messages, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

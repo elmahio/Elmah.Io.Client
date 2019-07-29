@@ -26,8 +26,8 @@ namespace Elmah.Io.Client.Models
         /// <param name="version">The version number of this deployment. The
         /// value of version can be a SemVer compliant string or any other
         /// syntax that you are using as your version numbering scheme.</param>
-        /// <param name="created">When was this deployment created. Defaults to
-        /// current time if not specified.</param>
+        /// <param name="created">When was this deployment created in UTC.
+        /// Defaults to current time if not specified.</param>
         /// <param name="description">Optional description of this deployment.
         /// Can be markdown or clear text.</param>
         /// <param name="userName">The name of the person responsible for
@@ -65,8 +65,8 @@ namespace Elmah.Io.Client.Models
         public string Version { get; set; }
 
         /// <summary>
-        /// Gets or sets when was this deployment created. Defaults to current
-        /// time if not specified.
+        /// Gets or sets when was this deployment created in UTC. Defaults to
+        /// current time if not specified.
         /// </summary>
         [JsonProperty(PropertyName = "created")]
         public System.DateTime? Created { get; set; }

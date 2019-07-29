@@ -1,5 +1,6 @@
 ﻿using Elmah.Io.Client.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
@@ -71,15 +72,28 @@ namespace Elmah.Io.Client
         /// </summary>
         void Log(Guid logId, Exception exception, Severity severity, string messageTemplate, params object[] propertyValues);
 
-        [Obsolete("Use the overload that takes log ID as a GUID.")]
-        void CreateAndNotify(string logId, CreateMessage message);
-
         /// <summary>
         /// Low level log method, which all other methods wanting to log a log message should ideally call.
         /// The CreateAndNotify method triggers event handlers of the OnMessage and OnMessageFail events.
         /// </summary>
         Message CreateAndNotify(Guid logId, CreateMessage message);
 
+        /// <summary>
+        /// Low level log method, which all other methods wanting to log a log message should ideally call.
+        /// The CreateAndNotifyAsync method triggers event handlers of the OnMessage and OnMessageFail events.
+        /// </summary>
         Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message);
+
+        /// <summary>
+        /// Low level log method, which all other methods wanting to log a log message should ideally call.
+        /// The CreateBulkAndNotify method triggers event handlers of the OnMessage and OnMessageFail events.
+        /// </summary>
+        IList<CreateBulkMessageResult> CreateBulkAndNotify(Guid logId, IList<CreateMessage> messages);
+
+        /// <summary>
+        /// Low level log method, which all other methods wanting to log a log message should ideally call.
+        /// The CreateBulkAndNotifyAsync method triggers event handlers of the OnMessage and OnMessageFail events.
+        /// </summary>
+        Task<IList<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages);
     }
 }
