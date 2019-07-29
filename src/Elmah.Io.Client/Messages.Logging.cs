@@ -138,6 +138,7 @@ namespace Elmah.Io.Client
                 if (a.Status != TaskStatus.RanToCompletion)
                 {
                     OnMessageFail?.Invoke(this, new FailEventArgs(message, a.Exception));
+                    return null;
                 }
 
                 var location = a.Result?.Response?.Headers?.Location;
