@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Net;
 
 namespace Elmah.Io.Client
 {
     public class ElmahIoOptions
     {
         public List<string> FormKeysToObfuscate { get; set; }
+
+        public IWebProxy WebProxy { get; set; }
 
         public ElmahIoOptions()
         {

@@ -10,9 +10,10 @@ namespace Elmah.Io.Client
 
         public static IElmahioAPI Create(string apiKey, ElmahIoOptions options)
         {
-            var client = new ElmahioAPI(new ApiKeyCredentials(apiKey))
+            options = options ?? new ElmahIoOptions();
+            var client = new ElmahioAPI(new ApiKeyCredentials(apiKey), HttpClientHandlerFactory.GetHttpClientHandler(options))
             {
-                Options = options ?? new ElmahIoOptions()
+                Options = options
             };
             client.HttpClient.Timeout = new TimeSpan(0, 0, 5);
             client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
