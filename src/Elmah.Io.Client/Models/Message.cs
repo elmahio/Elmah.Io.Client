@@ -35,6 +35,13 @@ namespace Elmah.Io.Client.Models
         /// message.</param>
         /// <param name="title">The textual title or headline of the message to
         /// log.</param>
+        /// <param name="titleTemplate">The title template of the message to
+        /// log. This property can be used from logging frameworks that
+        /// supports
+        /// structured logging like: "{user} says {quote}". In the example,
+        /// titleTemplate will be this string and title
+        /// will be "Gilfoyle says It's not magic. It's talent and
+        /// sweat".</param>
         /// <param name="source">The source of the code logging the message.
         /// This could be the assembly name.</param>
         /// <param name="statusCode">If the message logged relates to a HTTP
@@ -84,13 +91,14 @@ namespace Elmah.Io.Client.Models
         /// key/value pairs, by modifying the Data
         /// dictionary on the exception or by supplying additional key/values
         /// to this API.</param>
-        public Message(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
+        public Message(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string titleTemplate = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
         {
             Id = id;
             Application = application;
             Detail = detail;
             Hostname = hostname;
             Title = title;
+            TitleTemplate = titleTemplate;
             Source = source;
             StatusCode = statusCode;
             DateTime = dateTime;
@@ -146,6 +154,16 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title template of the message to log. This
+        /// property can be used from logging frameworks that supports
+        /// structured logging like: "{user} says {quote}". In the example,
+        /// titleTemplate will be this string and title
+        /// will be "Gilfoyle says It's not magic. It's talent and sweat".
+        /// </summary>
+        [JsonProperty(PropertyName = "titleTemplate")]
+        public string TitleTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the source of the code logging the message. This could

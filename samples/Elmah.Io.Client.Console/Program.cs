@@ -45,23 +45,32 @@ namespace Elmah.Io.Client.Console
                 }
             });
 
+            // Example of using the bulk endpoint to store multiple log messages in a single request
             client.Messages.CreateBulkAndNotify(logId, new[]
             {
                 new CreateMessage { Title = "This is a bulk message" },
                 new CreateMessage { Title = "This is another bulk message" },
             }.ToList());
 
-            var client2 = ElmahioAPI.Create("API_KEY");
-            client2.Options.FormKeysToObfuscate.Add("visible form item");
+            // Example of using structured logging
+            client.Messages.CreateAndNotify(logId, new CreateMessage
+            {
+                Title = "Thomas says Hello",
+                TitleTemplate = "{User} says Hello",
+            });
 
+            // Example of filtering undesired form items
+            var client2 = ElmahioAPI.Create("API_KEY");
+
+            client2.Options.FormKeysToObfuscate.Add("visible form item");
             client2.Messages.CreateAndNotify(logId, new CreateMessage
             {
                 Title = "Hello World",
                 Form = new List<Item>
                 {
-                    new Item {Key = "Password", Value = "SecretPassword"},
-                    new Item {Key = "pwd", Value = "Other secret value"},
-                    new Item {Key = "visible form item", Value = "Now this is obfuscated too"}
+                    new Item { Key = "Password", Value = "SecretPassword" },
+                    new Item { Key = "pwd", Value = "Other secret value" },
+                    new Item { Key = "visible form item", Value = "Now this is obfuscated too" }
                 }
             });
         }

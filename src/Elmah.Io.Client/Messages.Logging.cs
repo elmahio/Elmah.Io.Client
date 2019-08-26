@@ -176,9 +176,9 @@ namespace Elmah.Io.Client
                 var id = location?.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
 
                 return new Message(id, message.Application, message.Detail, message.Hostname, message.Title,
-                    message.Source, message.StatusCode, message.DateTime, message.Type, message.User,
-                    message.Severity, message.Url, message.Method, message.Version, message.Cookies, message.Form,
-                    message.QueryString, message.ServerVariables, message.Data);
+                    message.TitleTemplate, message.Source, message.StatusCode, message.DateTime, message.Type,
+                    message.User, message.Severity, message.Url, message.Method, message.Version, message.Cookies,
+                    message.Form, message.QueryString, message.ServerVariables, message.Data);
             };
         }
 
