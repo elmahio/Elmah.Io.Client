@@ -1,12 +1,8 @@
-﻿using Elmah.Io.Client;
-using Elmah.Io.Client.Models;
+﻿using Elmah.Io.Client.Models;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Elmah.Io.Client.Test
 {
@@ -22,7 +18,6 @@ namespace Elmah.Io.Client.Test
 
             // Get all logs
             var logs = api.Logs.GetAll();
-            Assert.That(logs.Count, Is.GreaterThan(0));
 
             // Create log
             api.Logs.Create(new CreateLog
@@ -41,10 +36,6 @@ namespace Elmah.Io.Client.Test
             // Get single log
             var log = api.Logs.Get(created.Id);
             Assert.That(log, Is.Not.Null);
-
-            // Get all deployments
-            var deployments = api.Deployments.GetAll();
-            Assert.That(deployments.Count, Is.GreaterThan(0));
 
             // Create deployment
             api.Deployments.Create(new CreateDeployment
@@ -69,7 +60,8 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
-            Assert.That(api.Deployments.GetAll().First().Version != now);
+            var deployments = api.Deployments.GetAll();
+            Assert.That(deployments.All(d => d.Version != now));
 
             // Create message
 
@@ -109,11 +101,14 @@ namespace Elmah.Io.Client.Test
 
             // Create bulk
 
-            api.Messages.CreateBulk(log.Id, new[]
-            {
-                new CreateMessage {Title = now},
-                new CreateMessage {Title = now},
-            }.ToList());
+            api
+                .Messages
+                .CreateBulk(log.Id, new[]
+                {
+                    new CreateMessage {Title = now},
+                    new CreateMessage {Title = now},
+                }
+                .ToList());
 
             Thread.Sleep(5000);
 
