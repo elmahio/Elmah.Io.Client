@@ -54,9 +54,9 @@ namespace Elmah.Io.Client
             /// <param name='log'>
             /// The log object to create.
             /// </param>
-            public static void Create(this ILogs operations, CreateLog log)
+            public static CreateLogResult Create(this ILogs operations, CreateLog log = default(CreateLog))
             {
-                operations.CreateAsync(log).GetAwaiter().GetResult();
+                return operations.CreateAsync(log).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -71,9 +71,12 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task CreateAsync(this ILogs operations, CreateLog log, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CreateLogResult> CreateAsync(this ILogs operations, CreateLog log = default(CreateLog), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.CreateWithHttpMessagesAsync(log, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                using (var _result = await operations.CreateWithHttpMessagesAsync(log, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
             /// <summary>

@@ -54,9 +54,9 @@ namespace Elmah.Io.Client
             /// <param name='deployment'>
             /// The deployment object to create.
             /// </param>
-            public static void Create(this IDeployments operations, CreateDeployment deployment)
+            public static CreateDeploymentResult Create(this IDeployments operations, CreateDeployment deployment = default(CreateDeployment))
             {
-                operations.CreateAsync(deployment).GetAwaiter().GetResult();
+                return operations.CreateAsync(deployment).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -71,9 +71,12 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task CreateAsync(this IDeployments operations, CreateDeployment deployment, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CreateDeploymentResult> CreateAsync(this IDeployments operations, CreateDeployment deployment = default(CreateDeployment), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.CreateWithHttpMessagesAsync(deployment, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                using (var _result = await operations.CreateWithHttpMessagesAsync(deployment, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
             /// <summary>

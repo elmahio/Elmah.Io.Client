@@ -44,7 +44,7 @@ namespace Elmah.Io.Client
             /// <param name='includeHeaders'>
             /// Include headers like server variables and cookies in the result (slower).
             /// </param>
-            public static MessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?))
+            public static MessagesResult GetAll(this IMessages operations, string logId, int? pageIndex = 0, int? pageSize = 15, string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = false)
             {
                 return operations.GetAllAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders).GetAwaiter().GetResult();
             }
@@ -79,7 +79,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = default(int?), int? pageSize = default(int?), string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MessagesResult> GetAllAsync(this IMessages operations, string logId, int? pageIndex = 0, int? pageSize = 15, string query = default(string), System.DateTime? fromParameter = default(System.DateTime?), System.DateTime? to = default(System.DateTime?), bool? includeHeaders = false, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetAllWithHttpMessagesAsync(logId, pageIndex, pageSize, query, fromParameter, to, includeHeaders, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -99,9 +99,9 @@ namespace Elmah.Io.Client
             /// <param name='message'>
             /// The message object to create.
             /// </param>
-            public static void Create(this IMessages operations, string logId, CreateMessage message)
+            public static CreateMessageResult Create(this IMessages operations, string logId, CreateMessage message = default(CreateMessage))
             {
-                operations.CreateAsync(logId, message).GetAwaiter().GetResult();
+                return operations.CreateAsync(logId, message).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -119,9 +119,12 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task CreateAsync(this IMessages operations, string logId, CreateMessage message, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CreateMessageResult> CreateAsync(this IMessages operations, string logId, CreateMessage message = default(CreateMessage), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.CreateWithHttpMessagesAsync(logId, message, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                using (var _result = await operations.CreateWithHttpMessagesAsync(logId, message, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
             /// <summary>
@@ -136,7 +139,7 @@ namespace Elmah.Io.Client
             /// <param name='search'>
             /// A search object containing query, time filters etc.
             /// </param>
-            public static void DeleteAll(this IMessages operations, string logId, Search search)
+            public static void DeleteAll(this IMessages operations, string logId, Search search = default(Search))
             {
                 operations.DeleteAllAsync(logId, search).GetAwaiter().GetResult();
             }
@@ -156,7 +159,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAllAsync(this IMessages operations, string logId, Search search, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAllAsync(this IMessages operations, string logId, Search search = default(Search), CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.DeleteAllWithHttpMessagesAsync(logId, search, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
@@ -287,7 +290,7 @@ namespace Elmah.Io.Client
             /// <param name='messages'>
             /// The messages to create.
             /// </param>
-            public static IList<CreateBulkMessageResult> CreateBulk(this IMessages operations, string logId, IList<CreateMessage> messages)
+            public static IList<CreateBulkMessageResult> CreateBulk(this IMessages operations, string logId, IList<CreateMessage> messages = default(IList<CreateMessage>))
             {
                 return operations.CreateBulkAsync(logId, messages).GetAwaiter().GetResult();
             }
@@ -307,7 +310,7 @@ namespace Elmah.Io.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<IList<CreateBulkMessageResult>> CreateBulkAsync(this IMessages operations, string logId, IList<CreateMessage> messages, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IList<CreateBulkMessageResult>> CreateBulkAsync(this IMessages operations, string logId, IList<CreateMessage> messages = default(IList<CreateMessage>), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.CreateBulkWithHttpMessagesAsync(logId, messages, null, cancellationToken).ConfigureAwait(false))
                 {

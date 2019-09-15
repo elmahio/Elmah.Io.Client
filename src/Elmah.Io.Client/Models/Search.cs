@@ -41,19 +41,19 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Gets or sets lucene query.
         /// </summary>
-        [JsonProperty(PropertyName = "Query")]
+        [JsonProperty(PropertyName = "query")]
         public string Query { get; set; }
 
         /// <summary>
         /// Gets or sets search from this date.
         /// </summary>
-        [JsonProperty(PropertyName = "From")]
+        [JsonProperty(PropertyName = "from")]
         public System.DateTime? FromProperty { get; set; }
 
         /// <summary>
         /// Gets or sets search to this date.
         /// </summary>
-        [JsonProperty(PropertyName = "To")]
+        [JsonProperty(PropertyName = "to")]
         public System.DateTime? To { get; set; }
 
     }

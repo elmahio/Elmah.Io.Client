@@ -162,7 +162,7 @@ namespace Elmah.Io.Client
             return message;
         }
 
-        private Func<Task<Microsoft.Rest.HttpOperationResponse>, Message> MessagesCreated(CreateMessage message)
+        private Func<Task<Microsoft.Rest.HttpOperationResponse<CreateMessageResult>>, Message> MessagesCreated(CreateMessage message)
         {
             return a =>
             {

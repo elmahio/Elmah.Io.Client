@@ -23,7 +23,11 @@ namespace Elmah.Io.Client.Models
         /// Initializes a new instance of the CreateBulkMessageResult class.
         /// </summary>
         /// <param name="statusCode">Status code of the individual messages as
-        /// if it were being created through the non-bulk endpoint.</param>
+        /// if it were being created through the non-bulk endpoint.
+        /// If a message was succesfully created, the status code will be 201
+        /// and location will contain an URL.
+        /// If a message was ignored, the status code will be 200 and the
+        /// location will be empty.</param>
         /// <param name="location">The location of the created message if
         /// StatusCode equals Created.</param>
         public CreateBulkMessageResult(int? statusCode = default(int?), string location = default(string))
@@ -41,15 +45,19 @@ namespace Elmah.Io.Client.Models
         /// <summary>
         /// Gets or sets status code of the individual messages as if it were
         /// being created through the non-bulk endpoint.
+        /// If a message was succesfully created, the status code will be 201
+        /// and location will contain an URL.
+        /// If a message was ignored, the status code will be 200 and the
+        /// location will be empty.
         /// </summary>
-        [JsonProperty(PropertyName = "StatusCode")]
+        [JsonProperty(PropertyName = "statusCode")]
         public int? StatusCode { get; set; }
 
         /// <summary>
         /// Gets or sets the location of the created message if StatusCode
         /// equals Created.
         /// </summary>
-        [JsonProperty(PropertyName = "Location")]
+        [JsonProperty(PropertyName = "location")]
         public string Location { get; set; }
 
     }

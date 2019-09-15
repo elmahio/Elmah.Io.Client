@@ -6,6 +6,7 @@
 
 namespace Elmah.Io.Client.Models
 {
+    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -23,7 +24,7 @@ namespace Elmah.Io.Client.Models
         /// Initializes a new instance of the CreateLog class.
         /// </summary>
         /// <param name="name">Name of the new log.</param>
-        public CreateLog(string name = default(string))
+        public CreateLog(string name)
         {
             Name = name;
             CustomInit();
@@ -40,5 +41,18 @@ namespace Elmah.Io.Client.Models
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            if (Name == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+        }
     }
 }
