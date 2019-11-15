@@ -56,6 +56,11 @@ namespace Elmah.Io.Client
         public virtual IDeployments Deployments { get; private set; }
 
         /// <summary>
+        /// Gets the IHeartbeats.
+        /// </summary>
+        public virtual IHeartbeats Heartbeats { get; private set; }
+
+        /// <summary>
         /// Gets the ILogs.
         /// </summary>
         public virtual ILogs Logs { get; private set; }
@@ -267,6 +272,7 @@ namespace Elmah.Io.Client
         private void Initialize()
         {
             Deployments = new Deployments(this);
+            Heartbeats = new Heartbeats(this);
             Logs = new Logs(this);
             Messages = new Messages(this);
             BaseUri = new System.Uri("https://api.elmah.io");

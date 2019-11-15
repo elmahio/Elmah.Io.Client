@@ -53,6 +53,11 @@ namespace Elmah.Io.Client
         IDeployments Deployments { get; }
 
         /// <summary>
+        /// Gets the IHeartbeats.
+        /// </summary>
+        IHeartbeats Heartbeats { get; }
+
+        /// <summary>
         /// Gets the ILogs.
         /// </summary>
         ILogs Logs { get; }
