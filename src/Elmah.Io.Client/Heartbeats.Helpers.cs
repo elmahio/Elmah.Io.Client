@@ -20,13 +20,15 @@ namespace Elmah.Io.Client
 
         public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
         {
-            await this.CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
-            {
-                Result = "Healthy",
-                Reason = reason,
-                Application = application,
-                Version = version,
-            });
+            await this
+                .CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
+                {
+                    Result = "Healthy",
+                    Reason = reason,
+                    Application = application,
+                    Version = version,
+                })
+                .ConfigureAwait(false);
         }
 
         public void Degraded(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
@@ -42,13 +44,15 @@ namespace Elmah.Io.Client
 
         public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
         {
-            await this.CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
-            {
-                Result = "Degraded",
-                Reason = reason,
-                Application = application,
-                Version = version,
-            });
+            await this
+                .CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
+                {
+                    Result = "Degraded",
+                    Reason = reason,
+                    Application = application,
+                    Version = version,
+                })
+                .ConfigureAwait(false);
         }
 
         public void Unhealthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
@@ -64,13 +68,15 @@ namespace Elmah.Io.Client
 
         public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
         {
-            await this.CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
-            {
-                Result = "Unhealthy",
-                Reason = reason,
-                Application = application,
-                Version = version,
-            });
+            await this
+                .CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
+                {
+                    Result = "Unhealthy",
+                    Reason = reason,
+                    Application = application,
+                    Version = version,
+                })
+                .ConfigureAwait(false);
         }
     }
 }
