@@ -61,35 +61,35 @@ namespace Elmah.Io.Client
             if (e is ArgumentException ae)
             {
                 if (!string.IsNullOrWhiteSpace(ae.ParamName))
-                    result.Add(new Item { Key = ItemName(ae, nameof(ae.ParamName)), Value = ae.ParamName });
+                    result.Add(new Item { Key = ae.ItemName(nameof(ae.ParamName)), Value = ae.ParamName });
             }
 
             if (e is BadImageFormatException bife)
             {
                 if (!string.IsNullOrWhiteSpace(bife.FileName))
-                    result.Add(new Item { Key = ItemName(bife, nameof(bife.FileName)), Value = bife.FileName });
+                    result.Add(new Item { Key = bife.ItemName(nameof(bife.FileName)), Value = bife.FileName });
 #if NETSTANDARD2_0 || NET45 || NET46 || NET461
                 if (!string.IsNullOrWhiteSpace(bife.FusionLog))
-                    result.Add(new Item { Key = ItemName(bife, nameof(bife.FusionLog)), Value = bife.FusionLog });
+                    result.Add(new Item { Key = bife.ItemName(nameof(bife.FusionLog)), Value = bife.FusionLog });
 #endif
             }
 
             if (e is FileNotFoundException fnfe)
             {
                 if (!string.IsNullOrWhiteSpace(fnfe.FileName))
-                    result.Add(new Item { Key = ItemName(fnfe, nameof(fnfe.FileName)), Value = fnfe.FileName });
+                    result.Add(new Item { Key = fnfe.ItemName(nameof(fnfe.FileName)), Value = fnfe.FileName });
 #if NETSTANDARD2_0 || NET45 || NET46 || NET461
                 if (!string.IsNullOrWhiteSpace(fnfe.FusionLog))
-                    result.Add(new Item { Key = ItemName(fnfe, nameof(fnfe.FusionLog)), Value = fnfe.FusionLog });
+                    result.Add(new Item { Key = fnfe.ItemName(nameof(fnfe.FusionLog)), Value = fnfe.FusionLog });
 #endif
             }
 
 #if NETSTANDARD1_4 || NETSTANDARD2_0 || NET45 || NET46 || NET461
             if (e is System.Net.Sockets.SocketException se)
             {
-                result.Add(new Item { Key = ItemName(se, nameof(se.SocketErrorCode)), Value = se.SocketErrorCode.ToString() });
+                result.Add(new Item { Key = se.ItemName(nameof(se.SocketErrorCode)), Value = se.SocketErrorCode.ToString() });
 #if NETSTANDARD2_0 || NET45 || NET46 || NET461
-                result.Add(new Item { Key = ItemName(se, nameof(se.ErrorCode)), Value = se.ErrorCode.ToString() });
+                result.Add(new Item { Key = se.ItemName(nameof(se.ErrorCode)), Value = se.ErrorCode.ToString() });
 #endif
             }
 #endif
@@ -98,7 +98,7 @@ namespace Elmah.Io.Client
             if (e is System.Net.WebException we)
             {
                 string ss = ItemName(we, nameof(we.Status));
-                result.Add(new Item { Key = ItemName(we, nameof(we.Status)), Value = we.Status.ToString() });
+                result.Add(new Item { Key = we.ItemName(nameof(we.Status)), Value = we.Status.ToString() });
             }
 #endif
 
@@ -108,7 +108,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Generate an item name of a property on an exception.
         /// </summary>
-        public static string ItemName(Exception exception, string propertyName)
+        public static string ItemName(this Exception exception, string propertyName)
         {
             return $"{exception.GetType().Name}.{propertyName}";
         }
