@@ -15,7 +15,7 @@ namespace Elmah.Io.Client
             {
                 Options = options
             };
-            client.HttpClient.Timeout = new TimeSpan(0, 0, 30);
+            client.HttpClient.Timeout = new TimeSpan(0, 0, 5);
             client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
             client.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.Client", $"{typeof(ElmahioAPI).GetTypeInfo().Assembly.GetName().Version}")));
             return client;
