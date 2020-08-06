@@ -27,12 +27,12 @@ namespace Elmah.Io.Client
             /// <param name='logId'>
             /// The ID of the log containing the heartbeat check.
             /// </param>
-            /// <param name='heartbeat'>
+            /// <param name='body'>
             /// The details of the heartbeat.
             /// </param>
-            public static void Create(this IHeartbeats operations, string id, string logId, CreateHeartbeat heartbeat = default(CreateHeartbeat))
+            public static void Create(this IHeartbeats operations, string id, string logId, CreateHeartbeat body = default(CreateHeartbeat))
             {
-                operations.CreateAsync(id, logId, heartbeat).GetAwaiter().GetResult();
+                operations.CreateAsync(id, logId, body).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -47,15 +47,15 @@ namespace Elmah.Io.Client
             /// <param name='logId'>
             /// The ID of the log containing the heartbeat check.
             /// </param>
-            /// <param name='heartbeat'>
+            /// <param name='body'>
             /// The details of the heartbeat.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task CreateAsync(this IHeartbeats operations, string id, string logId, CreateHeartbeat heartbeat = default(CreateHeartbeat), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task CreateAsync(this IHeartbeats operations, string id, string logId, CreateHeartbeat body = default(CreateHeartbeat), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.CreateWithHttpMessagesAsync(id, logId, heartbeat, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.CreateWithHttpMessagesAsync(id, logId, body, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
     }

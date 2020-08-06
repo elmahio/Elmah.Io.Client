@@ -37,7 +37,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Create a new deployment.
         /// </summary>
-        /// <param name='deployment'>
+        /// <param name='body'>
         /// The deployment object to create.
         /// </param>
         /// <param name='customHeaders'>
@@ -52,7 +52,7 @@ namespace Elmah.Io.Client
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        Task<HttpOperationResponse<CreateDeploymentResult>> CreateWithHttpMessagesAsync(CreateDeployment deployment = default(CreateDeployment), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<CreateDeploymentResult>> CreateWithHttpMessagesAsync(CreateDeployment body = default(CreateDeployment), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Fetch a deployment by its ID.
         /// </summary>

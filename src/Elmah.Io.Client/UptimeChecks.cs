@@ -8,6 +8,7 @@ namespace Elmah.Io.Client
 {
     using Microsoft.Rest;
     using Models;
+    using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
@@ -18,12 +19,12 @@ namespace Elmah.Io.Client
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Heartbeats operations.
+    /// UptimeChecks operations.
     /// </summary>
-    public partial class Heartbeats : IServiceOperations<ElmahioAPI>, IHeartbeats
+    public partial class UptimeChecks : IServiceOperations<ElmahioAPI>, IUptimeChecks
     {
         /// <summary>
-        /// Initializes a new instance of the Heartbeats class.
+        /// Initializes a new instance of the UptimeChecks class.
         /// </summary>
         /// <param name='client'>
         /// Reference to the service client.
@@ -31,7 +32,7 @@ namespace Elmah.Io.Client
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public Heartbeats(ElmahioAPI client)
+        public UptimeChecks(ElmahioAPI client)
         {
             if (client == null)
             {
@@ -46,17 +47,9 @@ namespace Elmah.Io.Client
         public ElmahioAPI Client { get; private set; }
 
         /// <summary>
-        /// Create a new heartbeat.
+        /// Fetch a list of uptime checks. Currently in closed beta. Get in contact to
+        /// get access to this endpoint.
         /// </summary>
-        /// <param name='id'>
-        /// The ID of the heartbeat check.
-        /// </param>
-        /// <param name='logId'>
-        /// The ID of the log containing the heartbeat check.
-        /// </param>
-        /// <param name='body'>
-        /// The details of the heartbeat.
-        /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -66,25 +59,14 @@ namespace Elmah.Io.Client
         /// <exception cref="HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when a required parameter is null
+        /// <exception cref="SerializationException">
+        /// Thrown when unable to deserialize the response
         /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse> CreateWithHttpMessagesAsync(string id, string logId, CreateHeartbeat body = default(CreateHeartbeat), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<IList<UptimeCheck>>> GetAllWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (id == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "id");
-            }
-            if (logId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "logId");
-            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -92,21 +74,16 @@ namespace Elmah.Io.Client
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("id", id);
-                tracingParameters.Add("logId", logId);
-                tracingParameters.Add("body", body);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                ServiceClientTracing.Enter(_invocationId, this, "Create", tracingParameters);
+                ServiceClientTracing.Enter(_invocationId, this, "GetAll", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v3/heartbeats/{logId}/{id}").ToString();
-            _url = _url.Replace("{id}", System.Uri.EscapeDataString(id));
-            _url = _url.Replace("{logId}", System.Uri.EscapeDataString(logId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v3/uptimechecks").ToString();
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
             HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new HttpMethod("POST");
+            _httpRequest.Method = new HttpMethod("GET");
             _httpRequest.RequestUri = new System.Uri(_url);
             // Set Headers
 
@@ -125,12 +102,6 @@ namespace Elmah.Io.Client
 
             // Serialize Request
             string _requestContent = null;
-            if(body != null)
-            {
-                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(body, Client.SerializationSettings);
-                _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
-                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
-            }
             // Set Credentials
             if (Client.Credentials != null)
             {
@@ -151,7 +122,7 @@ namespace Elmah.Io.Client
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 402 && (int)_statusCode != 404 && (int)_statusCode != 429)
+            if ((int)_statusCode != 200 && (int)_statusCode != 401 && (int)_statusCode != 402 && (int)_statusCode != 429)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -174,9 +145,27 @@ namespace Elmah.Io.Client
                 throw ex;
             }
             // Create Result
-            var _result = new HttpOperationResponse();
+            var _result = new HttpOperationResponse<IList<UptimeCheck>>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<IList<UptimeCheck>>(_responseContent, Client.DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
             if (_shouldTrace)
             {
                 ServiceClientTracing.Exit(_invocationId, _result);

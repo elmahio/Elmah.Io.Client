@@ -71,6 +71,39 @@ namespace Elmah.Io.Client
         public virtual IMessages Messages { get; private set; }
 
         /// <summary>
+        /// Gets the IUptimeChecks.
+        /// </summary>
+        public virtual IUptimeChecks UptimeChecks { get; private set; }
+
+#if NETSTANDARD1_1 || NET45
+        /// <summary>
+        /// Initializes a new instance of the ElmahioAPI class.
+        /// </summary>
+        /// <param name='httpClient'>
+        /// HttpClient to be used
+        /// </param>
+        /// <param name='disposeHttpClient'>
+        /// True: will dispose the provided httpClient on calling ElmahioAPI.Dispose(). False: will not dispose provided httpClient</param>
+        protected ElmahioAPI(HttpClient httpClient, bool disposeHttpClient) : base(httpClient)
+        {
+            Initialize();
+        }
+#else
+        /// <summary>
+        /// Initializes a new instance of the ElmahioAPI class.
+        /// </summary>
+        /// <param name='httpClient'>
+        /// HttpClient to be used
+        /// </param>
+        /// <param name='disposeHttpClient'>
+        /// True: will dispose the provided httpClient on calling ElmahioAPI.Dispose(). False: will not dispose provided httpClient</param>
+        protected ElmahioAPI(HttpClient httpClient, bool disposeHttpClient) : base(httpClient, disposeHttpClient)
+        {
+            Initialize();
+        }
+#endif
+
+        /// <summary>
         /// Initializes a new instance of the ElmahioAPI class.
         /// </summary>
         /// <param name='handlers'>
@@ -153,6 +186,33 @@ namespace Elmah.Io.Client
         /// Thrown when a required parameter is null
         /// </exception>
         public ElmahioAPI(ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
+        {
+            if (credentials == null)
+            {
+                throw new System.ArgumentNullException("credentials");
+            }
+            Credentials = credentials;
+            if (Credentials != null)
+            {
+                Credentials.InitializeServiceClient(this);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ElmahioAPI class.
+        /// </summary>
+        /// <param name='credentials'>
+        /// Required. Subscription credentials which uniquely identify client subscription.
+        /// </param>
+        /// <param name='httpClient'>
+        /// HttpClient to be used
+        /// </param>
+        /// <param name='disposeHttpClient'>
+        /// True: will dispose the provided httpClient on calling ElmahioAPI.Dispose(). False: will not dispose provided httpClient</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        public ElmahioAPI(ServiceClientCredentials credentials, HttpClient httpClient, bool disposeHttpClient) : this(httpClient, disposeHttpClient)
         {
             if (credentials == null)
             {
@@ -275,6 +335,7 @@ namespace Elmah.Io.Client
             Heartbeats = new Heartbeats(this);
             Logs = new Logs(this);
             Messages = new Messages(this);
+            UptimeChecks = new UptimeChecks(this);
             BaseUri = new System.Uri("https://api.elmah.io");
             SerializationSettings = new JsonSerializerSettings
             {

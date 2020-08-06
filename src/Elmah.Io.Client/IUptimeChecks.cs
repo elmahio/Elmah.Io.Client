@@ -14,22 +14,14 @@ namespace Elmah.Io.Client
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Heartbeats operations.
+    /// UptimeChecks operations.
     /// </summary>
-    public partial interface IHeartbeats
+    public partial interface IUptimeChecks
     {
         /// <summary>
-        /// Create a new heartbeat.
+        /// Fetch a list of uptime checks. Currently in closed beta. Get in
+        /// contact to get access to this endpoint.
         /// </summary>
-        /// <param name='id'>
-        /// The ID of the heartbeat check.
-        /// </param>
-        /// <param name='logId'>
-        /// The ID of the log containing the heartbeat check.
-        /// </param>
-        /// <param name='body'>
-        /// The details of the heartbeat.
-        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -39,9 +31,9 @@ namespace Elmah.Io.Client
         /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
         /// </exception>
-        Task<HttpOperationResponse> CreateWithHttpMessagesAsync(string id, string logId, CreateHeartbeat body = default(CreateHeartbeat), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<IList<UptimeCheck>>> GetAllWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

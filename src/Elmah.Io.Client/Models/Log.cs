@@ -24,10 +24,20 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         /// <param name="id">ID of the log.</param>
         /// <param name="name">Name of the log.</param>
-        public Log(string id = default(string), string name = default(string))
+        /// <param name="color">Color of the log. The color will always be one
+        /// of the following (green being the default):
+        /// green, lightgreen, lime, yellow, orange, deeporange, red, pink,
+        /// purple, deeppurple, blue, lightblue</param>
+        /// <param name="environmentName">Environment name this log is in or
+        /// "Other" if not in an environment.
+        /// "Other" is chosen over null to mimic the experience in the elmah.io
+        /// UI.</param>
+        public Log(string id = default(string), string name = default(string), string color = default(string), string environmentName = default(string))
         {
             Id = id;
             Name = name;
+            Color = color;
+            EnvironmentName = environmentName;
             CustomInit();
         }
 
@@ -47,6 +57,24 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets color of the log. The color will always be one of the
+        /// following (green being the default):
+        /// green, lightgreen, lime, yellow, orange, deeporange, red, pink,
+        /// purple, deeppurple, blue, lightblue
+        /// </summary>
+        [JsonProperty(PropertyName = "color")]
+        public string Color { get; set; }
+
+        /// <summary>
+        /// Gets or sets environment name this log is in or "Other" if not in
+        /// an environment.
+        /// "Other" is chosen over null to mimic the experience in the elmah.io
+        /// UI.
+        /// </summary>
+        [JsonProperty(PropertyName = "environmentName")]
+        public string EnvironmentName { get; set; }
 
     }
 }

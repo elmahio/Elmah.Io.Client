@@ -51,12 +51,12 @@ namespace Elmah.Io.Client
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='deployment'>
+            /// <param name='body'>
             /// The deployment object to create.
             /// </param>
-            public static CreateDeploymentResult Create(this IDeployments operations, CreateDeployment deployment = default(CreateDeployment))
+            public static CreateDeploymentResult Create(this IDeployments operations, CreateDeployment body = default(CreateDeployment))
             {
-                return operations.CreateAsync(deployment).GetAwaiter().GetResult();
+                return operations.CreateAsync(body).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -65,15 +65,15 @@ namespace Elmah.Io.Client
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='deployment'>
+            /// <param name='body'>
             /// The deployment object to create.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<CreateDeploymentResult> CreateAsync(this IDeployments operations, CreateDeployment deployment = default(CreateDeployment), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CreateDeploymentResult> CreateAsync(this IDeployments operations, CreateDeployment body = default(CreateDeployment), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateWithHttpMessagesAsync(deployment, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateWithHttpMessagesAsync(body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

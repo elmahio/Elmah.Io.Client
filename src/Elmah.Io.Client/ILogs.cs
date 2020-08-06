@@ -37,7 +37,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Create a new log.
         /// </summary>
-        /// <param name='log'>
+        /// <param name='body'>
         /// The log object to create.
         /// </param>
         /// <param name='customHeaders'>
@@ -52,7 +52,7 @@ namespace Elmah.Io.Client
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        Task<HttpOperationResponse<CreateLogResult>> CreateWithHttpMessagesAsync(CreateLog log = default(CreateLog), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<CreateLogResult>> CreateWithHttpMessagesAsync(CreateLog body = default(CreateLog), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Fetch a log by its ID.
         /// </summary>

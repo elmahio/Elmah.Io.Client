@@ -88,20 +88,40 @@ namespace Elmah.Io.Client
             }
 
             /// <summary>
-            /// Create a new message.
+            /// Deletes a list of messages by logid and query.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='logId'>
-            /// The ID of the log which should contain the new message.
+            /// The ID of the log containing the message.
             /// </param>
-            /// <param name='message'>
-            /// The message object to create.
+            /// <param name='body'>
+            /// A search object containing query, time filters etc.
             /// </param>
-            public static CreateMessageResult Create(this IMessages operations, string logId, CreateMessage message = default(CreateMessage))
+            public static void DeleteAll(this IMessages operations, string logId, Search body = default(Search))
             {
-                return operations.CreateAsync(logId, message).GetAwaiter().GetResult();
+                operations.DeleteAllAsync(logId, body).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Deletes a list of messages by logid and query.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='logId'>
+            /// The ID of the log containing the message.
+            /// </param>
+            /// <param name='body'>
+            /// A search object containing query, time filters etc.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task DeleteAllAsync(this IMessages operations, string logId, Search body = default(Search), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.DeleteAllWithHttpMessagesAsync(logId, body, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -113,55 +133,35 @@ namespace Elmah.Io.Client
             /// <param name='logId'>
             /// The ID of the log which should contain the new message.
             /// </param>
-            /// <param name='message'>
+            /// <param name='body'>
+            /// The message object to create.
+            /// </param>
+            public static CreateMessageResult Create(this IMessages operations, string logId, CreateMessage body = default(CreateMessage))
+            {
+                return operations.CreateAsync(logId, body).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create a new message.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='logId'>
+            /// The ID of the log which should contain the new message.
+            /// </param>
+            /// <param name='body'>
             /// The message object to create.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<CreateMessageResult> CreateAsync(this IMessages operations, string logId, CreateMessage message = default(CreateMessage), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CreateMessageResult> CreateAsync(this IMessages operations, string logId, CreateMessage body = default(CreateMessage), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateWithHttpMessagesAsync(logId, message, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateWithHttpMessagesAsync(logId, body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
-            }
-
-            /// <summary>
-            /// Deletes a list of messages by logid and query.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            /// <param name='search'>
-            /// A search object containing query, time filters etc.
-            /// </param>
-            public static void DeleteAll(this IMessages operations, string logId, Search search = default(Search))
-            {
-                operations.DeleteAllAsync(logId, search).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Deletes a list of messages by logid and query.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='logId'>
-            /// The ID of the log containing the message.
-            /// </param>
-            /// <param name='search'>
-            /// A search object containing query, time filters etc.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task DeleteAllAsync(this IMessages operations, string logId, Search search = default(Search), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.DeleteAllWithHttpMessagesAsync(logId, search, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -279,20 +279,46 @@ namespace Elmah.Io.Client
             }
 
             /// <summary>
-            /// Create one or more new messages.
+            /// Fix a message by its ID.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='id'>
+            /// The ID of the message to fix.
+            /// </param>
             /// <param name='logId'>
-            /// The ID of the log which should contain the new messages.
+            /// The ID of the log containing the message.
             /// </param>
-            /// <param name='messages'>
-            /// The messages to create.
+            /// <param name='markAllAsFixed'>
+            /// If set to true, all instances of the log message are set to fixed.
             /// </param>
-            public static IList<CreateBulkMessageResult> CreateBulk(this IMessages operations, string logId, IList<CreateMessage> messages = default(IList<CreateMessage>))
+            public static void Fix(this IMessages operations, string id, string logId, bool? markAllAsFixed = false)
             {
-                return operations.CreateBulkAsync(logId, messages).GetAwaiter().GetResult();
+                operations.FixAsync(id, logId, markAllAsFixed).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Fix a message by its ID.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// The ID of the message to fix.
+            /// </param>
+            /// <param name='logId'>
+            /// The ID of the log containing the message.
+            /// </param>
+            /// <param name='markAllAsFixed'>
+            /// If set to true, all instances of the log message are set to fixed.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task FixAsync(this IMessages operations, string id, string logId, bool? markAllAsFixed = false, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.FixWithHttpMessagesAsync(id, logId, markAllAsFixed, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -304,15 +330,32 @@ namespace Elmah.Io.Client
             /// <param name='logId'>
             /// The ID of the log which should contain the new messages.
             /// </param>
-            /// <param name='messages'>
+            /// <param name='body'>
+            /// The messages to create.
+            /// </param>
+            public static IList<CreateBulkMessageResult> CreateBulk(this IMessages operations, string logId, IList<CreateMessage> body = default(IList<CreateMessage>))
+            {
+                return operations.CreateBulkAsync(logId, body).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create one or more new messages.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='logId'>
+            /// The ID of the log which should contain the new messages.
+            /// </param>
+            /// <param name='body'>
             /// The messages to create.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<IList<CreateBulkMessageResult>> CreateBulkAsync(this IMessages operations, string logId, IList<CreateMessage> messages = default(IList<CreateMessage>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IList<CreateBulkMessageResult>> CreateBulkAsync(this IMessages operations, string logId, IList<CreateMessage> body = default(IList<CreateMessage>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateBulkWithHttpMessagesAsync(logId, messages, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateBulkWithHttpMessagesAsync(logId, body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

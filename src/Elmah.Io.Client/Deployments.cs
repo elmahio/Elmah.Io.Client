@@ -175,7 +175,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Create a new deployment.
         /// </summary>
-        /// <param name='deployment'>
+        /// <param name='body'>
         /// The deployment object to create.
         /// </param>
         /// <param name='customHeaders'>
@@ -193,11 +193,11 @@ namespace Elmah.Io.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<CreateDeploymentResult>> CreateWithHttpMessagesAsync(CreateDeployment deployment = default(CreateDeployment), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<CreateDeploymentResult>> CreateWithHttpMessagesAsync(CreateDeployment body = default(CreateDeployment), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (deployment != null)
+            if (body != null)
             {
-                deployment.Validate();
+                body.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -206,7 +206,7 @@ namespace Elmah.Io.Client
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("deployment", deployment);
+                tracingParameters.Add("body", body);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "Create", tracingParameters);
             }
@@ -235,9 +235,9 @@ namespace Elmah.Io.Client
 
             // Serialize Request
             string _requestContent = null;
-            if(deployment != null)
+            if(body != null)
             {
-                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(deployment, Client.SerializationSettings);
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(body, Client.SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
             }
@@ -261,7 +261,7 @@ namespace Elmah.Io.Client
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 201 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 402 && (int)_statusCode != 409 && (int)_statusCode != 429)
+            if ((int)_statusCode != 201 && (int)_statusCode != 400 && (int)_statusCode != 401 && (int)_statusCode != 402 && (int)_statusCode != 429)
             {
                 var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {

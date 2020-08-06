@@ -91,6 +91,12 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
+            // Fix message
+
+            api.Messages.Fix(message.Id, log.Id);
+
+            Thread.Sleep(2000);
+
             // Delete messages
 
             api.Messages.Delete(message.Id, log.Id);

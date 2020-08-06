@@ -175,7 +175,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Create a new log.
         /// </summary>
-        /// <param name='log'>
+        /// <param name='body'>
         /// The log object to create.
         /// </param>
         /// <param name='customHeaders'>
@@ -193,11 +193,11 @@ namespace Elmah.Io.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<CreateLogResult>> CreateWithHttpMessagesAsync(CreateLog log = default(CreateLog), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<CreateLogResult>> CreateWithHttpMessagesAsync(CreateLog body = default(CreateLog), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (log != null)
+            if (body != null)
             {
-                log.Validate();
+                body.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -206,7 +206,7 @@ namespace Elmah.Io.Client
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("log", log);
+                tracingParameters.Add("body", body);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "Create", tracingParameters);
             }
@@ -235,9 +235,9 @@ namespace Elmah.Io.Client
 
             // Serialize Request
             string _requestContent = null;
-            if(log != null)
+            if(body != null)
             {
-                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(log, Client.SerializationSettings);
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(body, Client.SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
             }

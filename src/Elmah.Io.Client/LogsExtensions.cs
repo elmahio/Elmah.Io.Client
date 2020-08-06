@@ -51,12 +51,12 @@ namespace Elmah.Io.Client
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='log'>
+            /// <param name='body'>
             /// The log object to create.
             /// </param>
-            public static CreateLogResult Create(this ILogs operations, CreateLog log = default(CreateLog))
+            public static CreateLogResult Create(this ILogs operations, CreateLog body = default(CreateLog))
             {
-                return operations.CreateAsync(log).GetAwaiter().GetResult();
+                return operations.CreateAsync(body).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -65,15 +65,15 @@ namespace Elmah.Io.Client
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='log'>
+            /// <param name='body'>
             /// The log object to create.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<CreateLogResult> CreateAsync(this ILogs operations, CreateLog log = default(CreateLog), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CreateLogResult> CreateAsync(this ILogs operations, CreateLog body = default(CreateLog), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateWithHttpMessagesAsync(log, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateWithHttpMessagesAsync(body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

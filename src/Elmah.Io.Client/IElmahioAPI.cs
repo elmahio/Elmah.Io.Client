@@ -67,5 +67,10 @@ namespace Elmah.Io.Client
         /// </summary>
         IMessages Messages { get; }
 
+        /// <summary>
+        /// Gets the IUptimeChecks.
+        /// </summary>
+        IUptimeChecks UptimeChecks { get; }
+
     }
 }
