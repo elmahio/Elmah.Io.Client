@@ -28,15 +28,12 @@ namespace Elmah.Io.Client
             var result = new List<Item>();
             if (exception is AggregateException ae)
             {
-                if (ae.InnerExceptions != null)
+                foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    foreach (var innerException in ae.InnerExceptions)
+                    var innerResult = innerException.Iterate();
+                    if (innerResult.Count > 0)
                     {
-                        var innerResult = innerException.Iterate();
-                        if (innerResult.Count > 0)
-                        {
-                            result.AddRange(innerResult);
-                        }
+                        result.AddRange(innerResult);
                     }
                 }
             }
