@@ -19,34 +19,62 @@ namespace Elmah.Io.Client
         {
             if (exception == null) return null;
 
+            var result = exception.Iterate();
+            return result;
+        }
+
+        private static List<Item> Iterate(this Exception exception)
+        {
             var result = new List<Item>();
-            var e = exception;
-            while (e != null)
+            if (exception is AggregateException ae)
             {
-                var data = e
+                if (ae.InnerExceptions != null)
+                {
+                    foreach (var innerException in ae.InnerExceptions)
+                    {
+                        var innerResult = innerException.Iterate();
+                        if (innerResult.Count > 0)
+                        {
+                            result.AddRange(innerResult);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var exceptionName = exception.GetType().Name;
+                var data = exception
                     .Data
                     .Keys
                     .Cast<object>()
                     .Where(k => !string.IsNullOrWhiteSpace(k.ToString()))
-                    .Select(k => new Item { Key = k.ToString(), Value = Value(e.Data, k) })
+                    .Select(k => new Item { Key = exception.ItemName(k.ToString()), Value = Value(exception.Data, k) })
                     .ToList();
+
                 if (data != null && data.Count > 0)
                 {
                     result.AddRange(data);
                 }
 
-                if (!string.IsNullOrWhiteSpace(e.HelpLink))
+                if (!string.IsNullOrWhiteSpace(exception.HelpLink))
                 {
-                    result.Add(new Item { Key = "Exception.HelpLink", Value = e.HelpLink });
+                    result.Add(new Item { Key = exception.ItemName(nameof(exception.HelpLink)), Value = exception.HelpLink });
                 }
 
-                var exceptionSpecificItems = ExceptionSpecificItems(e);
+                var exceptionSpecificItems = ExceptionSpecificItems(exception);
                 if (exceptionSpecificItems.Count > 0)
                 {
                     result.AddRange(exceptionSpecificItems);
                 }
 
-                e = e.InnerException;
+                if (exception.InnerException != null)
+                {
+                    var innerResult = exception.InnerException.Iterate();
+                    if (innerResult.Count > 0)
+                    {
+                        result.AddRange(innerResult);
+                    }
+                }
             }
 
             return result;
