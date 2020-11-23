@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.Client", "src\Elmah.Io.Client\Elmah.Io.Client.csproj", "{5F1C7559-931C-4BA2-AB21-D024F4B3EA1D}"
 EndProject
@@ -11,7 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{75CA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{097EBA0F-620D-420B-AA47-1CA81BF062B2}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.Client.Console", "samples\Elmah.Io.Client.Console\Elmah.Io.Client.Console.csproj", "{7FA18E8F-76E0-4E16-A6CB-24185E1E6950}"
@@ -20,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.Client.ApiClient",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9C6D9992-2FCE-481E-918C-76AE11E9DAF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.Client.Test", "test\Elmah.Io.Client.Test\Elmah.Io.Client.Test.csproj", "{02435685-2032-4640-B24B-533F5AB674AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.Client.Test", "test\Elmah.Io.Client.Test\Elmah.Io.Client.Test.csproj", "{02435685-2032-4640-B24B-533F5AB674AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
