@@ -177,8 +177,8 @@ namespace Elmah.Io.Client
 
                 return new Message(id, message.Application, message.Detail, message.Hostname, message.Title,
                     message.TitleTemplate, message.Source, message.StatusCode, message.DateTime, message.Type,
-                    message.User, message.Severity, message.Url, message.Method, message.Version, message.Cookies,
-                    message.Form, message.QueryString, message.ServerVariables, message.Data);
+                    message.User, message.Severity, message.Url, message.Method, message.Version, message.CorrelationId,
+                    message.Cookies, message.Form, message.QueryString, message.ServerVariables, message.Data);
             };
         }
 
