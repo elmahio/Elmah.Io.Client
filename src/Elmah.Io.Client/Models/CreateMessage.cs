@@ -71,6 +71,11 @@ namespace Elmah.Io.Client.Models
         /// from different versions of your software. The value of version can
         /// be a SemVer compliant string or any other
         /// syntax that you are using as your version numbering scheme.</param>
+        /// <param name="correlationId">CorrelationId can be used to group
+        /// similar log messages together into a single discoverable batch. A
+        /// correlation ID could be a session ID from ASP.NET Core,
+        /// a unique string spanning multiple microsservices handling the same
+        /// request, or similar.</param>
         /// <param name="cookies">A key/value pair of cookies. This property
         /// only makes sense for logging messages related to web
         /// requests.</param>
@@ -90,7 +95,7 @@ namespace Elmah.Io.Client.Models
         /// key/value pairs, by modifying the Data
         /// dictionary on the exception or by supplying additional key/values
         /// to this API.</param>
-        public CreateMessage(string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string titleTemplate = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
+        public CreateMessage(string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string titleTemplate = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), string correlationId = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
         {
             Application = application;
             Detail = detail;
@@ -106,6 +111,7 @@ namespace Elmah.Io.Client.Models
             Url = url;
             Method = method;
             Version = version;
+            CorrelationId = correlationId;
             Cookies = cookies;
             Form = form;
             QueryString = queryString;
@@ -229,6 +235,16 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }
+
+        /// <summary>
+        /// Gets or sets correlationId can be used to group similar log
+        /// messages together into a single discoverable batch. A correlation
+        /// ID could be a session ID from ASP.NET Core,
+        /// a unique string spanning multiple microsservices handling the same
+        /// request, or similar.
+        /// </summary>
+        [JsonProperty(PropertyName = "correlationId")]
+        public string CorrelationId { get; set; }
 
         /// <summary>
         /// Gets or sets a key/value pair of cookies. This property only makes
