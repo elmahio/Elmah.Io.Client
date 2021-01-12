@@ -32,7 +32,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Pack
-      run: dotnet pack --configuration Release src/Elmah.Io.Client/Elmah.Io.Client.csproj /p:Version=3.10.${{ github.run_number }}-pre
+      run: dotnet pack --configuration Release src/Elmah.Io.Client/Elmah.Io.Client.csproj /p:Version=3.10.${{ github.run_number }}
     - name: Push
-      run: dotnet nuget push src/Elmah.Io.Client/bin/Release/Elmah.Io.Client.3.10.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.Client/bin/Release/Elmah.Io.Client.3.10.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
