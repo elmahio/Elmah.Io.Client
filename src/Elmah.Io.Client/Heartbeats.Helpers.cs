@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
     public partial class Heartbeats
     {
-        public void Healthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
+        /// <inheritdoc/>
+        public void Healthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             this.Create(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
             {
@@ -18,7 +17,8 @@ namespace Elmah.Io.Client
             });
         }
 
-        public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
+        /// <inheritdoc/>
+        public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             await this
                 .CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
@@ -31,7 +31,8 @@ namespace Elmah.Io.Client
                 .ConfigureAwait(false);
         }
 
-        public void Degraded(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
+        /// <inheritdoc/>
+        public void Degraded(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             this.Create(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
             {
@@ -42,7 +43,8 @@ namespace Elmah.Io.Client
             });
         }
 
-        public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
+        /// <inheritdoc/>
+        public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             await this
                 .CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
@@ -55,7 +57,8 @@ namespace Elmah.Io.Client
                 .ConfigureAwait(false);
         }
 
-        public void Unhealthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
+        /// <inheritdoc/>
+        public void Unhealthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             this.Create(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
             {
@@ -66,7 +69,8 @@ namespace Elmah.Io.Client
             });
         }
 
-        public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null)
+        /// <inheritdoc/>
+        public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             await this
                 .CreateAsync(heartbeatId, logId.ToString(), new Models.CreateHeartbeat
