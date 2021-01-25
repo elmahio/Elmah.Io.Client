@@ -14,6 +14,7 @@ namespace Elmah.Io.Client
                 Reason = reason,
                 Application = application,
                 Version = version,
+                Took = took,
             });
         }
 
@@ -27,6 +28,7 @@ namespace Elmah.Io.Client
                     Reason = reason,
                     Application = application,
                     Version = version,
+                    Took = took,
                 })
                 .ConfigureAwait(false);
         }
@@ -40,6 +42,7 @@ namespace Elmah.Io.Client
                 Reason = reason,
                 Application = application,
                 Version = version,
+                Took = took,
             });
         }
 
@@ -53,6 +56,7 @@ namespace Elmah.Io.Client
                     Reason = reason,
                     Application = application,
                     Version = version,
+                    Took = took,
                 })
                 .ConfigureAwait(false);
         }
@@ -66,6 +70,7 @@ namespace Elmah.Io.Client
                 Reason = reason,
                 Application = application,
                 Version = version,
+                Took = took,
             });
         }
 
@@ -79,6 +84,7 @@ namespace Elmah.Io.Client
                     Reason = reason,
                     Application = application,
                     Version = version,
+                    Took = took,
                 })
                 .ConfigureAwait(false);
         }
