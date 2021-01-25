@@ -36,12 +36,18 @@ namespace Elmah.Io.Client.Models
         /// warnings, or information messages will get
         /// the newest version number created through deployment tracking as
         /// with normal log messages.</param>
-        public CreateHeartbeat(string result = default(string), string reason = default(string), string application = default(string), string version = default(string))
+        /// <param name="took">Optional long for specifying how many
+        /// milliseconds it took to execute the task resulting in this
+        /// heartbeat. This can be used to get a better overview
+        /// of how long a scheduled task or service is running or to figure out
+        /// if the grace period should be increased.</param>
+        public CreateHeartbeat(string result = default(string), string reason = default(string), string application = default(string), string version = default(string), long? took = default(long?))
         {
             Result = result;
             Reason = reason;
             Application = application;
             Version = version;
+            Took = took;
             CustomInit();
         }
 
@@ -83,6 +89,16 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }
+
+        /// <summary>
+        /// Gets or sets optional long for specifying how many milliseconds it
+        /// took to execute the task resulting in this heartbeat. This can be
+        /// used to get a better overview
+        /// of how long a scheduled task or service is running or to figure out
+        /// if the grace period should be increased.
+        /// </summary>
+        [JsonProperty(PropertyName = "took")]
+        public long? Took { get; set; }
 
     }
 }
