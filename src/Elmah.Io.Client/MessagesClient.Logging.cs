@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Rest;
 
 namespace Elmah.Io.Client
 {
-    public partial class Messages
+    public partial class MessagesClient
     {
         public void Verbose(Guid logId, string messageTemplate, params object[] propertyValues)
         {
@@ -81,7 +80,7 @@ namespace Elmah.Io.Client
             if (exception != null)
             {
                 message.Detail = exception.ToString();
-                message.Data = exception.ToDataList();
+                exception.ToDataList().ForEach(e => message.Data.Add(e));
                 message.Type = exception.GetType().Name;
             }
 
@@ -102,8 +101,8 @@ namespace Elmah.Io.Client
             return Task.Factory.StartNew(s =>
             {
                 return
-                   CreateBulkWithHttpMessagesAsync(logId.ToString(), messages)
-                   .ContinueWith(BulkMessagesCreated(messages));
+                    CreateBulkAsync(logId.ToString(), messages)
+                    .ContinueWith(BulkMessagesCreated(messages));
             }, this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
         }
 
@@ -118,7 +117,7 @@ namespace Elmah.Io.Client
 
             messages = obfuscated;
 
-            return await CreateBulkWithHttpMessagesAsync(logId.ToString(), messages)
+            return await CreateBulkAsync(logId.ToString(), messages)
                 .ContinueWith(BulkMessagesCreated(messages))
                 .ConfigureAwait(false);
         }
@@ -130,7 +129,7 @@ namespace Elmah.Io.Client
             return Task.Factory.StartNew(s =>
             {
                 return
-                   CreateWithHttpMessagesAsync(logId.ToString(), message)
+                   CreateAsync(logId.ToString(), message)
                    .ContinueWith(MessagesCreated(message));
             }, this, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
         }
@@ -140,7 +139,7 @@ namespace Elmah.Io.Client
             OnMessage?.Invoke(this, new MessageEventArgs(message));
             message = Obfuscate(message);
             return await
-               CreateWithHttpMessagesAsync(logId.ToString(), message)
+               CreateAsync(logId.ToString(), message)
                .ContinueWith(MessagesCreated(message))
                .ConfigureAwait(false);
         }
@@ -149,9 +148,9 @@ namespace Elmah.Io.Client
         {
             if (message == null) return message;
             if (message.Form == null || !message.Form.Any()) return message;
-            if (Client?.Options?.FormKeysToObfuscate == null) return message;
+            if (Options?.FormKeysToObfuscate == null) return message;
 
-            foreach (var key in Client.Options.FormKeysToObfuscate.Select(x => x.ToLower()))
+            foreach (var key in Options?.FormKeysToObfuscate.Select(x => x.ToLower()))
             {
                 foreach (var f in message.Form.Where(f => f.Key.ToLower().Equals(key) && !string.IsNullOrWhiteSpace(f.Value)))
                 {
@@ -162,7 +161,7 @@ namespace Elmah.Io.Client
             return message;
         }
 
-        private Func<Task<Microsoft.Rest.HttpOperationResponse<CreateMessageResult>>, Message> MessagesCreated(CreateMessage message)
+        private Func<Task<Azure.Response<CreateMessageResult>>, Message> MessagesCreated(CreateMessage message)
         {
             return a =>
             {
@@ -172,17 +171,17 @@ namespace Elmah.Io.Client
                     return null;
                 }
 
-                var location = a.Result?.Response?.Headers?.Location;
-                var id = location?.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
+                var location = new Uri(a.Result?.Value?.Location);
+                var id = location.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
 
                 return new Message(id, message.Application, message.Detail, message.Hostname, message.Title,
                     message.TitleTemplate, message.Source, message.StatusCode, message.DateTime, message.Type,
                     message.User, message.Severity, message.Url, message.Method, message.Version, message.CorrelationId,
-                    message.Cookies, message.Form, message.QueryString, message.ServerVariables, message.Data);
+                    message.Cookies.ToList(), message.Form.ToList(), message.QueryString.ToList(), message.ServerVariables.ToList(), message.Data.ToList());
             };
         }
 
-        private Func<Task<HttpOperationResponse<IList<CreateBulkMessageResult>>>, IList<CreateBulkMessageResult>> BulkMessagesCreated(IList<CreateMessage> messages)
+        private Func<Task<Azure.Response<IReadOnlyList<CreateBulkMessageResult>>>, IList<CreateBulkMessageResult>> BulkMessagesCreated(IList<CreateMessage> messages)
         {
             return a =>
             {
@@ -195,7 +194,7 @@ namespace Elmah.Io.Client
                     return null;
                 }
 
-                return a.Result?.Body;
+                return a.Result?.Value?.ToList();
             };
         }
 

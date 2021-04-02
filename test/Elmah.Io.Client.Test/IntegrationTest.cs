@@ -17,42 +17,36 @@ namespace Elmah.Io.Client.Test
             var now = DateTime.UtcNow.Ticks.ToString();
 
             // Get all logs
-            var logs = api.Logs.GetAll();
+            var logs = api.Logs.GetAll().Value;
 
             // Create log
-            api.Logs.Create(new CreateLog
-            {
-                Name = now
-            });
+            api.Logs.Create(new CreateLog(name: now));
 
             Thread.Sleep(2000);
 
-            var logs2 = api.Logs.GetAll();
+            var logs2 = api.Logs.GetAll().Value;
             Assert.That(logs2.Count == 1 + logs.Count);
 
             var created = logs2.FirstOrDefault(l => l.Name == now);
             Assert.That(created, Is.Not.Null);
 
             // Get single log
-            var log = api.Logs.Get(created.Id);
+            var log = api.Logs.Get(created.Id).Value;
             Assert.That(log, Is.Not.Null);
 
             // Create deployment
-            api.Deployments.Create(new CreateDeployment
-            {
-                Version = now
-            });
+            api.Deployments.Create(new CreateDeployment(version: now));
 
             Thread.Sleep(2000);
 
-            var deployments2 = api.Deployments.GetAll();
+            var deployments2 = api.Deployments.GetAll().Value;
             Assert.That(deployments2.First().Version == now);
 
             var createdDeployment = deployments2.FirstOrDefault(d => d.Version == now);
             Assert.That(createdDeployment, Is.Not.Null);
 
             // Get single deployment
-            var deployment = api.Deployments.Get(createdDeployment.Id);
+            var deployment = api.Deployments.Get(createdDeployment.Id).Value;
             Assert.That(deployment, Is.Not.Null);
 
             // Delete deployment
@@ -60,7 +54,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
-            var deployments = api.Deployments.GetAll();
+            var deployments = api.Deployments.GetAll().Value;
             Assert.That(deployments.All(d => d.Version != now));
 
             // Create message
@@ -73,7 +67,7 @@ namespace Elmah.Io.Client.Test
             Thread.Sleep(2000);
 
             // Get all messages
-            var messages = api.Messages.GetAll(log.Id);
+            var messages = api.Messages.GetAll(log.Id).Value;
             Assert.That(messages, Is.Not.Null);
             Assert.That(messages.Total, Is.EqualTo(1));
             Assert.That(messages.Messages.Count, Is.EqualTo(1));
@@ -103,7 +97,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
-            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
+            Assert.That(api.Messages.GetAll(log.Id).Value.Total, Is.EqualTo(0));
 
             // Create bulk
 
@@ -118,7 +112,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(5000);
 
-            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(2));
+            Assert.That(api.Messages.GetAll(log.Id).Value.Total, Is.EqualTo(2));
 
             // Delete bulk
 
@@ -126,7 +120,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(5000);
 
-            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
+            Assert.That(api.Messages.GetAll(log.Id).Value.Total, Is.EqualTo(0));
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
-    public partial class Heartbeats
+    public partial class HeartbeatsClient
     {
         /// <inheritdoc/>
         public void Healthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
