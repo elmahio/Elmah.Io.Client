@@ -1,18 +1,17 @@
-﻿using Elmah.Io.Client.Models;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading;
 
 namespace Elmah.Io.Client.Test
 {
-    [Ignore("Only run manually")]
     public class IntegrationTest
     {
+        // [Ignore("Only run manually")]
         [Test]
         public void Test()
         {
-            var api = ElmahioAPI.Create("API_KEY"); // API key must have all permissions enabled
+            var api = ElmahioAPI.Create("3376fd7e4f9a47cba704dc3e37c14d2a"); // API key must have all permissions enabled
 
             var now = DateTime.UtcNow.Ticks.ToString();
 
@@ -65,10 +64,12 @@ namespace Elmah.Io.Client.Test
 
             // Create message
 
-            api.Messages.Create(log.Id, new CreateMessage
-            {
-                Title = now
-            });
+            Assert.Throws<ElmahIoClientException<CreateMessageResult>>(() =>
+                api.Messages.Create(log.Id, new CreateMessage
+                {
+                    Title = now
+                })
+            );
 
             Thread.Sleep(2000);
 
