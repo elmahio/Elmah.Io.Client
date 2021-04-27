@@ -96,7 +96,9 @@ namespace Elmah.Io.Client.Models
         /// key/value pairs, by modifying the Data
         /// dictionary on the exception or by supplying additional key/values
         /// to this API.</param>
-        public Message(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string titleTemplate = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), string correlationId = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
+        /// <param name="breadcrumbs">A list of breadcrumbs preceding this log
+        /// message.</param>
+        public Message(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string titleTemplate = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), string correlationId = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>), IList<Breadcrumb> breadcrumbs = default(IList<Breadcrumb>))
         {
             Id = id;
             Application = application;
@@ -119,6 +121,7 @@ namespace Elmah.Io.Client.Models
             QueryString = queryString;
             ServerVariables = serverVariables;
             Data = data;
+            Breadcrumbs = breadcrumbs;
             CustomInit();
         }
 
@@ -294,6 +297,12 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "data")]
         public IList<Item> Data { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of breadcrumbs preceding this log message.
+        /// </summary>
+        [JsonProperty(PropertyName = "breadcrumbs")]
+        public IList<Breadcrumb> Breadcrumbs { get; set; }
 
     }
 }

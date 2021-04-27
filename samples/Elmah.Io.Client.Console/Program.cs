@@ -42,6 +42,13 @@ namespace Elmah.Io.Client.Console
                     new Item {Key = "Password", Value = "SecretPassword"},
                     new Item {Key = "pwd", Value = "Other secret value"},
                     new Item {Key = "visible form item", Value = "With a value"}
+                },
+                Breadcrumbs = new List<Breadcrumb>
+                {
+                    new Breadcrumb { DateTime = DateTime.UtcNow.AddSeconds(-10), Action = "navigation", Message = "Navigate from / to /signin", Severity = "Information" },
+                    new Breadcrumb { DateTime = DateTime.UtcNow.AddSeconds(-2), Action = "click", Message = "#submit", Severity = "Information" },
+                    new Breadcrumb { DateTime = DateTime.UtcNow.AddSeconds(-1), Action = "submit", Message = "#loginform", Severity = "Information" },
+                    new Breadcrumb { Action = "Error", Message = "Hello World", Severity = "Error" },
                 }
             });
 
