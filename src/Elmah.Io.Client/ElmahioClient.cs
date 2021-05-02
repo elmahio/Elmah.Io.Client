@@ -1560,9 +1560,9 @@ namespace Elmah.Io.Client
         /// <param name="body">The message object to create.</param>
         /// <returns>Message was not created.</returns>
         /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
-        public void Create(string logId, CreateMessage body = null)
+        public CreateMessageResult Create(string logId, CreateMessage body = null)
         {
-            System.Threading.Tasks.Task.Run(async () => await CreateAsync(logId, body, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
+            return System.Threading.Tasks.Task.Run(async () => await CreateAsync(logId, body, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1571,7 +1571,7 @@ namespace Elmah.Io.Client
         /// <param name="body">The message object to create.</param>
         /// <returns>Message was not created.</returns>
         /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task CreateAsync(string logId, CreateMessage body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<CreateMessageResult> CreateAsync(string logId, CreateMessage body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (logId == null)
                 throw new System.ArgumentNullException("logId");
@@ -1590,6 +1590,7 @@ namespace Elmah.Io.Client
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -1612,6 +1613,16 @@ namespace Elmah.Io.Client
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<CreateMessageResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ElmahIoClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
                         if (status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CreateMessageResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
@@ -1619,12 +1630,7 @@ namespace Elmah.Io.Client
                             {
                                 throw new ElmahIoClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ElmahIoClientException<CreateMessageResult>("Message was successfully created.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        if (status_ == 200)
-                        {
-                            return;
+                            return objectResponse_.Object;
                         }
                         else
                         if (status_ == 400)
@@ -2843,6 +2849,38 @@ namespace Elmah.Io.Client
     
     }
     
+    /// <summary>A breadcrumb represent a step preceding a log message.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Breadcrumb 
+    {
+        /// <summary>The date and time in UTC of the breadcrumb. If no date and time is provided, we will use the current date and time in UTC.</summary>
+        [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateTime { get; set; }
+    
+        /// <summary>An enum value representing the severity of this breadcrumb. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal.</summary>
+        [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Severity { get; set; }
+    
+        /// <summary>An action representing the breadcrumb. You can set a custom action or use one of the built-in: click, submit, navigation, request, error.</summary>
+        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Action { get; set; }
+    
+        /// <summary>A message representing the breadcrumb. This should elaborate on the action.</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static Breadcrumb FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Breadcrumb>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MessageOverview 
     {
@@ -2936,6 +2974,10 @@ namespace Elmah.Io.Client
         /// dictionary on the exception or by supplying additional key/values to this API.</summary>
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Item> Data { get; set; }
+    
+        /// <summary>A list of breadcrumbs preceding this log message.</summary>
+        [Newtonsoft.Json.JsonProperty("breadcrumbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Breadcrumb> Breadcrumbs { get; set; }
     
         public string ToJson()
         {
@@ -3089,6 +3131,10 @@ namespace Elmah.Io.Client
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Item> Data { get; set; }
     
+        /// <summary>A list of breadcrumbs preceding this log message.</summary>
+        [Newtonsoft.Json.JsonProperty("breadcrumbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Breadcrumb> Breadcrumbs { get; set; }
+    
         public string ToJson()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
@@ -3213,6 +3259,10 @@ namespace Elmah.Io.Client
         /// dictionary on the exception or by supplying additional key/values to this API.</summary>
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Item> Data { get; set; }
+    
+        /// <summary>A list of breadcrumbs preceding this log message.</summary>
+        [Newtonsoft.Json.JsonProperty("breadcrumbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Breadcrumb> Breadcrumbs { get; set; }
     
         public string ToJson()
         {
