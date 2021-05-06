@@ -71,7 +71,7 @@ namespace Elmah.Io.Client.Models
         /// to this API.</param>
         [Obsolete("Use the overload accepting a titleTemplate")]
         public Message(string id = default(string), string application = default(string), string detail = default(string), string hostname = default(string), string title = default(string), string source = default(string), int? statusCode = default(int?), System.DateTime? dateTime = default(System.DateTime?), string type = default(string), string user = default(string), string severity = default(string), string url = default(string), string method = default(string), string version = default(string), IList<Item> cookies = default(IList<Item>), IList<Item> form = default(IList<Item>), IList<Item> queryString = default(IList<Item>), IList<Item> serverVariables = default(IList<Item>), IList<Item> data = default(IList<Item>))
-            : this(id, application, detail, hostname, title, null, source, statusCode, dateTime, type, user, severity, url, method, version, null, cookies, form, queryString, serverVariables, data)
+            : this(id, application, detail, hostname, title, null, source, statusCode, dateTime, type, user, severity, url, method, version, null, cookies, form, queryString, serverVariables, data, null)
         {
         }
     }
