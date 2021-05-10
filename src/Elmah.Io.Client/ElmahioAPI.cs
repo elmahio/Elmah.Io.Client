@@ -63,7 +63,7 @@ namespace Elmah.Io.Client
         /// </summary>
         public UptimeChecksClient UptimeChecks { get; private set; }
 
-        public ElmahioAPI()
+        protected ElmahioAPI()
         {
             Initialize();
         }

@@ -16,6 +16,8 @@ namespace Elmah.Io.Client
             {
                 Options = options
             };
+            var clientHandler = HttpClientHandlerFactory.GetHttpClientHandler(options);
+            client.HttpClient = new HttpClient(clientHandler);
             client.HttpClient.DefaultRequestHeaders.Add("api_key", apiKey);
             client.HttpClient.Timeout = new TimeSpan(0, 0, 5);
             client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
