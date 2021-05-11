@@ -9,8 +9,10 @@ namespace Elmah.Io.Client.Console
     {
         static void Main(string[] args)
         {
-            var client = ElmahioAPI.Create("API_KEY");
             var logId = new Guid("LOG_ID");
+            var apiKey = "API_KEY";
+
+            var client = ElmahioAPI.Create(apiKey);
 
             // Examples of severity helper methods
             client.Messages.Fatal(logId, new ApplicationException("A fatal exception"), "Fatal message");
@@ -60,7 +62,7 @@ namespace Elmah.Io.Client.Console
             });
 
             // Example of filtering undesired form items
-            var client2 = ElmahioAPI.Create("API_KEY");
+            var client2 = ElmahioAPI.Create(apiKey);
 
             client2.Options.FormKeysToObfuscate.Add("visible form item");
             client2.Messages.CreateAndNotify(logId, new CreateMessage
@@ -71,8 +73,32 @@ namespace Elmah.Io.Client.Console
                     new Item { Key = "Password", Value = "SecretPassword" },
                     new Item { Key = "pwd", Value = "Other secret value" },
                     new Item { Key = "visible form item", Value = "Now this is obfuscated too" }
-                }
+                   }
             });
+
+            // Heartbeat examples
+            var heartbeatId = "HEARTBEAT_ID";
+            var heartbeats = ElmahioAPI.Create(apiKey).Heartbeats;
+
+            // Register healthy heartbeat
+            heartbeats.Healthy(logId, heartbeatId);
+
+            // Register degraded heartbeat
+            heartbeats.Degraded(logId, heartbeatId);
+
+            // Register Unhealthy heartbeat
+            heartbeats.Unhealthy(logId, heartbeatId, "Something is wrong");
+
+            // Check helper to automate heartbeat logging from a piece of code
+            client.Heartbeats.Check(() =>
+            {
+                var i = 0;
+                // This will cause an exception which logs an unhealthy heartbeat
+                var result = 42 / i;
+
+                // The code never reaches this line but if it would, a healthy heartbeat would  be logged
+                return true;
+            }, logId, heartbeatId);
         }
     }
 }
