@@ -32,12 +32,16 @@ namespace Elmah.Io.Client.Models
         /// "Other" if not in an environment.
         /// "Other" is chosen over null to mimic the experience in the elmah.io
         /// UI.</param>
-        public Log(string id = default(string), string name = default(string), string color = default(string), string environmentName = default(string))
+        /// <param name="disabled">Returns true if the log is currently
+        /// disabled. A log can be disabled either through the API
+        /// or in the elmah.io UI.</param>
+        public Log(string id = default(string), string name = default(string), string color = default(string), string environmentName = default(string), bool? disabled = default(bool?))
         {
             Id = id;
             Name = name;
             Color = color;
             EnvironmentName = environmentName;
+            Disabled = disabled;
             CustomInit();
         }
 
@@ -75,6 +79,14 @@ namespace Elmah.Io.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "environmentName")]
         public string EnvironmentName { get; set; }
+
+        /// <summary>
+        /// Gets or sets returns true if the log is currently disabled. A log
+        /// can be disabled either through the API
+        /// or in the elmah.io UI.
+        /// </summary>
+        [JsonProperty(PropertyName = "disabled")]
+        public bool? Disabled { get; set; }
 
     }
 }

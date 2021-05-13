@@ -113,5 +113,67 @@ namespace Elmah.Io.Client
                 }
             }
 
+            /// <summary>
+            /// Disable a log by its ID.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// The ID of the log to disable.
+            /// </param>
+            public static void Disable(this ILogs operations, string id)
+            {
+                operations.DisableAsync(id).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Disable a log by its ID.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// The ID of the log to disable.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task DisableAsync(this ILogs operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.DisableWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
+            /// Enable a log by its ID.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// The ID of the log to enable.
+            /// </param>
+            public static void Enable(this ILogs operations, string id)
+            {
+                operations.EnableAsync(id).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Enable a log by its ID.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// The ID of the log to enable.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task EnableAsync(this ILogs operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.EnableWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
     }
 }

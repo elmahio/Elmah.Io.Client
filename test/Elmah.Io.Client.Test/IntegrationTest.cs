@@ -18,6 +18,7 @@ namespace Elmah.Io.Client.Test
 
             // Get all logs
             var logs = api.Logs.GetAll();
+            Assert.That(logs.All(l => l.Disabled.HasValue && !l.Disabled.Value), Is.True);
 
             // Create log
             api.Logs.Create(new CreateLog
@@ -36,6 +37,17 @@ namespace Elmah.Io.Client.Test
             // Get single log
             var log = api.Logs.Get(created.Id);
             Assert.That(log, Is.Not.Null);
+            Assert.That(log.Disabled, Is.False);
+
+            // Disable log
+            api.Logs.Disable(created.Id);
+            log = api.Logs.Get(created.Id);
+            Assert.That(log.Disabled.HasValue && log.Disabled.Value, Is.True);
+
+            // Enable log
+            api.Logs.Enable(created.Id);
+            log = api.Logs.Get(created.Id);
+            Assert.That(log.Disabled.HasValue && log.Disabled.Value, Is.False);
 
             // Create deployment
             api.Deployments.Create(new CreateDeployment
