@@ -135,9 +135,12 @@ namespace Elmah.Io.Client
         public MessagesClient(ElmahioAPI elmahioAPI)
         {
             BaseUrl = elmahioAPI.BaseUri.ToString();
+            Options = elmahioAPI.Options;
             _httpClient = elmahioAPI.HttpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(elmahioAPI.SerializationSettings);
         }
+
+        public ElmahIoOptions Options { get; set; }
     }
 
     partial class UptimeChecksClient
