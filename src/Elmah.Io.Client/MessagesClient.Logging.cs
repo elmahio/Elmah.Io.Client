@@ -126,7 +126,7 @@ namespace Elmah.Io.Client
         {
             OnMessage?.Invoke(message);
             message = Obfuscate(message);
-            var messageResult = await CreateAsync(logId.ToString(), message);
+            var messageResult = await CreateAsync(logId.ToString(), message).ConfigureAwait(false);
             return MessageCreated(messageResult, message);
         }
 
@@ -199,5 +199,5 @@ namespace Elmah.Io.Client
                     throw new ArgumentOutOfRangeException(nameof(severity), severity, null);
             }
         }
-        }
     }
+}
