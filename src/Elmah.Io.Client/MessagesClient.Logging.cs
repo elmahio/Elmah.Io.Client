@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Rest;
 
 namespace Elmah.Io.Client
 {
-    public partial class MessagesClient
+    public partial class MessagesClient : IMessagesClient
     {
         public void Verbose(Guid logId, string messageTemplate, params object[] propertyValues)
         {
@@ -112,7 +111,7 @@ namespace Elmah.Io.Client
 
             messages = obfuscated;
 
-            return await CreateBulkAsync(logId.ToString(), messages);
+            return await CreateBulkAsync(logId.ToString(), messages).ConfigureAwait(false);
         }
 
         public Message CreateAndNotify(Guid logId, CreateMessage message)
@@ -180,42 +179,25 @@ namespace Elmah.Io.Client
             };
         }
 
-        private Func<Task<HttpOperationResponse<IList<CreateBulkMessageResult>>>, IList<CreateBulkMessageResult>> BulkMessagesCreated(IList<CreateMessage> messages)
+        private string SeverityToString(Severity severity)
+        {
+            switch (severity)
             {
-                return a =>
-                {
-                    if (a.Status != TaskStatus.RanToCompletion)
-                    {
-                        foreach (var msg in messages)
-                        {
-                            OnMessageFail?.Invoke(msg, a.Exception);
-                        }
-                        return null;
-                    }
-
-                    return a.Result?.Body;
-                };
+                case Severity.Verbose:
+                    return "Verbose";
+                case Severity.Debug:
+                    return "Debug";
+                case Severity.Information:
+                    return "Information";
+                case Severity.Warning:
+                    return "Warning";
+                case Severity.Error:
+                    return "Error";
+                case Severity.Fatal:
+                    return "Fatal";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(severity), severity, null);
             }
-
-            private string SeverityToString(Severity severity)
-            {
-                switch (severity)
-                {
-                    case Severity.Verbose:
-                        return "Verbose";
-                    case Severity.Debug:
-                        return "Debug";
-                    case Severity.Information:
-                        return "Information";
-                    case Severity.Warning:
-                        return "Warning";
-                    case Severity.Error:
-                        return "Error";
-                    case Severity.Fatal:
-                        return "Fatal";
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(severity), severity, null);
-                }
-            }
+        }
         }
     }

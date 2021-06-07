@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Elmah.Io.Client.Models;
 
 namespace Elmah.Io.Client.Console
 {
@@ -21,9 +20,9 @@ namespace Elmah.Io.Client.Console
             client.Messages.Verbose(logId, "A verbose message");
 
             // Example of using OnMessage event to decorate all messages before sending to elmah.io
-            client.Messages.OnMessage += (sender, eventArgs) =>
+            client.Messages.OnMessage += (message) =>
             {
-                eventArgs.Message.Version = "1.0.0";
+                message.Version = "1.0.0";
             };
 
             // Example of creating a log message with full control over all properties

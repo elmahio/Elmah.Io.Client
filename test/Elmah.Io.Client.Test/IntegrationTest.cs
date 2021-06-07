@@ -7,11 +7,11 @@ namespace Elmah.Io.Client.Test
 {
     public class IntegrationTest
     {
-        // [Ignore("Only run manually")]
+        [Ignore("Only run manually")]
         [Test]
         public void Test()
         {
-            var api = ElmahioAPI.Create("3376fd7e4f9a47cba704dc3e37c14d2a"); // API key must have all permissions enabled
+            var api = ElmahioAPI.Create("API_KEY"); // API key must have all permissions enabled
 
             var now = DateTime.UtcNow.Ticks.ToString();
 
@@ -64,12 +64,10 @@ namespace Elmah.Io.Client.Test
 
             // Create message
 
-            Assert.Throws<ElmahIoClientException<CreateMessageResult>>(() =>
-                api.Messages.Create(log.Id, new CreateMessage
-                {
-                    Title = now
-                })
-            );
+            api.Messages.Create(log.Id, new CreateMessage
+            {
+                Title = now
+            });
 
             Thread.Sleep(2000);
 

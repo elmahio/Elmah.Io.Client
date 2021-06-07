@@ -7,17 +7,16 @@ namespace Elmah.Io.Client
 {
     public partial class ElmahioAPI
     {
-        public HttpClient HttpClient { get; set; } = new HttpClient();
-        public ElmahIoOptions Options { get; set; } = new ElmahIoOptions();
+        public ElmahIoOptions Options { get; set; }
 
-        public static ElmahioAPI Create(string apiKey, ElmahIoOptions options)
+        public static IElmahioAPI Create(string apiKey, ElmahIoOptions options)
         {
-            var client = new ElmahioAPI()
+            var clientHandler = HttpClientHandlerFactory.GetHttpClientHandler(options);
+            var httpClient = new HttpClient(clientHandler);
+            var client = new ElmahioAPI(httpClient)
             {
                 Options = options
             };
-            var clientHandler = HttpClientHandlerFactory.GetHttpClientHandler(options);
-            client.HttpClient = new HttpClient(clientHandler);
             client.HttpClient.DefaultRequestHeaders.Add("api_key", apiKey);
             client.HttpClient.Timeout = new TimeSpan(0, 0, 5);
             client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
@@ -25,7 +24,7 @@ namespace Elmah.Io.Client
             return client;
         }
 
-        public static ElmahioAPI Create(string apiKey)
+        public static IElmahioAPI Create(string apiKey)
         {
             return Create(apiKey, new ElmahIoOptions());
         }

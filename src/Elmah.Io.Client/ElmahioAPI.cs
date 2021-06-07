@@ -8,9 +8,7 @@ namespace Elmah.Io.Client
 {
     using Newtonsoft.Json;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Net;
     using System.Net.Http;
 
     /// <summary>
@@ -26,7 +24,7 @@ namespace Elmah.Io.Client
     /// to configure API key
     /// permissions](https://docs.elmah.io/how-to-configure-api-key-permissions/)&lt;/li&gt;&lt;/ul&gt;
     /// </summary>
-    public partial class ElmahioAPI
+    public partial class ElmahioAPI : IElmahioAPI
     {
         /// <summary>
         /// The base URI of the service.
@@ -39,32 +37,38 @@ namespace Elmah.Io.Client
         public Func<JsonSerializerSettings> SerializationSettings { get; private set; }
 
         /// <summary>
-        /// Gets the IDeployments.
+        /// Gets the DeploymentsClient.
         /// </summary>
         public DeploymentsClient Deployments { get; private set; }
 
         /// <summary>
-        /// Gets the IHeartbeats.
+        /// Gets the HeartbeatsClient.
         /// </summary>
         public HeartbeatsClient Heartbeats { get; private set; }
 
         /// <summary>
-        /// Gets the ILogs.
+        /// Gets the LogsClient.
         /// </summary>
         public LogsClient Logs { get; private set; }
 
         /// <summary>
-        /// Gets the IMessages.
+        /// Gets the MessagesClient.
         /// </summary>
         public MessagesClient Messages { get; private set; }
 
         /// <summary>
-        /// Gets the IUptimeChecks.
+        /// Gets the UptimeChecksClient.
         /// </summary>
         public UptimeChecksClient UptimeChecks { get; private set; }
 
-        protected ElmahioAPI()
+        /// <summary>
+        /// Gets the HttpClient used in every client.
+        /// </summary>
+        public HttpClient HttpClient { get; set; }
+
+        protected ElmahioAPI(HttpClient httpClient)
         {
+            this.HttpClient = httpClient;
             Initialize();
         }
 
