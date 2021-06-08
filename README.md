@@ -40,10 +40,16 @@ client.Logs.Create(new CreateLog("My log"));
 
 ## Developing
 
-Parts of this client is auto generated using [AutoRest](https://github.com/Azure/autorest). AutoRest is a brilliant code generation tools by Microsoft, that takes swagger input and generates client libraries for a number of different programming languages (like C#).
+Parts of this client is auto generated using [NSwag](https://github.com/RicoSuter/NSwag). NSwag is an Open Source tool that can generate clients for many languages (like C#) from Swagger/OpenAPI 2.0 and 3.0 specs.
 
-To generate a client of the most recent code, execute the following in the root folder:
+To generate a client from the most reason API specs, you first need to install NSwag. We recommend that you use the NPM package which can be installed with this:
 
+```bash
+npm install nswag -g
 ```
-AutoRest.exe -Input https://api.elmah.io:443/swagger/docs/v3 -AddCredentials true -Namespace Elmah.Io.Client -OutputDirectory Elmah.Io.Client
+
+With this NSwag CLI tool, you can execute the following command in this folder to generate the newest client.
+
+```bash
+nswag run
 ```
