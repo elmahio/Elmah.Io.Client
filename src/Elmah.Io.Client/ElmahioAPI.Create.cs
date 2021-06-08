@@ -7,8 +7,14 @@ namespace Elmah.Io.Client
 {
     public partial class ElmahioAPI
     {
+        /// <summary>
+        /// The options to use for this client.
+        /// </summary>
         public ElmahIoOptions Options { get; set; }
 
+        /// <summary>
+        /// Create a new instance of the client. The instance should be shared or kept as a singleton.
+        /// </summary>
         public static IElmahioAPI Create(string apiKey, ElmahIoOptions options)
         {
             var clientHandler = HttpClientHandlerFactory.GetHttpClientHandler(options);
@@ -24,6 +30,9 @@ namespace Elmah.Io.Client
             return client;
         }
 
+        /// <summary>
+        /// Create a new instance of the client with default options. The instance should be shared or kept as a singleton.
+        /// </summary>
         public static IElmahioAPI Create(string apiKey)
         {
             return Create(apiKey, new ElmahIoOptions());

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>.NET Core client for communicating with the elmah.io REST API</Description>
+    <Description>.NET client for communicating with the elmah.io REST API</Description>
     <Authors>elmah.io</Authors>
     <TargetFrameworks>netstandard1.1;netstandard1.4;netstandard2.0;net45;net46;net461</TargetFrameworks>
     <AssemblyName>Elmah.Io.Client</AssemblyName>
