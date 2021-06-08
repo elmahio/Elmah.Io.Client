@@ -140,7 +140,18 @@ namespace Elmah.Io.Client
 
             messages = obfuscated;
 
-            return CreateBulk(logId.ToString(), messages);
+            try
+            {
+                return CreateBulk(logId.ToString(), messages);
+            }
+            catch (Exception e)
+            {
+                foreach (var msg in messages)
+                {
+                    OnMessageFail?.Invoke(this, new FailEventArgs(msg, e));
+                }
+                return null;
+            }
         }
 
         /// <summary>
@@ -158,7 +169,18 @@ namespace Elmah.Io.Client
 
             messages = obfuscated;
 
-            return await CreateBulkAsync(logId.ToString(), messages).ConfigureAwait(false);
+            try
+            {
+                return await CreateBulkAsync(logId.ToString(), messages).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                foreach (var msg in messages)
+                {
+                    OnMessageFail?.Invoke(this, new FailEventArgs(msg, e));
+                }
+                return null;
+            }
         }
 
         /// <summary>
@@ -169,8 +191,16 @@ namespace Elmah.Io.Client
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
             message = Obfuscate(message);
-            var messageResult = Create(logId.ToString(), message);
-            return MessageCreated(messageResult, message);
+            try
+            {
+                var messageResult = Create(logId.ToString(), message);
+                return MessageCreated(messageResult, message);
+            }
+            catch (Exception e)
+            {
+                OnMessageFail?.Invoke(this, new FailEventArgs(message, e));
+                return null;
+            }
         }
 
         /// <summary>
@@ -181,8 +211,16 @@ namespace Elmah.Io.Client
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
             message = Obfuscate(message);
-            var messageResult = await CreateAsync(logId.ToString(), message).ConfigureAwait(false);
-            return MessageCreated(messageResult, message);
+            try
+            {
+                var messageResult = await CreateAsync(logId.ToString(), message).ConfigureAwait(false);
+                return MessageCreated(messageResult, message);
+            }
+            catch (Exception e)
+            {
+                OnMessageFail?.Invoke(this, new FailEventArgs(message, e));
+                return null;
+            }
         }
 
         private CreateMessage Obfuscate(CreateMessage message)
