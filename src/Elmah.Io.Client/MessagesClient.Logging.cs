@@ -1,112 +1,85 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 
 namespace Elmah.Io.Client
 {
-    public partial class MessagesClient
+    public partial class MessagesClient : IMessagesClient
     {
-        /// <summary>
-        /// Write a log message with the Verbose severity.
-        /// </summary>
+        /// <inheritdoc/>
         public void Verbose(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Verbose(logId, null, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Verbose severity and associated exception.
-        /// </summary>
+        /// <inheritdoc/>
         public void Verbose(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Verbose, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Debug severity.
-        /// </summary>
+        /// <inheritdoc/>
         public void Debug(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Debug(logId, null, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Debug severity and associated exception.
-        /// </summary>
+        /// <inheritdoc/>
         public void Debug(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Debug, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Information severity.
-        /// </summary>
+        /// <inheritdoc/>
         public void Information(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Information(logId, null, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Information severity and associated exception.
-        /// </summary>
+        /// <inheritdoc/>
         public void Information(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Information, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Warning severity.
-        /// </summary>
+        /// <inheritdoc/>
         public void Warning(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Warning(logId, null, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Warning severity and associated exception.
-        /// </summary>
+        /// <inheritdoc/>
         public void Warning(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Warning, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Error severity.
-        /// </summary>
+        /// <inheritdoc/>
         public void Error(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Error(logId, null, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Error severity and associated exception.
-        /// </summary>
+        /// <inheritdoc/>
         public void Error(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Error, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Fatal severity.
-        /// </summary>
+        /// <inheritdoc/>
         public void Fatal(Guid logId, string messageTemplate, params object[] propertyValues)
         {
             Fatal(logId, null, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the Verbose Fatal and associated exception.
-        /// </summary>
+        /// <inheritdoc/>
         public void Fatal(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Fatal, messageTemplate, propertyValues);
         }
 
-        /// <summary>
-        /// Write a log message with the specified exception, severity and message.
-        /// </summary>
+        /// <inheritdoc/>
         public void Log(Guid logId, Exception exception, Severity severity, string messageTemplate, params object[] propertyValues)
         {
             var message = new CreateMessage
@@ -125,10 +98,7 @@ namespace Elmah.Io.Client
             CreateAndNotify(logId, message);
         }
 
-        /// <summary>
-        /// Low level log method, which all other methods wanting to log a log message should ideally call.
-        /// The CreateBulkAndNotify method triggers event handlers of the OnMessage and OnMessageFail events.
-        /// </summary>
+        /// <inheritdoc/>
         public ICollection<CreateBulkMessageResult> CreateBulkAndNotify(Guid logId, IList<CreateMessage> messages)
         {
             var obfuscated = new List<CreateMessage>();
@@ -154,10 +124,7 @@ namespace Elmah.Io.Client
             }
         }
 
-        /// <summary>
-        /// Low level log method, which all other methods wanting to log a log message should ideally call.
-        /// The CreateBulkAndNotifyAsync method triggers event handlers of the OnMessage and OnMessageFail events.
-        /// </summary>
+        /// <inheritdoc/>
         public async Task<ICollection<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages)
         {
             var obfuscated = new List<CreateMessage>();
@@ -183,10 +150,7 @@ namespace Elmah.Io.Client
             }
         }
 
-        /// <summary>
-        /// Low level log method, which all other methods wanting to log a log message should ideally call.
-        /// The CreateAndNotify method triggers event handlers of the OnMessage and OnMessageFail events.
-        /// </summary>
+        /// <inheritdoc/>
         public Message CreateAndNotify(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
@@ -203,10 +167,7 @@ namespace Elmah.Io.Client
             }
         }
 
-        /// <summary>
-        /// Low level log method, which all other methods wanting to log a log message should ideally call.
-        /// The CreateAndNotifyAsync method triggers event handlers of the OnMessage and OnMessageFail events.
-        /// </summary>
+        /// <inheritdoc/>
         public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));

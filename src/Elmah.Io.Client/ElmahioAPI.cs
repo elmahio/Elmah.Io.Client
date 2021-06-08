@@ -15,19 +15,19 @@ namespace Elmah.Io.Client
         public Func<JsonSerializerSettings> SerializationSettings { get; private set; }
 
         ///<inheritdoc/>
-        public DeploymentsClient Deployments { get; private set; }
+        public IDeploymentsClient Deployments { get; private set; }
 
         ///<inheritdoc/>
-        public HeartbeatsClient Heartbeats { get; private set; }
+        public IHeartbeatsClient Heartbeats { get; private set; }
 
         ///<inheritdoc/>
-        public LogsClient Logs { get; private set; }
+        public ILogsClient Logs { get; private set; }
 
         ///<inheritdoc/>
-        public MessagesClient Messages { get; private set; }
+        public IMessagesClient Messages { get; private set; }
 
         ///<inheritdoc/>
-        public UptimeChecksClient UptimeChecks { get; private set; }
+        public IUptimeChecksClient UptimeChecks { get; private set; }
 
         ///<inheritdoc/>
         public HttpClient HttpClient { get; set; }

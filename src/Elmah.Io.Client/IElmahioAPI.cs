@@ -22,27 +22,27 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Gets the IDeployments.
         /// </summary>
-        DeploymentsClient Deployments { get; }
+        IDeploymentsClient Deployments { get; }
 
         /// <summary>
         /// Gets the IHeartbeats.
         /// </summary>
-        HeartbeatsClient Heartbeats { get; }
+        IHeartbeatsClient Heartbeats { get; }
 
         /// <summary>
         /// Gets the ILogs.
         /// </summary>
-        LogsClient Logs { get; }
+        ILogsClient Logs { get; }
 
         /// <summary>
         /// Gets the IMessages.
         /// </summary>
-        MessagesClient Messages { get; }
+        IMessagesClient Messages { get; }
 
         /// <summary>
         /// Gets the IUptimeChecks.
         /// </summary>
-        UptimeChecksClient UptimeChecks { get; }
+        IUptimeChecksClient UptimeChecks { get; }
 
         /// <summary>
         /// Gets the HttpClient used in every client.

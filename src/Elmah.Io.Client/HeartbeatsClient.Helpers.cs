@@ -3,16 +3,13 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
-    public partial class HeartbeatsClient
+    public partial class HeartbeatsClient : IHeartbeatsClient
     {
         private const string DegradedResult = "Degraded";
         private const string HealthyResult = "Healthy";
         private const string UnhealthyResult = "Unhealthy";
 
-        /// <summary>
-        /// Helper for running a piece of code and automatically logging a heartbeat. If the code return true, a healthy heartbeat is logged.
-        /// If the code return false or throw an exception, an unhealthy heartbeat is logged.
-        /// </summary>
+        /// <inheritdoc/>
         public void Check(Func<bool> func, Guid logId, string heartbeatId, string application = null, string version = null)
         {
             var result = HealthyResult;
@@ -36,10 +33,7 @@ namespace Elmah.Io.Client
             });
         }
 
-        /// <summary>
-        /// Helper for running a piece of code and automatically logging a heartbeat. If the code return true, a healthy heartbeat is logged.
-        /// If the code return false or throw an exception, an unhealthy heartbeat is logged.
-        /// </summary>
+        /// <inheritdoc/>
         public async Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null)
         {
             var result = HealthyResult;
@@ -65,9 +59,7 @@ namespace Elmah.Io.Client
                 .ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Logs a healthy heartbeat in the specified log on the specified heartbeat.
-        /// </summary>
+        /// <inheritdoc/>
         public void Healthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             Create(heartbeatId, logId.ToString(), new CreateHeartbeat
@@ -80,9 +72,7 @@ namespace Elmah.Io.Client
             });
         }
 
-        /// <summary>
-        /// Logs a healthy heartbeat in the specified log on the specified heartbeat.
-        /// </summary>
+        /// <inheritdoc/>
         public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             await
@@ -97,9 +87,7 @@ namespace Elmah.Io.Client
                 .ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Logs a degraded heartbeat in the specified log on the specified heartbeat.
-        /// </summary>
+        /// <inheritdoc/>
         public void Degraded(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             Create(heartbeatId, logId.ToString(), new CreateHeartbeat
@@ -112,9 +100,7 @@ namespace Elmah.Io.Client
             });
         }
 
-        /// <summary>
-        /// Logs a degraded heartbeat in the specified log on the specified heartbeat.
-        /// </summary>
+        /// <inheritdoc/>
         public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             await
@@ -129,9 +115,7 @@ namespace Elmah.Io.Client
                 .ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Logs a unhealthy heartbeat in the specified log on the specified heartbeat.
-        /// </summary>
+        /// <inheritdoc/>
         public void Unhealthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             Create(heartbeatId, logId.ToString(), new CreateHeartbeat
@@ -144,9 +128,7 @@ namespace Elmah.Io.Client
             });
         }
 
-        /// <summary>
-        /// Logs a unhealthy heartbeat in the specified log on the specified heartbeat.
-        /// </summary>
+        /// <inheritdoc/>
         public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
         {
             await
