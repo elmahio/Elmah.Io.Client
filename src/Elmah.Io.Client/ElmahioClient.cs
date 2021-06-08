@@ -16,7 +16,62 @@ namespace Elmah.Io.Client
     using System = global::System;
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class DeploymentsClient 
+    public partial interface IDeploymentsClient
+    {
+        /// <summary>Fetch a list of deployments.</summary>
+        /// <returns>Request for deployments successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Collections.Generic.ICollection<Deployment> GetAll();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fetch a list of deployments.</summary>
+        /// <returns>Request for deployments successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Deployment>> GetAllAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Create a new deployment.</summary>
+        /// <param name="body">The deployment object to create.</param>
+        /// <returns>Deployment was created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        CreateDeploymentResult Create(CreateDeployment body = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create a new deployment.</summary>
+        /// <param name="body">The deployment object to create.</param>
+        /// <returns>Deployment was created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CreateDeploymentResult> CreateAsync(CreateDeployment body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Fetch a deployment by its ID.</summary>
+        /// <param name="id">The ID of the deployment to fetch.</param>
+        /// <returns>Request for deployment successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        Deployment Get(string id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fetch a deployment by its ID.</summary>
+        /// <param name="id">The ID of the deployment to fetch.</param>
+        /// <returns>Request for deployment successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Deployment> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Delete a deployment by its ID.</summary>
+        /// <param name="id">The ID of the deployment to delete.</param>
+        /// <returns>Deployment was deleted.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void Delete(string id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Delete a deployment by its ID.</summary>
+        /// <param name="id">The ID of the deployment to delete.</param>
+        /// <returns>Deployment was deleted.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class DeploymentsClient : IDeploymentsClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -566,7 +621,29 @@ namespace Elmah.Io.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class HeartbeatsClient 
+    public partial interface IHeartbeatsClient
+    {
+        /// <summary>Create a new heartbeat.</summary>
+        /// <param name="id">The ID of the heartbeat check.</param>
+        /// <param name="logId">The ID of the log containing the heartbeat check.</param>
+        /// <param name="body">The details of the heartbeat.</param>
+        /// <returns>Heartbeat was created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void Create(string id, string logId, CreateHeartbeat body = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create a new heartbeat.</summary>
+        /// <param name="id">The ID of the heartbeat check.</param>
+        /// <param name="logId">The ID of the log containing the heartbeat check.</param>
+        /// <param name="body">The details of the heartbeat.</param>
+        /// <returns>Heartbeat was created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CreateAsync(string id, string logId, CreateHeartbeat body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class HeartbeatsClient : IHeartbeatsClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -822,7 +899,75 @@ namespace Elmah.Io.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class LogsClient 
+    public partial interface ILogsClient
+    {
+        /// <summary>Fetch a list of logs.</summary>
+        /// <returns>Request for logs successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Collections.Generic.ICollection<Log> GetAll();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fetch a list of logs.</summary>
+        /// <returns>Request for logs successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Log>> GetAllAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Create a new log.</summary>
+        /// <param name="body">The log object to create.</param>
+        /// <returns>Log where successfully created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        CreateLogResult Create(CreateLog body = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create a new log.</summary>
+        /// <param name="body">The log object to create.</param>
+        /// <returns>Log where successfully created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CreateLogResult> CreateAsync(CreateLog body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Fetch a log by its ID.</summary>
+        /// <param name="id">The ID of the log to fetch.</param>
+        /// <returns>Request for log successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        Log Get(string id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fetch a log by its ID.</summary>
+        /// <param name="id">The ID of the log to fetch.</param>
+        /// <returns>Request for log successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Log> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Disable a log by its ID.</summary>
+        /// <param name="id">The ID of the log to disable.</param>
+        /// <returns>Log was disabled.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void Disable(string id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Disable a log by its ID.</summary>
+        /// <param name="id">The ID of the log to disable.</param>
+        /// <returns>Log was disabled.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DisableAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Enable a log by its ID.</summary>
+        /// <param name="id">The ID of the log to enable.</param>
+        /// <returns>Log was enabled.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void Enable(string id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Enable a log by its ID.</summary>
+        /// <param name="id">The ID of the log to enable.</param>
+        /// <returns>Log was enabled.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task EnableAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class LogsClient : ILogsClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -1468,7 +1613,144 @@ namespace Elmah.Io.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class MessagesClient 
+    public partial interface IMessagesClient
+    {
+        /// <summary>Fetch messages from a log.</summary>
+        /// <param name="logId">The ID of the log containing the messages.</param>
+        /// <param name="pageIndex">The page number of the result.</param>
+        /// <param name="pageSize">The number of messages to load (max 100) or 15 if not set.</param>
+        /// <param name="query">A full-text or Lucene query to limit the messages by.</param>
+        /// <param name="from">A start date and time to search from (not included).</param>
+        /// <param name="to">An end date and time to search to (not included).</param>
+        /// <param name="includeHeaders">Include headers like server variables and cookies in the result (slower).</param>
+        /// <returns>Log found and may contain messages.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        MessagesResult GetAll(string logId, int? pageIndex = null, int? pageSize = null, string query = null, System.DateTimeOffset? from = null, System.DateTimeOffset? to = null, bool? includeHeaders = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fetch messages from a log.</summary>
+        /// <param name="logId">The ID of the log containing the messages.</param>
+        /// <param name="pageIndex">The page number of the result.</param>
+        /// <param name="pageSize">The number of messages to load (max 100) or 15 if not set.</param>
+        /// <param name="query">A full-text or Lucene query to limit the messages by.</param>
+        /// <param name="from">A start date and time to search from (not included).</param>
+        /// <param name="to">An end date and time to search to (not included).</param>
+        /// <param name="includeHeaders">Include headers like server variables and cookies in the result (slower).</param>
+        /// <returns>Log found and may contain messages.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MessagesResult> GetAllAsync(string logId, int? pageIndex = null, int? pageSize = null, string query = null, System.DateTimeOffset? from = null, System.DateTimeOffset? to = null, bool? includeHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Deletes a list of messages by logid and query.</summary>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <param name="body">A search object containing query, time filters etc.</param>
+        /// <returns>Messages where deleted.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void DeleteAll(string logId, Search body = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Deletes a list of messages by logid and query.</summary>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <param name="body">A search object containing query, time filters etc.</param>
+        /// <returns>Messages where deleted.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteAllAsync(string logId, Search body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Create a new message.</summary>
+        /// <param name="logId">The ID of the log which should contain the new message.</param>
+        /// <param name="body">The message object to create.</param>
+        /// <returns>Message was not created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        CreateMessageResult Create(string logId, CreateMessage body = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create a new message.</summary>
+        /// <param name="logId">The ID of the log which should contain the new message.</param>
+        /// <param name="body">The message object to create.</param>
+        /// <returns>Message was not created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CreateMessageResult> CreateAsync(string logId, CreateMessage body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Fetch a message by its ID.</summary>
+        /// <param name="id">The ID of the message to fetch.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <returns>Message found.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        Message Get(string id, string logId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fetch a message by its ID.</summary>
+        /// <param name="id">The ID of the message to fetch.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <returns>Message found.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Message> GetAsync(string id, string logId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Delete a message by its ID.</summary>
+        /// <param name="id">The ID of the message to delete.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <returns>Message where deleted.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void Delete(string id, string logId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Delete a message by its ID.</summary>
+        /// <param name="id">The ID of the message to delete.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <returns>Message where deleted.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteAsync(string id, string logId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Hide a message by its ID.</summary>
+        /// <param name="id">The ID of the message to hide.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <returns>Message was hidden.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void Hide(string id, string logId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Hide a message by its ID.</summary>
+        /// <param name="id">The ID of the message to hide.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <returns>Message was hidden.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task HideAsync(string id, string logId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Fix a message by its ID.</summary>
+        /// <param name="id">The ID of the message to fix.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <param name="markAllAsFixed">If set to true, all instances of the log message are set to fixed.</param>
+        /// <returns>Message was fixed.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void Fix(string id, string logId, bool? markAllAsFixed = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fix a message by its ID.</summary>
+        /// <param name="id">The ID of the message to fix.</param>
+        /// <param name="logId">The ID of the log containing the message.</param>
+        /// <param name="markAllAsFixed">If set to true, all instances of the log message are set to fixed.</param>
+        /// <returns>Message was fixed.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FixAsync(string id, string logId, bool? markAllAsFixed = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <summary>Create one or more new messages.</summary>
+        /// <param name="logId">The ID of the log which should contain the new messages.</param>
+        /// <param name="body">The messages to create.</param>
+        /// <returns>Zero or more messages where successfully created. Check the response body for details.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Collections.Generic.ICollection<CreateBulkMessageResult> CreateBulk(string logId, System.Collections.Generic.IEnumerable<CreateMessage> body = null);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create one or more new messages.</summary>
+        /// <param name="logId">The ID of the log which should contain the new messages.</param>
+        /// <param name="body">The messages to create.</param>
+        /// <returns>Zero or more messages where successfully created. Check the response body for details.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CreateBulkMessageResult>> CreateBulkAsync(string logId, System.Collections.Generic.IEnumerable<CreateMessage> body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class MessagesClient : IMessagesClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -2574,7 +2856,23 @@ namespace Elmah.Io.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class UptimeChecksClient 
+    public partial interface IUptimeChecksClient
+    {
+        /// <summary>Fetch a list of uptime checks. Currently in closed beta. Get in contact to get access to this endpoint.</summary>
+        /// <returns>Request for uptime checks successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Collections.Generic.ICollection<UptimeCheck> GetAll();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Fetch a list of uptime checks. Currently in closed beta. Get in contact to get access to this endpoint.</summary>
+        /// <returns>Request for uptime checks successful.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UptimeCheck>> GetAllAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class UptimeChecksClient : IUptimeChecksClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
