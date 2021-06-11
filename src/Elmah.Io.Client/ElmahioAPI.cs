@@ -1,129 +1,82 @@
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace Elmah.Io.Client
 {
     ///<inheritdoc/>
-    public partial class ElmahioAPI : IElmahioAPI
+    public class ElmahioAPI : IElmahioAPI
     {
         ///<inheritdoc/>
-        public System.Uri BaseUri { get; set; }
+        public IDeploymentsClient Deployments { get; }
 
         ///<inheritdoc/>
-        public Func<JsonSerializerSettings> SerializationSettings { get; private set; }
+        public IHeartbeatsClient Heartbeats { get; }
+
+        ///<inheritdoc/> d sa
+        public ILogsClient Logs { get; }
 
         ///<inheritdoc/>
-        public IDeploymentsClient Deployments { get; private set; }
+        public IMessagesClient Messages { get; }
 
         ///<inheritdoc/>
-        public IHeartbeatsClient Heartbeats { get; private set; }
+        public IUptimeChecksClient UptimeChecks { get; }
 
         ///<inheritdoc/>
-        public ILogsClient Logs { get; private set; }
+        public HttpClient HttpClient { get; }
 
         ///<inheritdoc/>
-        public IMessagesClient Messages { get; private set; }
-
-        ///<inheritdoc/>
-        public IUptimeChecksClient UptimeChecks { get; private set; }
-
-        ///<inheritdoc/>
-        public HttpClient HttpClient { get; set; }
+        public ElmahIoOptions Options { get; }
 
         /// <summary>
         /// Create a new instance with the specified HttpClient.
         /// </summary>
-        protected ElmahioAPI(HttpClient httpClient)
+        protected ElmahioAPI(string baseUrl, ElmahIoOptions options, HttpClient httpClient)
         {
-            this.HttpClient = httpClient;
-            Initialize();
+            HttpClient = httpClient;
+            Options = options;
+            Deployments = new DeploymentsClient(baseUrl, httpClient);
+            Heartbeats = new HeartbeatsClient(baseUrl, httpClient);
+            Logs = new LogsClient(baseUrl, httpClient);
+            Messages = new MessagesClient(baseUrl, httpClient, options);
+            UptimeChecks = new UptimeChecksClient(baseUrl, httpClient);
         }
 
         /// <summary>
-        /// An optional partial-method to perform custom initialization.
-        ///</summary>
-        partial void CustomInitialize();
-
-        /// <summary>
-        /// Initializes client properties.
+        /// Create a new instance of the client using the provided HttpClient. The provided HttpClient will be updated
+        /// with the API key header, a user agent, and the base URL for the elmah.io API (if not already set).
+        /// The instance should be shared or kept as a singleton.
         /// </summary>
-        private void Initialize()
+        public static IElmahioAPI Create(string apiKey, ElmahIoOptions options, HttpClient httpClient)
         {
-            BaseUri = new System.Uri("https://api.elmah.io");
-            SerializationSettings = () => new JsonSerializerSettings
-            {
-                Formatting = Newtonsoft.Json.Formatting.Indented,
-                DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
-                NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize,
-                // ContractResolver = new ReadOnlyJsonContractResolver(),
-                Converters = new List<JsonConverter>
-                {
-                    // new Iso8601TimeSpanConverter()
-                }
-            };
-            CustomInitialize();
-            Deployments = new DeploymentsClient(this);
-            Heartbeats = new HeartbeatsClient(this);
-            Logs = new LogsClient(this);
-            Messages = new MessagesClient(this);
-            UptimeChecks = new UptimeChecksClient(this);
-        }
-    }
-
-    partial class DeploymentsClient
-    {
-        public DeploymentsClient(IElmahioAPI elmahioAPI)
-        {
-            BaseUrl = elmahioAPI.BaseUri.ToString();
-            _httpClient = elmahioAPI.HttpClient;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(elmahioAPI.SerializationSettings);
-        }
-    }
-
-    partial class HeartbeatsClient
-    {
-        public HeartbeatsClient(IElmahioAPI elmahioAPI)
-        {
-            BaseUrl = elmahioAPI.BaseUri.ToString();
-            _httpClient = elmahioAPI.HttpClient;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(elmahioAPI.SerializationSettings);
-        }
-    }
-
-    partial class LogsClient
-    {
-        public LogsClient(IElmahioAPI elmahioAPI)
-        {
-            BaseUrl = elmahioAPI.BaseUri.ToString();
-            _httpClient = elmahioAPI.HttpClient;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(elmahioAPI.SerializationSettings);
-        }
-    }
-
-    partial class MessagesClient
-    {
-        public MessagesClient(IElmahioAPI elmahioAPI)
-        {
-            BaseUrl = elmahioAPI.BaseUri.ToString();
-            Options = elmahioAPI.Options;
-            _httpClient = elmahioAPI.HttpClient;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(elmahioAPI.SerializationSettings);
+            if (string.IsNullOrWhiteSpace(apiKey)) throw new ArgumentNullException(nameof(apiKey));
+            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+            if (options == null) options = new ElmahIoOptions();
+            var client = new ElmahioAPI(httpClient.BaseAddress?.ToString() ?? "https://api.elmah.io/", options, httpClient);
+            client.HttpClient.DefaultRequestHeaders.Add("api_key", apiKey);
+            client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
+            client.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.Client", $"{typeof(ElmahioAPI).GetTypeInfo().Assembly.GetName().Version}")));
+            return client;
         }
 
-        public ElmahIoOptions Options { get; set; }
-    }
-
-    partial class UptimeChecksClient
-    {
-        public UptimeChecksClient(IElmahioAPI elmahioAPI)
+        /// <summary>
+        /// Create a new instance of the client. The instance should be shared or kept as a singleton.
+        /// </summary>
+        public static IElmahioAPI Create(string apiKey, ElmahIoOptions options)
         {
-            BaseUrl = elmahioAPI.BaseUri.ToString();
-            _httpClient = elmahioAPI.HttpClient;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(elmahioAPI.SerializationSettings);
+            var clientHandler = HttpClientHandlerFactory.GetHttpClientHandler(options);
+            var httpClient = new HttpClient(clientHandler);
+            httpClient.Timeout = new TimeSpan(0, 0, 5);
+            return Create(apiKey, options, httpClient);
+        }
+
+        /// <summary>
+        /// Create a new instance of the client with default options. The instance should be shared or kept as a singleton.
+        /// </summary>
+        public static IElmahioAPI Create(string apiKey)
+        {
+            return Create(apiKey, new ElmahIoOptions());
         }
     }
 }

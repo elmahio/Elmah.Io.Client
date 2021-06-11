@@ -1,24 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace Elmah.Io.Client
 {
     /// <summary>
     /// A single type to make it easy to keep all clients in a single location.
     /// </summary>
-    public partial interface IElmahioAPI
+    public interface IElmahioAPI
     {
-        /// <summary>
-        /// The base URI of the service.
-        /// </summary>
-        System.Uri BaseUri { get; set; }
-
-        /// <summary>
-        /// Gets or sets json serialization settings.
-        /// </summary>
-        Func<JsonSerializerSettings> SerializationSettings { get; }
-
         /// <summary>
         /// Gets the IDeployments.
         /// </summary>
@@ -45,8 +33,13 @@ namespace Elmah.Io.Client
         IUptimeChecksClient UptimeChecks { get; }
 
         /// <summary>
-        /// Gets the HttpClient used in every client.
+        /// The HttpClient used to communicate with the elmah.io API.
         /// </summary>
-        HttpClient HttpClient { get; set; }
+        HttpClient HttpClient { get; }
+
+        /// <summary>
+        /// The options to use for this client.
+        /// </summary>
+        ElmahIoOptions Options { get; }
     }
 }

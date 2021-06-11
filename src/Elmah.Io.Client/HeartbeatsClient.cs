@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
-    public partial class HeartbeatsClient : IHeartbeatsClient
+    partial class HeartbeatsClient : IHeartbeatsClient
     {
         private const string DegradedResult = "Degraded";
         private const string HealthyResult = "Healthy";
@@ -141,6 +143,16 @@ namespace Elmah.Io.Client
                     Took = took,
                 })
                 .ConfigureAwait(false);
+        }
+
+        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        {
+            settings.Formatting = Formatting.Indented;
+            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            settings.Converters = new List<JsonConverter>();
         }
     }
 }

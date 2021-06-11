@@ -59,9 +59,10 @@ namespace Elmah.Io.Client.Console
             });
 
             // Example of filtering undesired form items
-            var client2 = ElmahioAPI.Create("API_KEY");
+            var options = new ElmahIoOptions();
+            options.FormKeysToObfuscate.Add("visible form item");
+            var client2 = ElmahioAPI.Create("API_KEY", options);
 
-            client2.Options.FormKeysToObfuscate.Add("visible form item");
             client2.Messages.CreateAndNotify(logId, new CreateMessage
             {
                 Title = "Hello World",

@@ -1,12 +1,37 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
-    public partial class MessagesClient : IMessagesClient
+    partial class MessagesClient : IMessagesClient
     {
+        public MessagesClient(string baseUrl, HttpClient httpClient, ElmahIoOptions options) : this(baseUrl, httpClient)
+        {
+            Options = options;
+        }
+
+        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        {
+            settings.Formatting = Formatting.Indented;
+            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            settings.Converters = new List<JsonConverter>();
+        }
+
+        public ElmahIoOptions Options { get; set; }
+
+        /// <inheritdoc/>
+        public event EventHandler<MessageEventArgs> OnMessage;
+
+        /// <inheritdoc/>
+        public event EventHandler<FailEventArgs> OnMessageFail;
+
         /// <inheritdoc/>
         public void Verbose(Guid logId, string messageTemplate, params object[] propertyValues)
         {
