@@ -3104,52 +3104,59 @@ namespace Elmah.Io.Client
         }
     }
 
+    /// <summary>A breadcrumb represent a step preceding a log message.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Deployment 
+    public partial class Breadcrumb 
     {
-        /// <summary>The ID of this deployment.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
+        /// <summary>The date and time in UTC of the breadcrumb. If no date and time is provided, we will use the current date and time in UTC.</summary>
+        [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateTime { get; set; }
     
-        /// <summary>The version number of this deployment. The value of version can be a SemVer compliant string or any other
-        /// syntax that you are using as your version numbering scheme.</summary>
-        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Version { get; set; }
+        /// <summary>An enum value representing the severity of this breadcrumb. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal.</summary>
+        [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Severity { get; set; }
     
-        /// <summary>When was this deployment created.</summary>
-        [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? Created { get; set; }
+        /// <summary>An action representing the breadcrumb. You can set a custom action or use one of the built-in: click, submit, navigation, request, error.</summary>
+        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Action { get; set; }
     
-        /// <summary>The elmah.io id of the user creating this deployment. Since deployments are created on a subscription,
-        /// the CreatedBy will contain the id of the user with the subscription.</summary>
-        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CreatedBy { get; set; }
-    
-        /// <summary>Sescription of this deployment in markdown or clear text.</summary>
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Description { get; set; }
-    
-        /// <summary>The name of the person responsible for creating this deployment.</summary>
-        [Newtonsoft.Json.JsonProperty("userName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string UserName { get; set; }
-    
-        /// <summary>The email of the person responsible for creating this deployment.</summary>
-        [Newtonsoft.Json.JsonProperty("userEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string UserEmail { get; set; }
-    
-        /// <summary>If the deployment is attached a single log, this property is set to the ID of that log.
-        /// If null, the deployment is attached all logs on the organization.</summary>
-        [Newtonsoft.Json.JsonProperty("logId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string LogId { get; set; }
+        /// <summary>A message representing the breadcrumb. This should elaborate on the action.</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
     
         public string ToJson()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
         }
     
-        public static Deployment FromJson(string data)
+        public static Breadcrumb FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Deployment>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Breadcrumb>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CreateBulkMessageResult 
+    {
+        /// <summary>Status code of the individual messages as if it were being created through the non-bulk endpoint.
+        /// If a message was succesfully created, the status code will be 201 and location will contain an URL.
+        /// If a message was ignored, the status code will be 200 and the location will be empty.</summary>
+        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusCode { get; set; }
+    
+        /// <summary>The location of the created message if StatusCode equals Created.</summary>
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Uri Location { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static CreateBulkMessageResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateBulkMessageResult>(data, new Newtonsoft.Json.JsonSerializerSettings());
         }
     
     }
@@ -3255,6 +3262,250 @@ namespace Elmah.Io.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CreateLog 
+    {
+        /// <summary>Name of the new log.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        public string Name { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static CreateLog FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateLog>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CreateLogResult 
+    {
+        /// <summary>The location of the created log.</summary>
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Uri Location { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static CreateLogResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateLogResult>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CreateMessage 
+    {
+        /// <summary>Used to identify which application logged this message. You can use this if you have multiple applications and services logging to the same log</summary>
+        [Newtonsoft.Json.JsonProperty("application", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Application { get; set; }
+    
+        /// <summary>A longer description of the message. For errors this could be a stacktrace, but it's really up to you what to log in there.</summary>
+        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Detail { get; set; }
+    
+        /// <summary>The hostname of the server logging the message.</summary>
+        [Newtonsoft.Json.JsonProperty("hostname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Hostname { get; set; }
+    
+        /// <summary>The textual title or headline of the message to log.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The title template of the message to log. This property can be used from logging frameworks that supports
+        /// structured logging like: "{user} says {quote}". In the example, titleTemplate will be this string and title
+        /// will be "Gilfoyle says It's not magic. It's talent and sweat".</summary>
+        [Newtonsoft.Json.JsonProperty("titleTemplate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TitleTemplate { get; set; }
+    
+        /// <summary>The source of the code logging the message. This could be the assembly name.</summary>
+        [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Source { get; set; }
+    
+        /// <summary>If the message logged relates to a HTTP status code, you can put the code in this property. This would probably only be relevant for errors,
+        /// but could be used for logging successful status codes as well.</summary>
+        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusCode { get; set; }
+    
+        /// <summary>The date and time in UTC of the message. If you don't provide us with a value in dateTime, we will set the current date and time in UTC.</summary>
+        [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateTime { get; set; }
+    
+        /// <summary>The type of message. If logging an error, the type of the exception would go into type but you can put anything in there, that makes sense for your domain.</summary>
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Type { get; set; }
+    
+        /// <summary>An identification of the user triggering this message. You can put the users email address or your user key into this property.</summary>
+        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string User { get; set; }
+    
+        /// <summary>An enum value representing the severity of this message. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal</summary>
+        [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Severity { get; set; }
+    
+        /// <summary>If message relates to a HTTP request, you may send the URL of that request. If you don't provide us with an URL, we will try to find a key named URL in serverVariables.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Url { get; set; }
+    
+        /// <summary>If message relates to a HTTP request, you may send the HTTP method of that request. If you don't provide us with a method, we will try to find a key named REQUEST_METHOD in serverVariables.</summary>
+        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Method { get; set; }
+    
+        /// <summary>Versions can be used to distinguish messages from different versions of your software. The value of version can be a SemVer compliant string or any other
+        /// syntax that you are using as your version numbering scheme.</summary>
+        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Version { get; set; }
+    
+        /// <summary>CorrelationId can be used to group similar log messages together into a single discoverable batch. A correlation ID could be a session ID from ASP.NET Core,
+        /// a unique string spanning multiple microsservices handling the same request, or similar.</summary>
+        [Newtonsoft.Json.JsonProperty("correlationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CorrelationId { get; set; }
+    
+        /// <summary>Code can be used to include source code related to the log message. The code will typically span from a few lines before the line causing the log message
+        /// to a few lines after. For now, all lines above 21 will be removed. This makes room for showing 10 lines before the logging line, the logging line, and
+        /// 10 lines after the logging line. Don't include a very large string in this property since that will quickly make the entire messages exceed the max limit
+        /// of 256 kb.</summary>
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
+    
+        /// <summary>A key/value pair of cookies. This property only makes sense for logging messages related to web requests.</summary>
+        [Newtonsoft.Json.JsonProperty("cookies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> Cookies { get; set; }
+    
+        /// <summary>A key/value pair of form fields and their values. This property makes sense if logging message related to users inputting data in a form.</summary>
+        [Newtonsoft.Json.JsonProperty("form", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> Form { get; set; }
+    
+        /// <summary>A key/value pair of query string parameters. This property makes sense if logging message related to a HTTP request.</summary>
+        [Newtonsoft.Json.JsonProperty("queryString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> QueryString { get; set; }
+    
+        /// <summary>A key/value pair of server values. Server variables are typically related to handling requests in a webserver but could be used for other types of information as well.</summary>
+        [Newtonsoft.Json.JsonProperty("serverVariables", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> ServerVariables { get; set; }
+    
+        /// <summary>A key/value pair of user-defined fields and their values. When logging an exception, the Data dictionary of
+        /// the exception is copied to this property. You can add additional key/value pairs, by modifying the Data
+        /// dictionary on the exception or by supplying additional key/values to this API.</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> Data { get; set; }
+    
+        /// <summary>A list of breadcrumbs preceding this log message.</summary>
+        [Newtonsoft.Json.JsonProperty("breadcrumbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Breadcrumb> Breadcrumbs { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static CreateMessage FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateMessage>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CreateMessageResult 
+    {
+        /// <summary>The location of the created message.</summary>
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Uri Location { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static CreateMessageResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateMessageResult>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Deployment 
+    {
+        /// <summary>The ID of this deployment.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The version number of this deployment. The value of version can be a SemVer compliant string or any other
+        /// syntax that you are using as your version numbering scheme.</summary>
+        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Version { get; set; }
+    
+        /// <summary>When was this deployment created.</summary>
+        [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? Created { get; set; }
+    
+        /// <summary>The elmah.io id of the user creating this deployment. Since deployments are created on a subscription,
+        /// the CreatedBy will contain the id of the user with the subscription.</summary>
+        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CreatedBy { get; set; }
+    
+        /// <summary>Sescription of this deployment in markdown or clear text.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The name of the person responsible for creating this deployment.</summary>
+        [Newtonsoft.Json.JsonProperty("userName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UserName { get; set; }
+    
+        /// <summary>The email of the person responsible for creating this deployment.</summary>
+        [Newtonsoft.Json.JsonProperty("userEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UserEmail { get; set; }
+    
+        /// <summary>If the deployment is attached a single log, this property is set to the ID of that log.
+        /// If null, the deployment is attached all logs on the organization.</summary>
+        [Newtonsoft.Json.JsonProperty("logId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LogId { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static Deployment FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Deployment>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
+    /// <summary>Represents a key value pair.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Item 
+    {
+        /// <summary>The key of the item.</summary>
+        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        /// <summary>The value of the item.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+        public static Item FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Item>(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Log 
     {
         /// <summary>ID of the log.</summary>
@@ -3293,95 +3544,118 @@ namespace Elmah.Io.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CreateLog 
+    public partial class Message 
     {
-        /// <summary>Name of the new log.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
-        public string Name { get; set; }
+        /// <summary>The ID of this message.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
     
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
+        /// <summary>Used to identify which application logged this message. You can use this if you have multiple applications and services logging to the same log</summary>
+        [Newtonsoft.Json.JsonProperty("application", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Application { get; set; }
     
-        public static CreateLog FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateLog>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
+        /// <summary>A longer description of the message. For errors this could be a stacktrace, but it's really up to you what to log in there.</summary>
+        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Detail { get; set; }
     
-    }
+        /// <summary>The hostname of the server logging the message.</summary>
+        [Newtonsoft.Json.JsonProperty("hostname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Hostname { get; set; }
     
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CreateLogResult 
-    {
-        /// <summary>The location of the created log.</summary>
-        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Uri Location { get; set; }
+        /// <summary>The textual title or headline of the message to log.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
     
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
+        /// <summary>The title template of the message to log. This property can be used from logging frameworks that supports
+        /// structured logging like: "{user} says {quote}". In the example, titleTemplate will be this string and title
+        /// will be "Gilfoyle says It's not magic. It's talent and sweat".</summary>
+        [Newtonsoft.Json.JsonProperty("titleTemplate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TitleTemplate { get; set; }
     
-        public static CreateLogResult FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateLogResult>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
+        /// <summary>The source of the code logging the message. This could be the assembly name.</summary>
+        [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Source { get; set; }
     
-    }
+        /// <summary>If the message logged relates to a HTTP status code, you can put the code in this property. This would probably only be relevant for errors,
+        /// but could be used for logging successful status codes as well.</summary>
+        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusCode { get; set; }
     
-    /// <summary>Represents a key value pair.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Item 
-    {
-        /// <summary>The key of the item.</summary>
-        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Key { get; set; }
-    
-        /// <summary>The value of the item.</summary>
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Value { get; set; }
-    
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-        public static Item FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Item>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-    }
-    
-    /// <summary>A breadcrumb represent a step preceding a log message.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Breadcrumb 
-    {
-        /// <summary>The date and time in UTC of the breadcrumb. If no date and time is provided, we will use the current date and time in UTC.</summary>
+        /// <summary>The date and time in UTC of the message. If you don't provide us with a value in dateTime, we will set the current date and time in UTC.</summary>
         [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? DateTime { get; set; }
     
-        /// <summary>An enum value representing the severity of this breadcrumb. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal.</summary>
+        /// <summary>The type of message. If logging an error, the type of the exception would go into type but you can put anything in there, that makes sense for your domain.</summary>
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Type { get; set; }
+    
+        /// <summary>An identification of the user triggering this message. You can put the users email address or your user key into this property.</summary>
+        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string User { get; set; }
+    
+        /// <summary>An enum value representing the severity of this message. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal</summary>
         [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Severity { get; set; }
     
-        /// <summary>An action representing the breadcrumb. You can set a custom action or use one of the built-in: click, submit, navigation, request, error.</summary>
-        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Action { get; set; }
+        /// <summary>If message relates to a HTTP request, you may send the URL of that request. If you don't provide us with an URL, we will try to find a key named URL in serverVariables.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Url { get; set; }
     
-        /// <summary>A message representing the breadcrumb. This should elaborate on the action.</summary>
-        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Message { get; set; }
+        /// <summary>If message relates to a HTTP request, you may send the HTTP method of that request. If you don't provide us with a method, we will try to find a key named REQUEST_METHOD in serverVariables.</summary>
+        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Method { get; set; }
+    
+        /// <summary>Versions can be used to distinguish messages from different versions of your software. The value of version can be a SemVer compliant string or any other
+        /// syntax that you are using as your version numbering scheme.</summary>
+        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Version { get; set; }
+    
+        /// <summary>CorrelationId can be used to group similar log messages together into a single discoverable batch. A correlation ID could be a session ID from ASP.NET Core,
+        /// a unique string spanning multiple microsservices handling the same request, or similar.</summary>
+        [Newtonsoft.Json.JsonProperty("correlationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CorrelationId { get; set; }
+    
+        /// <summary>Code can be used to include source code related to the log message. The code will typically span from a few lines before the line causing the log message
+        /// to a few lines after. For now, all lines above 21 will be removed. This makes room for showing 10 lines before the logging line, the logging line, and
+        /// 10 lines after the logging line. Don't include a very large string in this property since that will quickly make the entire messages exceed the max limit
+        /// of 256 kb.</summary>
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
+    
+        /// <summary>A key/value pair of cookies. This property only makes sense for logging messages related to web requests.</summary>
+        [Newtonsoft.Json.JsonProperty("cookies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> Cookies { get; set; }
+    
+        /// <summary>A key/value pair of form fields and their values. This property makes sense if logging message related to users inputting data in a form.</summary>
+        [Newtonsoft.Json.JsonProperty("form", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> Form { get; set; }
+    
+        /// <summary>A key/value pair of query string parameters. This property makes sense if logging message related to a HTTP request.</summary>
+        [Newtonsoft.Json.JsonProperty("queryString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> QueryString { get; set; }
+    
+        /// <summary>A key/value pair of server values. Server variables are typically related to handling requests in a webserver but could be used for other types of information as well.</summary>
+        [Newtonsoft.Json.JsonProperty("serverVariables", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> ServerVariables { get; set; }
+    
+        /// <summary>A key/value pair of user-defined fields and their values. When logging an exception, the Data dictionary of
+        /// the exception is copied to this property. You can add additional key/value pairs, by modifying the Data
+        /// dictionary on the exception or by supplying additional key/values to this API.</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Item> Data { get; set; }
+    
+        /// <summary>A list of breadcrumbs preceding this log message.</summary>
+        [Newtonsoft.Json.JsonProperty("breadcrumbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Breadcrumb> Breadcrumbs { get; set; }
     
         public string ToJson()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
         }
     
-        public static Breadcrumb FromJson(string data)
+        public static Message FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Breadcrumb>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Message>(data, new Newtonsoft.Json.JsonSerializerSettings());
         }
     
     }
@@ -3457,6 +3731,13 @@ namespace Elmah.Io.Client
         /// a unique string spanning multiple microsservices handling the same request, or similar.</summary>
         [Newtonsoft.Json.JsonProperty("correlationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CorrelationId { get; set; }
+    
+        /// <summary>Code can be used to include source code related to the log message. The code will typically span from a few lines before the line causing the log message
+        /// to a few lines after. For now, all lines above 21 will be removed. This makes room for showing 10 lines before the logging line, the logging line, and
+        /// 10 lines after the logging line. Don't include a very large string in this property since that will quickly make the entire messages exceed the max limit
+        /// of 256 kb.</summary>
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
     
         /// <summary>A key/value pair of cookies. This property only makes sense for logging messages related to web requests.</summary>
         [Newtonsoft.Json.JsonProperty("cookies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3542,266 +3823,6 @@ namespace Elmah.Io.Client
         public static Search FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Search>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CreateMessage 
-    {
-        /// <summary>Used to identify which application logged this message. You can use this if you have multiple applications and services logging to the same log</summary>
-        [Newtonsoft.Json.JsonProperty("application", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Application { get; set; }
-    
-        /// <summary>A longer description of the message. For errors this could be a stacktrace, but it's really up to you what to log in there.</summary>
-        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Detail { get; set; }
-    
-        /// <summary>The hostname of the server logging the message.</summary>
-        [Newtonsoft.Json.JsonProperty("hostname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Hostname { get; set; }
-    
-        /// <summary>The textual title or headline of the message to log.</summary>
-        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Title { get; set; }
-    
-        /// <summary>The title template of the message to log. This property can be used from logging frameworks that supports
-        /// structured logging like: "{user} says {quote}". In the example, titleTemplate will be this string and title
-        /// will be "Gilfoyle says It's not magic. It's talent and sweat".</summary>
-        [Newtonsoft.Json.JsonProperty("titleTemplate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string TitleTemplate { get; set; }
-    
-        /// <summary>The source of the code logging the message. This could be the assembly name.</summary>
-        [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Source { get; set; }
-    
-        /// <summary>If the message logged relates to a HTTP status code, you can put the code in this property. This would probably only be relevant for errors,
-        /// but could be used for logging successful status codes as well.</summary>
-        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? StatusCode { get; set; }
-    
-        /// <summary>The date and time in UTC of the message. If you don't provide us with a value in dateTime, we will set the current date and time in UTC.</summary>
-        [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DateTime { get; set; }
-    
-        /// <summary>The type of message. If logging an error, the type of the exception would go into type but you can put anything in there, that makes sense for your domain.</summary>
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
-    
-        /// <summary>An identification of the user triggering this message. You can put the users email address or your user key into this property.</summary>
-        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string User { get; set; }
-    
-        /// <summary>An enum value representing the severity of this message. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal</summary>
-        [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Severity { get; set; }
-    
-        /// <summary>If message relates to a HTTP request, you may send the URL of that request. If you don't provide us with an URL, we will try to find a key named URL in serverVariables.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Url { get; set; }
-    
-        /// <summary>If message relates to a HTTP request, you may send the HTTP method of that request. If you don't provide us with a method, we will try to find a key named REQUEST_METHOD in serverVariables.</summary>
-        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Method { get; set; }
-    
-        /// <summary>Versions can be used to distinguish messages from different versions of your software. The value of version can be a SemVer compliant string or any other
-        /// syntax that you are using as your version numbering scheme.</summary>
-        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Version { get; set; }
-    
-        /// <summary>CorrelationId can be used to group similar log messages together into a single discoverable batch. A correlation ID could be a session ID from ASP.NET Core,
-        /// a unique string spanning multiple microsservices handling the same request, or similar.</summary>
-        [Newtonsoft.Json.JsonProperty("correlationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CorrelationId { get; set; }
-    
-        /// <summary>A key/value pair of cookies. This property only makes sense for logging messages related to web requests.</summary>
-        [Newtonsoft.Json.JsonProperty("cookies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> Cookies { get; set; }
-    
-        /// <summary>A key/value pair of form fields and their values. This property makes sense if logging message related to users inputting data in a form.</summary>
-        [Newtonsoft.Json.JsonProperty("form", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> Form { get; set; }
-    
-        /// <summary>A key/value pair of query string parameters. This property makes sense if logging message related to a HTTP request.</summary>
-        [Newtonsoft.Json.JsonProperty("queryString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> QueryString { get; set; }
-    
-        /// <summary>A key/value pair of server values. Server variables are typically related to handling requests in a webserver but could be used for other types of information as well.</summary>
-        [Newtonsoft.Json.JsonProperty("serverVariables", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> ServerVariables { get; set; }
-    
-        /// <summary>A key/value pair of user-defined fields and their values. When logging an exception, the Data dictionary of
-        /// the exception is copied to this property. You can add additional key/value pairs, by modifying the Data
-        /// dictionary on the exception or by supplying additional key/values to this API.</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> Data { get; set; }
-    
-        /// <summary>A list of breadcrumbs preceding this log message.</summary>
-        [Newtonsoft.Json.JsonProperty("breadcrumbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Breadcrumb> Breadcrumbs { get; set; }
-    
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-        public static CreateMessage FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateMessage>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CreateMessageResult 
-    {
-        /// <summary>The location of the created message.</summary>
-        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Uri Location { get; set; }
-    
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-        public static CreateMessageResult FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateMessageResult>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Message 
-    {
-        /// <summary>The ID of this message.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        /// <summary>Used to identify which application logged this message. You can use this if you have multiple applications and services logging to the same log</summary>
-        [Newtonsoft.Json.JsonProperty("application", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Application { get; set; }
-    
-        /// <summary>A longer description of the message. For errors this could be a stacktrace, but it's really up to you what to log in there.</summary>
-        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Detail { get; set; }
-    
-        /// <summary>The hostname of the server logging the message.</summary>
-        [Newtonsoft.Json.JsonProperty("hostname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Hostname { get; set; }
-    
-        /// <summary>The textual title or headline of the message to log.</summary>
-        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Title { get; set; }
-    
-        /// <summary>The title template of the message to log. This property can be used from logging frameworks that supports
-        /// structured logging like: "{user} says {quote}". In the example, titleTemplate will be this string and title
-        /// will be "Gilfoyle says It's not magic. It's talent and sweat".</summary>
-        [Newtonsoft.Json.JsonProperty("titleTemplate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string TitleTemplate { get; set; }
-    
-        /// <summary>The source of the code logging the message. This could be the assembly name.</summary>
-        [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Source { get; set; }
-    
-        /// <summary>If the message logged relates to a HTTP status code, you can put the code in this property. This would probably only be relevant for errors,
-        /// but could be used for logging successful status codes as well.</summary>
-        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? StatusCode { get; set; }
-    
-        /// <summary>The date and time in UTC of the message. If you don't provide us with a value in dateTime, we will set the current date and time in UTC.</summary>
-        [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DateTime { get; set; }
-    
-        /// <summary>The type of message. If logging an error, the type of the exception would go into type but you can put anything in there, that makes sense for your domain.</summary>
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
-    
-        /// <summary>An identification of the user triggering this message. You can put the users email address or your user key into this property.</summary>
-        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string User { get; set; }
-    
-        /// <summary>An enum value representing the severity of this message. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal</summary>
-        [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Severity { get; set; }
-    
-        /// <summary>If message relates to a HTTP request, you may send the URL of that request. If you don't provide us with an URL, we will try to find a key named URL in serverVariables.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Url { get; set; }
-    
-        /// <summary>If message relates to a HTTP request, you may send the HTTP method of that request. If you don't provide us with a method, we will try to find a key named REQUEST_METHOD in serverVariables.</summary>
-        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Method { get; set; }
-    
-        /// <summary>Versions can be used to distinguish messages from different versions of your software. The value of version can be a SemVer compliant string or any other
-        /// syntax that you are using as your version numbering scheme.</summary>
-        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Version { get; set; }
-    
-        /// <summary>CorrelationId can be used to group similar log messages together into a single discoverable batch. A correlation ID could be a session ID from ASP.NET Core,
-        /// a unique string spanning multiple microsservices handling the same request, or similar.</summary>
-        [Newtonsoft.Json.JsonProperty("correlationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CorrelationId { get; set; }
-    
-        /// <summary>A key/value pair of cookies. This property only makes sense for logging messages related to web requests.</summary>
-        [Newtonsoft.Json.JsonProperty("cookies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> Cookies { get; set; }
-    
-        /// <summary>A key/value pair of form fields and their values. This property makes sense if logging message related to users inputting data in a form.</summary>
-        [Newtonsoft.Json.JsonProperty("form", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> Form { get; set; }
-    
-        /// <summary>A key/value pair of query string parameters. This property makes sense if logging message related to a HTTP request.</summary>
-        [Newtonsoft.Json.JsonProperty("queryString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> QueryString { get; set; }
-    
-        /// <summary>A key/value pair of server values. Server variables are typically related to handling requests in a webserver but could be used for other types of information as well.</summary>
-        [Newtonsoft.Json.JsonProperty("serverVariables", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> ServerVariables { get; set; }
-    
-        /// <summary>A key/value pair of user-defined fields and their values. When logging an exception, the Data dictionary of
-        /// the exception is copied to this property. You can add additional key/value pairs, by modifying the Data
-        /// dictionary on the exception or by supplying additional key/values to this API.</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Item> Data { get; set; }
-    
-        /// <summary>A list of breadcrumbs preceding this log message.</summary>
-        [Newtonsoft.Json.JsonProperty("breadcrumbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Breadcrumb> Breadcrumbs { get; set; }
-    
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-        public static Message FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Message>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CreateBulkMessageResult 
-    {
-        /// <summary>Status code of the individual messages as if it were being created through the non-bulk endpoint.
-        /// If a message was succesfully created, the status code will be 201 and location will contain an URL.
-        /// If a message was ignored, the status code will be 200 and the location will be empty.</summary>
-        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? StatusCode { get; set; }
-    
-        /// <summary>The location of the created message if StatusCode equals Created.</summary>
-        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Uri Location { get; set; }
-    
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-    
-        public static CreateBulkMessageResult FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateBulkMessageResult>(data, new Newtonsoft.Json.JsonSerializerSettings());
         }
     
     }
