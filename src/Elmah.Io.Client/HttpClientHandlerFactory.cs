@@ -13,11 +13,21 @@ namespace Elmah.Io.Client
         {
             if (DateTime.Now.Subtract(_initTime) > _lifeTime || _instance == null)
             {
-                _instance = new HttpClientHandler
+                if (options.WebProxy != null)
                 {
-                    UseProxy = options.WebProxy != null,
-                    Proxy = options.WebProxy,
-                };
+                    _instance = new HttpClientHandler
+                    {
+                        UseProxy = true,
+                        Proxy = options.WebProxy,
+                    };
+                }
+                else
+                {
+                    _instance = new HttpClientHandler
+                    {
+                        UseProxy = false,
+                    };
+                }
                 _initTime = DateTime.Now;
             }
             return _instance;
