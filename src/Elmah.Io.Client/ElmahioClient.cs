@@ -280,6 +280,12 @@ namespace Elmah.Io.Client
                             throw new ElmahIoClientException("Tried to call the deployment API without deployment tracking enabled or trial expired.", status_, responseText_, headers_, null);
                         }
                         else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ElmahIoClientException("Specified log not found.", status_, responseText_, headers_, null);
+                        }
+                        else
                         if (status_ == 429)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
