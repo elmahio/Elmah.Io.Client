@@ -2856,6 +2856,314 @@ namespace Elmah.Io.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface ISourceMapsClient
+    {
+        /// <summary>Create or update a translation between a minified JavaScript path to the minified JavaScript and source map files.</summary>
+        /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
+        /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
+        /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
+        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
+        /// <returns>Source map was successfully created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        void CreateOrUpdate(string logId, System.Uri path, FileParameter sourceMap, FileParameter minifiedJavaScript);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create or update a translation between a minified JavaScript path to the minified JavaScript and source map files.</summary>
+        /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
+        /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
+        /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
+        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
+        /// <returns>Source map was successfully created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CreateOrUpdateAsync(string logId, System.Uri path, FileParameter sourceMap, FileParameter minifiedJavaScript, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class SourceMapsClient : ISourceMapsClient
+    {
+        private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+    
+        public SourceMapsClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+        {
+            BaseUrl = baseUrl;
+            _httpClient = httpClient;
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
+        }
+    
+        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            UpdateJsonSerializerSettings(settings);
+            return settings;
+        }
+    
+        public string BaseUrl
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+    
+        public Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+    
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+    
+    
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+        /// <summary>Create or update a translation between a minified JavaScript path to the minified JavaScript and source map files.</summary>
+        /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
+        /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
+        /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
+        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
+        /// <returns>Source map was successfully created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        public void CreateOrUpdate(string logId, System.Uri path, FileParameter sourceMap, FileParameter minifiedJavaScript)
+        {
+            System.Threading.Tasks.Task.Run(async () => await CreateOrUpdateAsync(logId, path, sourceMap, minifiedJavaScript, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create or update a translation between a minified JavaScript path to the minified JavaScript and source map files.</summary>
+        /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
+        /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
+        /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
+        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
+        /// <returns>Source map was successfully created.</returns>
+        /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task CreateOrUpdateAsync(string logId, System.Uri path, FileParameter sourceMap, FileParameter minifiedJavaScript, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (logId == null)
+                throw new System.ArgumentNullException("logId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v3/sourcemaps/{logId}");
+            urlBuilder_.Replace("{logId}", System.Uri.EscapeDataString(ConvertToString(logId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+                    if (path == null)
+                        throw new System.ArgumentNullException("path");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(path, System.Globalization.CultureInfo.InvariantCulture)), "Path");
+                    }
+                    if (sourceMap == null)
+                        throw new System.ArgumentNullException("sourceMap");
+                    else
+                    {
+                        var content_sourceMap_ = new System.Net.Http.StreamContent(sourceMap.Data);
+                        if (!string.IsNullOrEmpty(sourceMap.ContentType))
+                            content_sourceMap_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(sourceMap.ContentType);
+                        content_.Add(content_sourceMap_, "SourceMap", sourceMap.FileName ?? "SourceMap");
+                    }
+                    if (minifiedJavaScript == null)
+                        throw new System.ArgumentNullException("minifiedJavaScript");
+                    else
+                    {
+                        var content_minifiedJavaScript_ = new System.Net.Http.StreamContent(minifiedJavaScript.Data);
+                        if (!string.IsNullOrEmpty(minifiedJavaScript.ContentType))
+                            content_minifiedJavaScript_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(minifiedJavaScript.ContentType);
+                        content_.Add(content_minifiedJavaScript_, "MinifiedJavaScript", minifiedJavaScript.FileName ?? "MinifiedJavaScript");
+                    }
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ElmahIoClientException("Something wrong with the query parameters or form.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ElmahIoClientException("API key not valid or no access to resource.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 402)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ElmahIoClientException("Tried to call the logs API but the trial expired.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ElmahIoClientException("Log not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 429)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ElmahIoClientException("A maximum of 500 requests per minute and 3600 requests per hour are permitted", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ElmahIoClientException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        protected struct ObjectResponseResult<T>
+        {
+            public ObjectResponseResult(T responseObject, string responseText)
+            {
+                this.Object = responseObject;
+                this.Text = responseText;
+            }
+    
+            public T Object { get; }
+    
+            public string Text { get; }
+        }
+    
+        public bool ReadResponseAsString { get; set; }
+        
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
+        {
+            if (response == null || response.Content == null)
+            {
+                return new ObjectResponseResult<T>(default(T), string.Empty);
+            }
+        
+            if (ReadResponseAsString)
+            {
+                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    return new ObjectResponseResult<T>(typedBody, responseText);
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                    throw new ElmahIoClientException(message, (int)response.StatusCode, responseText, headers, exception);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                    {
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
+                    throw new ElmahIoClientException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                }
+            }
+        }
+    
+        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (value == null)
+            {
+                return "";
+            }
+        
+            if (value is System.Enum)
+            {
+                var name = System.Enum.GetName(value.GetType(), value);
+                if (name != null)
+                {
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    if (field != null)
+                    {
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
+                        if (attribute != null)
+                        {
+                            return attribute.Value != null ? attribute.Value : name;
+                        }
+                    }
+        
+                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
+                    return converted == null ? string.Empty : converted;
+                }
+            }
+            else if (value is bool) 
+            {
+                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
+            }
+            else if (value is byte[])
+            {
+                return System.Convert.ToBase64String((byte[]) value);
+            }
+            else if (value.GetType().IsArray)
+            {
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+            }
+        
+            var result = System.Convert.ToString(value, cultureInfo);
+            return result == null ? "" : result;
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IUptimeChecksClient
     {
         /// <summary>Fetch a list of uptime checks. Currently in closed beta. Get in contact to get access to this endpoint.</summary>
@@ -3856,6 +4164,33 @@ namespace Elmah.Io.Client
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UptimeCheck>(data, new Newtonsoft.Json.JsonSerializerSettings());
         }
     
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class FileParameter
+    {
+        public FileParameter(System.IO.Stream data)
+            : this (data, null, null)
+        {
+        }
+
+        public FileParameter(System.IO.Stream data, string fileName)
+            : this (data, fileName, null)
+        {
+        }
+
+        public FileParameter(System.IO.Stream data, string fileName, string contentType)
+        {
+            Data = data;
+            FileName = fileName;
+            ContentType = contentType;
+        }
+
+        public System.IO.Stream Data { get; private set; }
+
+        public string FileName { get; private set; }
+
+        public string ContentType { get; private set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]

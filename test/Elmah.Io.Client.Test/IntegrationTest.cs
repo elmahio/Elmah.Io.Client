@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace Elmah.Io.Client.Test
@@ -35,6 +37,15 @@ namespace Elmah.Io.Client.Test
             // Get single log
             var log = api.Logs.Get(created.Id);
             Assert.That(log, Is.Not.Null);
+
+            // Create source map
+            using var sourceMapStream = new MemoryStream(Encoding.UTF8.GetBytes("{ version: 3, file: \"path.min.js\", sourceRoot: \"\", sources: [\"path.js\"], names: [\"src\", mappings: \"\" }"));
+            using var scriptStream = new MemoryStream(Encoding.UTF8.GetBytes("var v = 42;"));
+            api.SourceMaps.CreateOrUpdate(
+                log.Id,
+                new Uri("/some/path.min.js", UriKind.Relative),
+                new FileParameter(sourceMapStream, "path.map", "application/json"),
+                new FileParameter(scriptStream, "path.min.js", "text/javascript"));
 
             // Create deployment
             api.Deployments.Create(new CreateDeployment

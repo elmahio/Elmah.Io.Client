@@ -33,6 +33,11 @@ namespace Elmah.Io.Client
         IUptimeChecksClient UptimeChecks { get; }
 
         /// <summary>
+        /// Gets the ISourceMapsClient.
+        /// </summary>
+        ISourceMapsClient SourceMaps { get; }
+
+        /// <summary>
         /// The HttpClient used to communicate with the elmah.io API.
         /// </summary>
         HttpClient HttpClient { get; }

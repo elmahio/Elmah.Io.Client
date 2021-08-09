@@ -24,6 +24,9 @@ namespace Elmah.Io.Client
         public IUptimeChecksClient UptimeChecks { get; }
 
         ///<inheritdoc/>
+        public ISourceMapsClient SourceMaps { get; }
+
+        ///<inheritdoc/>
         public HttpClient HttpClient { get; }
 
         ///<inheritdoc/>
@@ -41,6 +44,7 @@ namespace Elmah.Io.Client
             Logs = new LogsClient(baseUrl, httpClient);
             Messages = new MessagesClient(baseUrl, httpClient, options);
             UptimeChecks = new UptimeChecksClient(baseUrl, httpClient);
+            SourceMaps = new SourceMapsClient(baseUrl, httpClient);
         }
 
         /// <summary>
