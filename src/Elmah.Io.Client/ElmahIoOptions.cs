@@ -14,7 +14,9 @@ namespace Elmah.Io.Client
         public List<string> FormKeysToObfuscate { get; set; }
 
         /// <summary>
-        /// Make it possible to communicate with the elmah.io API through a proxy.
+        /// Make it possible to communicate with the elmah.io API through a proxy. Proxy settings should
+        /// be provided on the options when calling the ElmahioAPI.Create method. Once the client has been
+        /// initialized, setting a proxy in this property will no longer have any effect.
         /// </summary>
         public IWebProxy WebProxy { get; set; }
 

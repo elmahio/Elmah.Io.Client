@@ -50,7 +50,9 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Create a new instance of the client using the provided HttpClient. The provided HttpClient will be updated
         /// with the API key header, a user agent, and the base URL for the elmah.io API (if not already set).
-        /// The instance should be shared or kept as a singleton.
+        /// The instance should be shared or kept as a singleton. When bringing your own HttpClient the proxy
+        /// settings on the ElmahIoOptions object will be ignored. The HttpClient should be configured to use
+        /// the proxy manually before provided to this method.
         /// </summary>
         public static IElmahioAPI Create(string apiKey, ElmahIoOptions options, HttpClient httpClient)
         {
