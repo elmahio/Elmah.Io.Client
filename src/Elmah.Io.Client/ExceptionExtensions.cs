@@ -26,7 +26,6 @@ namespace Elmah.Io.Client
         {
             var result = new List<Item>();
 
-            var exceptionName = exception.GetType().Name;
             var data = exception
                 .Data
                 .Keys
