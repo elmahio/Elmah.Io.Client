@@ -25,9 +25,35 @@ namespace Elmah.Io.Client
         private static List<Item> Iterate(this Exception exception)
         {
             var result = new List<Item>();
+
+            var exceptionName = exception.GetType().Name;
+            var data = exception
+                .Data
+                .Keys
+                .Cast<object>()
+                .Where(k => !string.IsNullOrWhiteSpace(k.ToString()))
+                .Select(k => new Item { Key = exception.ItemName(k.ToString()), Value = Value(exception.Data, k) })
+                .ToList();
+
+            if (data != null && data.Count > 0)
+            {
+                result.AddRange(data);
+            }
+
+            if (!string.IsNullOrWhiteSpace(exception.HelpLink))
+            {
+                result.Add(new Item { Key = exception.ItemName(nameof(exception.HelpLink)), Value = exception.HelpLink });
+            }
+
+            var exceptionSpecificItems = ExceptionSpecificItems(exception);
+            if (exceptionSpecificItems.Count > 0)
+            {
+                result.AddRange(exceptionSpecificItems);
+            }
+
             if (exception is AggregateException ae)
             {
-                foreach (var innerException in ae.Flatten().InnerExceptions)
+                foreach (var innerException in ae.InnerExceptions)
                 {
                     var innerResult = innerException.Iterate();
                     if (innerResult.Count > 0)
@@ -36,40 +62,12 @@ namespace Elmah.Io.Client
                     }
                 }
             }
-            else
+            else if (exception.InnerException != null)
             {
-                var exceptionName = exception.GetType().Name;
-                var data = exception
-                    .Data
-                    .Keys
-                    .Cast<object>()
-                    .Where(k => !string.IsNullOrWhiteSpace(k.ToString()))
-                    .Select(k => new Item { Key = exception.ItemName(k.ToString()), Value = Value(exception.Data, k) })
-                    .ToList();
-
-                if (data != null && data.Count > 0)
+                var innerResult = exception.InnerException.Iterate();
+                if (innerResult.Count > 0)
                 {
-                    result.AddRange(data);
-                }
-
-                if (!string.IsNullOrWhiteSpace(exception.HelpLink))
-                {
-                    result.Add(new Item { Key = exception.ItemName(nameof(exception.HelpLink)), Value = exception.HelpLink });
-                }
-
-                var exceptionSpecificItems = ExceptionSpecificItems(exception);
-                if (exceptionSpecificItems.Count > 0)
-                {
-                    result.AddRange(exceptionSpecificItems);
-                }
-
-                if (exception.InnerException != null)
-                {
-                    var innerResult = exception.InnerException.Iterate();
-                    if (innerResult.Count > 0)
-                    {
-                        result.AddRange(innerResult);
-                    }
+                    result.AddRange(innerResult);
                 }
             }
 

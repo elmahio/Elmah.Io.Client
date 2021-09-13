@@ -152,17 +152,23 @@ namespace Elmah.Io.Client.Test
             innerException3.Data.Add("inner-key3", "inner-value3");
 
             var aggregateException1 = new AggregateException(innerException1, innerException2);
+            aggregateException1.Data.Add("outer-key1", "outer-value1");
             var aggregateException2 = new AggregateException(innerException3);
+            aggregateException2.Data.Add("outer-key2", "outer-value2");
             var aggregateException3 = new AggregateException(aggregateException1, aggregateException2);
+            aggregateException3.Data.Add("outer-key3", "outer-value3");
 
             // Act
             var result = aggregateException3.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(3));
+            Assert.That(result.Count, Is.EqualTo(6));
             Assert.That(result.Any(r => r.Key == "Exception.inner-key1" && r.Value == "inner-value1"));
             Assert.That(result.Any(r => r.Key == "Exception.inner-key2" && r.Value == "inner-value2"));
             Assert.That(result.Any(r => r.Key == "Exception.inner-key3" && r.Value == "inner-value3"));
+            Assert.That(result.Any(r => r.Key == "AggregateException.outer-key1" && r.Value == "outer-value1"));
+            Assert.That(result.Any(r => r.Key == "AggregateException.outer-key2" && r.Value == "outer-value2"));
+            Assert.That(result.Any(r => r.Key == "AggregateException.outer-key3" && r.Value == "outer-value3"));
         }
 
         [Test]
