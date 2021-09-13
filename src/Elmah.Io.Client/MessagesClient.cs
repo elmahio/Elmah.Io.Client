@@ -117,7 +117,7 @@ namespace Elmah.Io.Client
             {
                 message.Detail = exception.ToString();
                 message.Data = exception.ToDataList();
-                message.Type = exception.GetType().Name;
+                message.Type = exception.GetBaseException().GetType().FullName;
             }
 
             CreateAndNotify(logId, message);
