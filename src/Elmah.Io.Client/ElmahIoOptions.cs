@@ -27,6 +27,14 @@ namespace Elmah.Io.Client
         public TimeSpan Timeout { get; set; }
 
         /// <summary>
+        /// Append a custom user agent to requests made to the elmah.io API. If you are using an integration
+        /// this will be already handled. If you are using the Elmah.Io.Client package directly, this will be
+        /// a good way to identify who you are. User agents should be on the form name/version.
+        /// Example: PiedPiper/1.0.0.0
+        /// </summary>
+        public string UserAgent { get; set; }
+
+        /// <summary>
         /// Create a new instance with default options.
         /// </summary>
         public ElmahIoOptions()

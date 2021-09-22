@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 
 namespace Elmah.Io.Client
 {
@@ -66,7 +67,7 @@ namespace Elmah.Io.Client
 #pragma warning disable CS0618 // Type or member is obsolete
             client.HttpClient.DefaultRequestHeaders.Add("api_key", apiKey);
             client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
-            client.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.Client", $"{typeof(ElmahioAPI).GetTypeInfo().Assembly.GetName().Version}")));
+            client.HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent(options));
 #pragma warning restore CS0618 // Type or member is obsolete
             return client;
         }
@@ -88,6 +89,18 @@ namespace Elmah.Io.Client
         public static IElmahioAPI Create(string apiKey)
         {
             return Create(apiKey, new ElmahIoOptions());
+        }
+
+        private static string UserAgent(ElmahIoOptions options)
+        {
+            var sb = new StringBuilder();
+            sb.Append(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.Client", $"{typeof(ElmahioAPI).GetTypeInfo().Assembly.GetName().Version}")).ToString());
+            if (!string.IsNullOrWhiteSpace(options.UserAgent))
+            {
+                sb.Append(" ").Append(options.UserAgent);
+            }
+
+            return sb.ToString();
         }
     }
 }
