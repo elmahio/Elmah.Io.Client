@@ -27,6 +27,7 @@ namespace Elmah.Io.Client
         public ISourceMapsClient SourceMaps { get; }
 
         ///<inheritdoc/>
+        [Obsolete("The internal HttpClient used within the elmah.io client will be removed in a future version. You can provide a custom HttpClient through the ElmahioAPI.Create method or you can customize things like timeout and proxy through the ElmahIoOptions class.")]
         public HttpClient HttpClient { get; }
 
         ///<inheritdoc/>
@@ -37,7 +38,9 @@ namespace Elmah.Io.Client
         /// </summary>
         protected ElmahioAPI(string baseUrl, ElmahIoOptions options, HttpClient httpClient)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             HttpClient = httpClient;
+#pragma warning restore CS0618 // Type or member is obsolete
             Options = options;
             Deployments = new DeploymentsClient(baseUrl, httpClient);
             Heartbeats = new HeartbeatsClient(baseUrl, httpClient);
@@ -51,8 +54,8 @@ namespace Elmah.Io.Client
         /// Create a new instance of the client using the provided HttpClient. The provided HttpClient will be updated
         /// with the API key header, a user agent, and the base URL for the elmah.io API (if not already set).
         /// The instance should be shared or kept as a singleton. When bringing your own HttpClient the proxy
-        /// settings on the ElmahIoOptions object will be ignored. The HttpClient should be configured to use
-        /// the proxy manually before provided to this method.
+        /// and timeout settings on the ElmahIoOptions object will be ignored. The HttpClient should be configured to
+        /// use the proxy manually before provided to this method.
         /// </summary>
         public static IElmahioAPI Create(string apiKey, ElmahIoOptions options, HttpClient httpClient)
         {
@@ -60,9 +63,11 @@ namespace Elmah.Io.Client
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
             if (options == null) options = new ElmahIoOptions();
             var client = new ElmahioAPI(httpClient.BaseAddress?.ToString() ?? "https://api.elmah.io/", options, httpClient);
+#pragma warning disable CS0618 // Type or member is obsolete
             client.HttpClient.DefaultRequestHeaders.Add("api_key", apiKey);
             client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
             client.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.Client", $"{typeof(ElmahioAPI).GetTypeInfo().Assembly.GetName().Version}")));
+#pragma warning restore CS0618 // Type or member is obsolete
             return client;
         }
 
@@ -73,7 +78,7 @@ namespace Elmah.Io.Client
         {
             var clientHandler = HttpClientHandlerFactory.GetHttpClientHandler(options);
             var httpClient = new HttpClient(clientHandler);
-            httpClient.Timeout = new TimeSpan(0, 0, 5);
+            httpClient.Timeout = options.Timeout;
             return Create(apiKey, options, httpClient);
         }
 

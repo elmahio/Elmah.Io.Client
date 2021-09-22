@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Elmah.Io.Client
@@ -21,6 +22,11 @@ namespace Elmah.Io.Client
         public IWebProxy WebProxy { get; set; }
 
         /// <summary>
+        /// Modify the default timeout of 5 seconds when communicating with the elmah.io API.
+        /// </summary>
+        public TimeSpan Timeout { get; set; }
+
+        /// <summary>
         /// Create a new instance with default options.
         /// </summary>
         public ElmahIoOptions()
@@ -30,6 +36,7 @@ namespace Elmah.Io.Client
                 "password",
                 "pwd"
             };
+            Timeout = TimeSpan.FromSeconds(5);
         }
     }
 }
