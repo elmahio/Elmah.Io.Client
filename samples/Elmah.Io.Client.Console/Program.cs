@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace Elmah.Io.Client.Console
 {
@@ -11,7 +12,17 @@ namespace Elmah.Io.Client.Console
             var apiKey = "API_KEY";
             var logId = new Guid("LOG_ID");
 
-            var client = ElmahioAPI.Create(apiKey);
+            var client = ElmahioAPI.Create(apiKey, new ElmahIoOptions
+            {
+                // Remove comment on the following line to change the default timeout from 5 seconds to something else.
+                //Timeout = TimeSpan.FromSeconds(10),
+                // Remove comment on the following line to identify your program with a custom user agent.
+                //UserAgent = "Elmah.Io.Client.Console/1.0.0.0",
+                // Remove comment on the following line to automatically obfuscate form keys by name.
+                //FormKeysToObfuscate = new List<string> { "password", "pwd", "adgangskode", "passwort", "contraseña" },
+                // Remove comment on the following line to log through a proxy (in this case Fiddler).
+                //WebProxy = new WebProxy("localhost", 8888),
+            });
 
             // Examples of severity helper methods
             client.Messages.Fatal(logId, new ApplicationException("A fatal exception"), "Fatal message");
