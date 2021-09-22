@@ -8,8 +8,10 @@ namespace Elmah.Io.Client.Console
     {
         static void Main(string[] args)
         {
-            var client = ElmahioAPI.Create("API_KEY");
+            var apiKey = "API_KEY";
             var logId = new Guid("LOG_ID");
+
+            var client = ElmahioAPI.Create(apiKey);
 
             // Examples of severity helper methods
             client.Messages.Fatal(logId, new ApplicationException("A fatal exception"), "Fatal message");
@@ -61,7 +63,7 @@ namespace Elmah.Io.Client.Console
             // Example of filtering undesired form items
             var options = new ElmahIoOptions();
             options.FormKeysToObfuscate.Add("visible form item");
-            var client2 = ElmahioAPI.Create("API_KEY", options);
+            var client2 = ElmahioAPI.Create(apiKey, options);
 
             client2.Messages.CreateAndNotify(logId, new CreateMessage
             {
