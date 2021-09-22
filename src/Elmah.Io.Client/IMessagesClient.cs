@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
+    /// <summary>
+    /// Interface for methods creating log messages.
+    /// </summary>
     public partial interface IMessagesClient
     {
         /// <summary>

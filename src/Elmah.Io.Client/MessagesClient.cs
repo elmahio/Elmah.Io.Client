@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
+    /// <inheritdoc/>
     partial class MessagesClient : IMessagesClient
     {
+        /// <summary>
+        /// Create a new instances of the MessagesClient class using the provider options.
+        /// This should typically not be called by any client. Use the ElmahioAPI.Create method instead.
+        /// </summary>
         public MessagesClient(string baseUrl, HttpClient httpClient, ElmahIoOptions options) : this(baseUrl, httpClient)
         {
             Options = options;
@@ -24,7 +29,11 @@ namespace Elmah.Io.Client
             settings.Converters = new List<JsonConverter>();
         }
 
-        public ElmahIoOptions Options { get; set; }
+        /// <summary>
+        /// The options used to log messages to elmah.io.
+        /// This should typically not be called by any client. Use the ElmahioAPI.Create method instead.
+        /// </summary>
+        public ElmahIoOptions Options { get; private set; }
 
         /// <inheritdoc/>
         public event EventHandler<MessageEventArgs> OnMessage;

@@ -3,6 +3,7 @@ using System.Net.Http;
 
 namespace Elmah.Io.Client
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class HttpClientHandlerFactory
     {
         private static HttpClientHandler _instance = null;
@@ -33,4 +34,5 @@ namespace Elmah.Io.Client
             return _instance;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
