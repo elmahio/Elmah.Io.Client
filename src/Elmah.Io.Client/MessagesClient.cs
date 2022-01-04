@@ -120,7 +120,7 @@ namespace Elmah.Io.Client
             {
                 DateTime = DateTime.UtcNow,
                 Title = string.Format(messageTemplate, propertyValues),
-                Severity = SeverityToString(severity)
+                Severity = severity.AsString(),
             };
             if (exception != null)
             {
@@ -265,27 +265,6 @@ namespace Elmah.Io.Client
                 Data = message.Data,
                 Breadcrumbs = message.Breadcrumbs,
             };
-        }
-
-        private string SeverityToString(Severity severity)
-        {
-            switch (severity)
-            {
-                case Severity.Verbose:
-                    return "Verbose";
-                case Severity.Debug:
-                    return "Debug";
-                case Severity.Information:
-                    return "Information";
-                case Severity.Warning:
-                    return "Warning";
-                case Severity.Error:
-                    return "Error";
-                case Severity.Fatal:
-                    return "Fatal";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(severity), severity, null);
-            }
         }
     }
 }
