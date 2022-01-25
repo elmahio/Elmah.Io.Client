@@ -3492,12 +3492,12 @@ namespace Elmah.Io.Client
         public string Description { get; set; }
     
         /// <summary>The name of the person responsible for creating this deployment. This can be the name taken from
-        /// your deployment server (like VSTS or Octopus).</summary>
+        /// your deployment server (like Azure DevOps or Octopus).</summary>
         [Newtonsoft.Json.JsonProperty("userName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string UserName { get; set; }
     
         /// <summary>The email of the person responsible for creating this deployment. This can be the email taken from
-        /// your deployment server (like VSTS or Octopus).</summary>
+        /// your deployment server (like Azure DevOps or Octopus).</summary>
         [Newtonsoft.Json.JsonProperty("userEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string UserEmail { get; set; }
     
