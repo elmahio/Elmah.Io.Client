@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
+    /// <summary>
+    /// Interface for methods creating heartbeats.
+    /// </summary>
     public partial interface IHeartbeatsClient
     {
         /// <summary>

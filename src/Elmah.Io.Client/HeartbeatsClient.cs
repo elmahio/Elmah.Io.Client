@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
+    /// <inheritdoc/>
     partial class HeartbeatsClient : IHeartbeatsClient
     {
         private const string DegradedResult = "Degraded";

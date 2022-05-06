@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Elmah.Io.Client
 {
+    /// <inheritdoc/>
     partial class UptimeChecksClient
     {
         partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
