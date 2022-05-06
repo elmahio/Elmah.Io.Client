@@ -2868,7 +2868,7 @@ namespace Elmah.Io.Client
         /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
         /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
         /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
-        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="sourceMap">The source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
         /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
         /// <returns>Source map was successfully created.</returns>
         /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
@@ -2879,7 +2879,7 @@ namespace Elmah.Io.Client
         /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
         /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
         /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
-        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="sourceMap">The source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
         /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
         /// <returns>Source map was successfully created.</returns>
         /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
@@ -2927,7 +2927,7 @@ namespace Elmah.Io.Client
         /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
         /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
         /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
-        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="sourceMap">The source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
         /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
         /// <returns>Source map was successfully created.</returns>
         /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
@@ -2941,7 +2941,7 @@ namespace Elmah.Io.Client
         /// <param name="logId">The ID of the log which should contain the minified JavaScript and source map.</param>
         /// <param name="path">An URL to the online minified JavaScript file. The URL can be absolute or relative but will always be converted to a relative path (no protocol, domain, and query parameters).
         /// elmah.io uses this path to lookup any lines in a JS stack trace that will need de-minification.</param>
-        /// <param name="sourceMap">The source source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
+        /// <param name="sourceMap">The source map file. Only files with an extension of .map and content type of application/json will be accepted.</param>
         /// <param name="minifiedJavaScript">The minified JavaScript file. Only files with an extension of .js and content type of text/javascript will be accepted.</param>
         /// <returns>Source map was successfully created.</returns>
         /// <exception cref="ElmahIoClientException">A server side error occurred.</exception>
