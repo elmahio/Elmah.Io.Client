@@ -12,6 +12,27 @@ namespace Elmah.Io.Client
     public static class ExceptionExtensions
     {
         /// <summary>
+        /// Generate a CreateMessage object from an exception. This object can used as a template
+        /// and decorated with additional properties before sent to the CreateAndNotify method.
+        /// </summary>
+        public static CreateMessage ToMessage(this Exception exception)
+        {
+            if (exception == null) return null;
+
+            var message = new CreateMessage
+            {
+                DateTime = DateTime.UtcNow,
+                Title = exception.Message,
+                Severity = "Error",
+                Detail = exception.ToString(),
+                Data = exception.ToDataList(),
+                Type = exception.GetBaseException().GetType().FullName,
+            };
+
+            return message;
+        }
+
+        /// <summary>
         /// Pulls as much information as possible from an Exception to a list of elmah.io Items.
         /// </summary>
         public static List<Item> ToDataList(this Exception exception)

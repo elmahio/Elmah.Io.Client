@@ -9,6 +9,30 @@ namespace Elmah.Io.Client.Test
     public class ExceptionExtensionsTest
     {
         [Test]
+        public void CanGenerateCreateMessageFromException()
+        {
+            // Arrange
+            var ex = new ApplicationException("An exception");
+            ex.Data.Add("Hello", "World");
+
+            // Act
+            var msg = ex.ToMessage();
+
+            // Assert
+            Assert.That(msg, Is.Not.Null);
+            Assert.That(msg.Title, Is.EqualTo(ex.Message));
+            Assert.That(msg.Type, Is.EqualTo(ex.GetType().FullName));
+            Assert.That(msg.DateTime.HasValue);
+            Assert.That(msg.Severity, Is.EqualTo("Error"));
+            Assert.That(msg.Detail, Is.EqualTo(ex.ToString()));
+            Assert.That(msg.Data, Is.Not.Null);
+            Assert.That(msg.Data.Count, Is.EqualTo(1));
+            var d = msg.Data.First();
+            Assert.That(d.Key, Is.EqualTo("ApplicationException.Hello"));
+            Assert.That(d.Value, Is.EqualTo("World"));
+        }
+
+        [Test]
         public void CanGenerateDataListWithHelpLink()
         {
             // Arrange
