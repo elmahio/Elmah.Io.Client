@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
@@ -159,7 +160,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task<ICollection<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages)
+        public async Task<ICollection<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages, CancellationToken cancellationToken = default)
         {
             var obfuscated = new List<CreateMessage>();
             foreach (var message in messages)
@@ -172,7 +173,7 @@ namespace Elmah.Io.Client
 
             try
             {
-                return await CreateBulkAsync(logId.ToString(), messages).ConfigureAwait(false);
+                return await CreateBulkAsync(logId.ToString(), messages, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -202,13 +203,13 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message)
+        public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message, CancellationToken cancellationToken = default)
         {
             OnMessage?.Invoke(this, new MessageEventArgs(message));
             message = Obfuscate(message);
             try
             {
-                var messageResult = await CreateAsync(logId.ToString(), message).ConfigureAwait(false);
+                var messageResult = await CreateAsync(logId.ToString(), message, cancellationToken).ConfigureAwait(false);
                 return MessageCreated(messageResult, message);
             }
             catch (Exception e)

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
@@ -37,7 +38,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null)
+        public async Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null, CancellationToken cancellationToken = default)
         {
             var result = HealthyResult;
             string reason = null;
@@ -51,14 +52,18 @@ namespace Elmah.Io.Client
                 reason = e.ToString();
             }
 
-            await
-                CreateAsync(heartbeatId, logId.ToString(), new CreateHeartbeat
-                {
-                    Result = result,
-                    Reason = reason,
-                    Application = application,
-                    Version = version,
-                })
+            await 
+                CreateAsync(
+                    heartbeatId,
+                    logId.ToString(),
+                    new CreateHeartbeat
+                    {
+                        Result = result,
+                        Reason = reason,
+                        Application = application,
+                        Version = version,
+                    },
+                    cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -76,17 +81,21 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
+        public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default)
         {
             await
-                CreateAsync(heartbeatId, logId.ToString(), new CreateHeartbeat
-                {
-                    Result = HealthyResult,
-                    Reason = reason,
-                    Application = application,
-                    Version = version,
-                    Took = took,
-                })
+                CreateAsync(
+                    heartbeatId,
+                    logId.ToString(),
+                    new CreateHeartbeat
+                    {
+                        Result = HealthyResult,
+                        Reason = reason,
+                        Application = application,
+                        Version = version,
+                        Took = took,
+                    },
+                    cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -104,17 +113,21 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
+        public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default)
         {
             await
-                CreateAsync(heartbeatId, logId.ToString(), new CreateHeartbeat
-                {
-                    Result = DegradedResult,
-                    Reason = reason,
-                    Application = application,
-                    Version = version,
-                    Took = took,
-                })
+                CreateAsync(
+                    heartbeatId,
+                    logId.ToString(),
+                    new CreateHeartbeat
+                    {
+                        Result = DegradedResult,
+                        Reason = reason,
+                        Application = application,
+                        Version = version,
+                        Took = took,
+                    },
+                    cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -132,17 +145,21 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
+        public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default)
         {
             await
-                CreateAsync(heartbeatId, logId.ToString(), new CreateHeartbeat
-                {
-                    Result = UnhealthyResult,
-                    Reason = reason,
-                    Application = application,
-                    Version = version,
-                    Took = took,
-                })
+                CreateAsync(
+                    heartbeatId,
+                    logId.ToString(),
+                    new CreateHeartbeat
+                    {
+                        Result = UnhealthyResult,
+                        Reason = reason,
+                        Application = application,
+                        Version = version,
+                        Took = took,
+                    },
+                    cancellationToken)
                 .ConfigureAwait(false);
         }
 

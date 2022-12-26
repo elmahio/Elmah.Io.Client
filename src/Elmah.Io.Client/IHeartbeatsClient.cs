@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
@@ -18,7 +19,7 @@ namespace Elmah.Io.Client
         /// Helper for running a piece of code and automatically logging a heartbeat. If the code return true, a healthy heartbeat is logged.
         /// If the code return false or throw an exception, an unhealthy heartbeat is logged.
         /// </summary>
-        Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null);
+        Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Logs a healthy heartbeat in the specified log on the specified heartbeat.
@@ -28,7 +29,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Logs a healthy heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null);
+        Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Logs a degraded heartbeat in the specified log on the specified heartbeat.
@@ -38,7 +39,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Logs a degraded heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null);
+        Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Logs a unhealthy heartbeat in the specified log on the specified heartbeat.
@@ -48,6 +49,6 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Logs a unhealthy heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null);
+        Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default);
     }
 }
