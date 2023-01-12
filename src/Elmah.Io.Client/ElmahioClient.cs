@@ -2399,7 +2399,7 @@ namespace Elmah.Io.Client
                         if (status_ == 413)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ElmahIoClientException("Message too large. Messages must not exceed 256 kb.", status_, responseText_, headers_, null);
+                            throw new ElmahIoClientException("Message too large. Messages must not exceed 256 kb. As additional information, some fields are trimmed down when processed on the backend.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 429)
@@ -4070,6 +4070,13 @@ namespace Elmah.Io.Client
         public string Code { get; set; }
 
         /// <summary>
+        /// The log message category. Category can be a string of choice but typically contain a logging category set by a logging framework like NLog or Serilog.
+        /// <br/>When logging through a logging framework, this field will be provided by the framework and not something that needs to be set manually.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
+
+        /// <summary>
         /// A key/value pair of cookies. This property only makes sense for logging messages related to web requests.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("cookies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4413,6 +4420,12 @@ namespace Elmah.Io.Client
         public string Code { get; set; }
 
         /// <summary>
+        /// The log message category. Category can be a string of choice but typically contain a logging category set by a logging framework like NLog or Serilog.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
+
+        /// <summary>
         /// A key/value pair of cookies. This property only makes sense for logging messages related to web requests.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("cookies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4577,6 +4590,12 @@ namespace Elmah.Io.Client
         /// </summary>
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
+
+        /// <summary>
+        /// The log message category. Category can be a string of choice but typically contain a logging category set by a logging framework like NLog or Serilog.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
 
         /// <summary>
         /// A key/value pair of cookies. This property only makes sense for logging messages related to web requests.
