@@ -102,6 +102,12 @@ namespace Elmah.Io.Client
 
         /// <summary>
         /// Low level log method, which all other methods wanting to log a log message should ideally call.
+        /// The CreateBulkAndNotifyAsync method triggers event handlers of the OnMessage and OnMessageFail events.
+        /// </summary>
+        Task<ICollection<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages);
+
+        /// <summary>
+        /// Low level log method, which all other methods wanting to log a log message should ideally call.
         /// The CreateAndNotify method triggers event handlers of the OnMessage and OnMessageFail events.
         /// </summary>
         Message CreateAndNotify(Guid logId, CreateMessage message);
@@ -111,5 +117,11 @@ namespace Elmah.Io.Client
         /// The CreateAndNotifyAsync method triggers event handlers of the OnMessage and OnMessageFail events.
         /// </summary>
         Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Low level log method, which all other methods wanting to log a log message should ideally call.
+        /// The CreateAndNotifyAsync method triggers event handlers of the OnMessage and OnMessageFail events.
+        /// </summary>
+        Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message);
     }
 }

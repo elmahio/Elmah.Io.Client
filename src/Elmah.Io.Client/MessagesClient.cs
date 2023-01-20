@@ -160,6 +160,12 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
+        public async Task<ICollection<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages)
+        {
+            return await CreateBulkAndNotifyAsync(logId, messages, default);
+        }
+
+        /// <inheritdoc/>
         public async Task<ICollection<CreateBulkMessageResult>> CreateBulkAndNotifyAsync(Guid logId, IList<CreateMessage> messages, CancellationToken cancellationToken = default)
         {
             var obfuscated = new List<CreateMessage>();
@@ -218,6 +224,13 @@ namespace Elmah.Io.Client
                 return null;
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message)
+        {
+            return await CreateAndNotifyAsync(logId, message, default);
+        }
+
 
         private CreateMessage Obfuscate(CreateMessage message)
         {
