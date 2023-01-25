@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
@@ -114,6 +116,14 @@ namespace Elmah.Io.Client
                 if (!string.IsNullOrWhiteSpace(bife.FusionLog))
                     result.Add(new Item { Key = bife.ItemName(nameof(bife.FusionLog)), Value = bife.FusionLog });
 #endif
+            }
+
+            if (e is TaskCanceledException tce)
+            {
+                if (tce.CancellationToken != CancellationToken.None)
+                {
+                    result.Add(new Item { Key = tce.ItemName(nameof(tce.CancellationToken.IsCancellationRequested)), Value = tce.CancellationToken.IsCancellationRequested.ToString() });
+                }
             }
 
             if (e is FileNotFoundException fnfe)

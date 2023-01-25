@@ -3,6 +3,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Elmah.Io.Client.Test
 {
@@ -144,6 +146,36 @@ namespace Elmah.Io.Client.Test
             // Assert
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result.Any(r => r.Key == "WebException.Status" && r.Value == "ProtocolError"));
+        }
+
+        [Test]
+        public void CanGenerateDataListFromTaskCanceledExceptionNotCanceled()
+        {
+            // Arrange
+            var task = Task.CompletedTask;
+            var taskCanceledException = new TaskCanceledException(task);
+
+            // Act
+            var result = taskCanceledException.ToDataList();
+
+            // Assert
+            Assert.That(result.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CanGenerateDataListFromTaskCanceledExceptionCanceled()
+        {
+            // Arrange
+            var token = new CancellationToken(true);
+            var task = Task.FromCanceled(token);
+            var taskCanceledException = new TaskCanceledException(task);
+
+            // Act
+            var result = taskCanceledException.ToDataList();
+
+            // Assert
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Any(r => r.Key == "TaskCanceledException.IsCancellationRequested" && r.Value == "True"));
         }
 
         [Test]
