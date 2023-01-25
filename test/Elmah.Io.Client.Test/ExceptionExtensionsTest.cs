@@ -152,7 +152,7 @@ namespace Elmah.Io.Client.Test
         public void CanGenerateDataListFromTaskCanceledExceptionNotCanceled()
         {
             // Arrange
-            var task = Task.CompletedTask;
+            var task = Task.FromResult(0);
             var taskCanceledException = new TaskCanceledException(task);
 
             // Act
@@ -166,8 +166,9 @@ namespace Elmah.Io.Client.Test
         public void CanGenerateDataListFromTaskCanceledExceptionCanceled()
         {
             // Arrange
-            var token = new CancellationToken(true);
-            var task = Task.FromCanceled(token);
+            var tcs = new TaskCompletionSource<int>();
+            tcs.TrySetCanceled();
+            var task = tcs.Task;
             var taskCanceledException = new TaskCanceledException(task);
 
             // Act
