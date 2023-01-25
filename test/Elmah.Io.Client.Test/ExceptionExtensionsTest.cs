@@ -162,13 +162,12 @@ namespace Elmah.Io.Client.Test
             Assert.That(result.Count, Is.EqualTo(0));
         }
 
+#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void CanGenerateDataListFromTaskCanceledExceptionCanceled()
         {
             // Arrange
-            var source = new CancellationTokenSource();
-            source.Cancel();
-            var task = Task.FromCanceled(source.Token);
+            var task = Task.FromCanceled(new CancellationToken(true));
             var taskCanceledException = new TaskCanceledException(task);
 
             // Act
@@ -178,6 +177,7 @@ namespace Elmah.Io.Client.Test
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result.Any(r => r.Key == "TaskCanceledException.IsCancellationRequested" && r.Value == "True"));
         }
+#endif
 
         [Test]
         public void CanGenerateDataList()
