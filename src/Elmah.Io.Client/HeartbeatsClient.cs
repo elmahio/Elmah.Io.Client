@@ -38,12 +38,6 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null)
-        {
-            await CheckAsync(func, logId, heartbeatId, application, version, default);
-        }
-
-        /// <inheritdoc/>
         public async Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null, CancellationToken cancellationToken = default)
         {
             var result = HealthyResult;
@@ -87,12 +81,6 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
-        {
-            await HealthyAsync(logId, heartbeatId, reason, application, version, took, default);
-        }
-
-        /// <inheritdoc/>
         public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default)
         {
             await
@@ -125,12 +113,6 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
-        {
-            await DegradedAsync(logId, heartbeatId, reason, application, version, took, default);
-        }
-
-        /// <inheritdoc/>
         public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default)
         {
             await
@@ -160,12 +142,6 @@ namespace Elmah.Io.Client
                 Version = version,
                 Took = took,
             });
-        }
-
-        /// <inheritdoc/>
-        public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null)
-        {
-            await UnhealthyAsync(logId, heartbeatId, reason, application, version, took, default);
         }
 
         /// <inheritdoc/>
