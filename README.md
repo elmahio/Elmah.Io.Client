@@ -13,7 +13,7 @@ To start logging, create a new instance of the `ElmahioAPI` class:
 client = ElmahioAPI.Create(apiKey);
 ```
 
-where `apiKey` is your API key found on your profile page at elmah.io.
+where `apiKey` is your API key found on your profile page at elmah.io. Make sure to share this instance as a singleton.
 
 ### Logging
 
