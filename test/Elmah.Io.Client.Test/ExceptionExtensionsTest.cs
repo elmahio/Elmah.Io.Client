@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
@@ -28,10 +29,7 @@ namespace Elmah.Io.Client.Test
             Assert.That(msg.Severity, Is.EqualTo("Error"));
             Assert.That(msg.Detail, Is.EqualTo(ex.ToString()));
             Assert.That(msg.Data, Is.Not.Null);
-            Assert.That(msg.Data.Count, Is.EqualTo(1));
-            var d = msg.Data.First();
-            Assert.That(d.Key, Is.EqualTo("ApplicationException.Hello"));
-            Assert.That(d.Value, Is.EqualTo("World"));
+            Assert.That(msg.Data.Any(d => d.Key == "ApplicationException.Hello" && d.Value == "World"));
         }
 
         [Test]
@@ -45,8 +43,7 @@ namespace Elmah.Io.Client.Test
             var result = exception.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "Exception.HelpLink" && r.Value == "http://localhost"));
+            Assert.That(result.Any(d => d.Key == "Exception.HelpLink" && d.Value == "http://localhost"));
         }
 
         [Test]
@@ -59,8 +56,7 @@ namespace Elmah.Io.Client.Test
             var result = argumentException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "ArgumentException.ParamName" && r.Value == "paramName"));
+            Assert.That(result.Any(d => d.Key == "ArgumentException.ParamName" && d.Value == "paramName"));
         }
 
         [Test]
@@ -73,8 +69,7 @@ namespace Elmah.Io.Client.Test
             var result = argumentNullException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "ArgumentNullException.ParamName" && r.Value == "paramName"));
+            Assert.That(result.Any(d => d.Key == "ArgumentNullException.ParamName" && d.Value == "paramName"));
         }
 
         [Test]
@@ -87,8 +82,7 @@ namespace Elmah.Io.Client.Test
             var result = argumentOutOfRangeException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "ArgumentOutOfRangeException.ParamName" && r.Value == "paramName"));
+            Assert.That(result.Any(d => d.Key == "ArgumentOutOfRangeException.ParamName" && d.Value == "paramName"));
         }
 
         [Test]
@@ -101,9 +95,8 @@ namespace Elmah.Io.Client.Test
             var result = socketException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That(result.Any(r => r.Key == "SocketException.SocketErrorCode" && r.Value == "100"));
-            Assert.That(result.Any(r => r.Key == "SocketException.ErrorCode" && r.Value == "100"));
+            Assert.That(result.Any(d => d.Key == "SocketException.SocketErrorCode" && d.Value == "100"));
+            Assert.That(result.Any(d => d.Key == "SocketException.ErrorCode" && d.Value == "100"));
         }
 
         [Test]
@@ -116,8 +109,7 @@ namespace Elmah.Io.Client.Test
             var result = badImageFormatException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "BadImageFormatException.FileName" && r.Value == "fileName"));
+            Assert.That(result.Any(d => d.Key == "BadImageFormatException.FileName" && d.Value == "fileName"));
         }
 
         [Test]
@@ -130,8 +122,7 @@ namespace Elmah.Io.Client.Test
             var result = fileNotFoundException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "FileNotFoundException.FileName" && r.Value == "fileName"));
+            Assert.That(result.Any(d => d.Key == "FileNotFoundException.FileName" && d.Value == "fileName"));
         }
 
         [Test]
@@ -144,8 +135,7 @@ namespace Elmah.Io.Client.Test
             var result = webException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "WebException.Status" && r.Value == "ProtocolError"));
+            Assert.That(result.Any(d => d.Key == "WebException.Status" && d.Value == "ProtocolError"));
         }
 
         [Test]
@@ -159,7 +149,7 @@ namespace Elmah.Io.Client.Test
             var result = taskCanceledException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(0));
+            Assert.That(!result.Any(d => d.Key.StartsWith("TaskCanceledException")));
         }
 
 #if NETCOREAPP3_1_OR_GREATER
@@ -174,8 +164,7 @@ namespace Elmah.Io.Client.Test
             var result = taskCanceledException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "TaskCanceledException.IsCancellationRequested" && r.Value == "True"));
+            Assert.That(result.Any(d => d.Key == "TaskCanceledException.IsCancellationRequested" && d.Value == "True"));
         }
 #endif
 
@@ -192,7 +181,6 @@ namespace Elmah.Io.Client.Test
             var result = outerException.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(2));
             Assert.That(result.Any(r => r.Key == "Exception.inner-key" && r.Value == "inner-value"));
             Assert.That(result.Any(r => r.Key == "Exception.outer-key" && r.Value == "outer-value"));
         }
@@ -219,7 +207,6 @@ namespace Elmah.Io.Client.Test
             var result = aggregateException3.ToDataList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(6));
             Assert.That(result.Any(r => r.Key == "Exception.inner-key1" && r.Value == "inner-value1"));
             Assert.That(result.Any(r => r.Key == "Exception.inner-key2" && r.Value == "inner-value2"));
             Assert.That(result.Any(r => r.Key == "Exception.inner-key3" && r.Value == "inner-value3"));
@@ -239,7 +226,8 @@ namespace Elmah.Io.Client.Test
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(0));
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Any(r => r.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR"));
         }
 
         [Test]
@@ -253,6 +241,51 @@ namespace Elmah.Io.Client.Test
 
             // Assert
             Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void CanGenererateExceptionInspector()
+        {
+            // Arrange
+            ApplicationException applicationException = null;
+            try
+            {
+                new ExceptionThrower().Throw();
+            }
+            catch (ApplicationException e)
+            {
+                applicationException = e;
+            }
+
+            var wrapper = new FileNotFoundException("wrapper", "TheFile", applicationException);
+
+            var aggregateException = new AggregateException(wrapper, new NullReferenceException("was null"));
+            aggregateException.Data.Add("outer-key1", "outer-value1");
+
+            // Act
+            var result = aggregateException.ToDataList();
+
+            // Assert
+            var inspector = result.FirstOrDefault(r => r.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR");
+            Assert.That(inspector, Is.Not.Null);
+            var value = inspector.Value;
+            Assert.That(!string.IsNullOrWhiteSpace(value));
+            Assert.DoesNotThrow(() => JsonConvert.DeserializeObject(value));
+            Assert.That(value.Contains("System.ApplicationException"));
+            Assert.That(value.Contains("System.IO.FileNotFoundException"));
+            Assert.That(value.Contains("System.AggregateException"));
+            Assert.That(value.Contains("ExceptionThrower.Throw()"));
+            Assert.That(value.Contains("outer-key1"));
+            Assert.That(value.Contains("TheFile"));
+            Assert.That(value.Contains("was null"));
+        }
+
+        private class ExceptionThrower
+        {
+            public void Throw()
+            {
+                throw new ApplicationException("Test");
+            }
         }
     }
 }
