@@ -54,8 +54,11 @@ namespace Elmah.Io.Client
             return dataItems;
         }
 
-        private static IterateExceptionResult Iterate(this Exception exception)
+        private static IterateExceptionResult Iterate(this Exception exception, int level = 1)
         {
+            // Don't iterate more than 10 nested exceptions
+            if (level > 10) return null;
+
             var exceptionModel = new ExceptionModel();
             exceptionModel.Message = exception.Message;
             exceptionModel.Type = exception.GetType().FullName;
@@ -97,13 +100,13 @@ namespace Elmah.Io.Client
             {
                 foreach (var innerException in ae.InnerExceptions)
                 {
-                    var innerResult = innerException.Iterate();
-                    if (innerResult.Items.Count > 0)
+                    var innerResult = innerException.Iterate(1 + level);
+                    if (innerResult?.Items.Count > 0)
                     {
                         result.AddRange(innerResult.Items);
                     }
 
-                    if (innerResult.Exception != null)
+                    if (innerResult?.Exception != null)
                     {
                         exceptionModel.Inners.Add(innerResult.Exception);
                     }
@@ -111,13 +114,13 @@ namespace Elmah.Io.Client
             }
             else if (exception.InnerException != null)
             {
-                var innerResult = exception.InnerException.Iterate();
-                if (innerResult.Items.Count > 0)
+                var innerResult = exception.InnerException.Iterate(1 + level);
+                if (innerResult?.Items.Count > 0)
                 {
                     result.AddRange(innerResult.Items);
                 }
 
-                if (innerResult.Exception != null)
+                if (innerResult?.Exception != null)
                 {
                     exceptionModel.Inners.Add(innerResult.Exception);
                 }

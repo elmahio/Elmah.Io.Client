@@ -280,6 +280,33 @@ namespace Elmah.Io.Client.Test
             Assert.That(value.Contains("was null"));
         }
 
+        [Test]
+        public void CanStopAt10NestedLevelsOfExceptions()
+        {
+            // Arrange
+            var exception = new Exception("1",
+                new Exception("2",
+                    new Exception("3",
+                        new Exception("4",
+                            new Exception("5",
+                                new Exception("6",
+                                    new Exception("7",
+                                        new Exception("8",
+                                            new Exception("9",
+                                                new Exception("10",
+                                                    new Exception("11")))))))))));
+
+            // Act
+            var result = exception.ToDataList();
+
+            // Assert
+            var inspector = result.FirstOrDefault(x => x.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR");
+            Assert.That(inspector, Is.Not.Null);
+            var value = inspector.Value;
+            Assert.That(value.Contains("\"Message\":\"1\""));
+            Assert.That(!value.Contains("\"Message\":\"11\""));
+        }
+
         private class ExceptionThrower
         {
             public void Throw()
