@@ -45,11 +45,8 @@ namespace Elmah.Io.Client
             var result = exception.Iterate();
             var dataItems = new List<Item>(result.Items)
             {
-                new Item
-                {
-                    Key = "X-ELMAHIO-EXCEPTIONINSPECTOR",
-                    Value = JsonConvert.SerializeObject(result.Exception),
-                }
+                new Item("X-ELMAHIO-EXCEPTIONINSPECTOR", JsonConvert.SerializeObject(result.Exception)),
+                new Item("X-ELMAHIO-FRAMEWORKDESCRIPTION", System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription)
             };
             return dataItems;
         }
