@@ -46,7 +46,9 @@ namespace Elmah.Io.Client
             var dataItems = new List<Item>(result.Items)
             {
                 new Item("X-ELMAHIO-EXCEPTIONINSPECTOR", JsonConvert.SerializeObject(result.Exception)),
+#if NETSTANDARD1_1_OR_GREATER
                 new Item("X-ELMAHIO-FRAMEWORKDESCRIPTION", System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription)
+#endif
             };
             return dataItems;
         }
