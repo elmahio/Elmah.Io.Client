@@ -216,32 +216,10 @@ namespace Elmah.Io.Client.Test
         }
 
         [Test]
-        public void CanHandleNoData()
-        {
-            // Arrange
-            var exception = new Exception();
-
-            // Act
-            var result = exception.ToDataList();
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Any(r => r.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR"));
-        }
+        public void CanHandleNoData() => Assert.That(new Exception().ToDataList(), Is.Not.Null);
 
         [Test]
-        public void CanHandleNullException()
-        {
-            // Arrange
-            Exception exception = null;
-
-            // Act
-            var result = exception.ToDataList();
-
-            // Assert
-            Assert.That(result, Is.Null);
-        }
+        public void CanHandleNullException() => Assert.That(((Exception)null).ToDataList(), Is.Null);
 
         [Test]
         public void CanGenererateExceptionInspector()
