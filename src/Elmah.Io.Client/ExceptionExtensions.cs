@@ -46,7 +46,7 @@ namespace Elmah.Io.Client
             var dataItems = new List<Item>(result.Items)
             {
                 new Item("X-ELMAHIO-EXCEPTIONINSPECTOR", JsonConvert.SerializeObject(result.Exception)),
-#if NETSTANDARD1_1 || NETSTANDARD1_1_OR_GREATER
+#if NETSTANDARD1_1 || NETSTANDARD1_1_OR_GREATER || NET45 || NET46 || NET461
                 new Item("X-ELMAHIO-FRAMEWORKDESCRIPTION", System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription)
 #endif
             };
@@ -61,7 +61,7 @@ namespace Elmah.Io.Client
             var exceptionModel = new ExceptionModel();
             exceptionModel.Message = exception.Message;
             exceptionModel.Type = exception.GetType().FullName;
-#if NETSTANDARD2_0 || NET45 || NET46 || NET461
+#if NETSTANDARD2_0 || NETSTANDARD2_0_OR_GREATER || NET45 || NET46 || NET461
             exceptionModel.TargetSite = exception.TargetSite?.ToString();
 #endif
             exceptionModel.Source = exception.Source;
