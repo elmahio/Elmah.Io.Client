@@ -28,10 +28,6 @@ namespace Elmah.Io.Client
         public ISourceMapsClient SourceMaps { get; }
 
         ///<inheritdoc/>
-        [Obsolete("The internal HttpClient used within the elmah.io client will be removed in a future version. You can provide a custom HttpClient through the ElmahioAPI.Create method or you can customize things like timeout and proxy through the ElmahIoOptions class.")]
-        public HttpClient HttpClient { get; }
-
-        ///<inheritdoc/>
         public ElmahIoOptions Options { get; }
 
         /// <summary>
@@ -39,9 +35,6 @@ namespace Elmah.Io.Client
         /// </summary>
         protected ElmahioAPI(string baseUrl, ElmahIoOptions options, HttpClient httpClient)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            HttpClient = httpClient;
-#pragma warning restore CS0618 // Type or member is obsolete
             Options = options;
             Deployments = new DeploymentsClient(baseUrl, httpClient);
             Heartbeats = new HeartbeatsClient(baseUrl, httpClient);
@@ -63,12 +56,10 @@ namespace Elmah.Io.Client
             if (string.IsNullOrWhiteSpace(apiKey)) throw new ArgumentNullException(nameof(apiKey));
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
             if (options == null) options = new ElmahIoOptions();
+            httpClient.DefaultRequestHeaders.Add("api_key", apiKey);
+            httpClient.DefaultRequestHeaders.UserAgent.Clear();
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent(options));
             var client = new ElmahioAPI(httpClient.BaseAddress?.ToString() ?? "https://api.elmah.io/", options, httpClient);
-#pragma warning disable CS0618 // Type or member is obsolete
-            client.HttpClient.DefaultRequestHeaders.Add("api_key", apiKey);
-            client.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
-            client.HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent(options));
-#pragma warning restore CS0618 // Type or member is obsolete
             return client;
         }
 

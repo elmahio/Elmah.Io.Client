@@ -39,12 +39,6 @@ namespace Elmah.Io.Client
         ISourceMapsClient SourceMaps { get; }
 
         /// <summary>
-        /// The HttpClient used to communicate with the elmah.io API.
-        /// </summary>
-        [Obsolete("The internal HttpClient used within the elmah.io client will be removed in a future version. You can provide a custom HttpClient through the ElmahioAPI.Create method or you can customize things like timeout and proxy through the ElmahIoOptions class.")]
-        HttpClient HttpClient { get; }
-
-        /// <summary>
         /// The options to use for this client.
         /// </summary>
         ElmahIoOptions Options { get; }
