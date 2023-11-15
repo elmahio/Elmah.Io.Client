@@ -22,7 +22,7 @@ namespace Elmah.Io.Client.ApiClient
                 application = "ApiClient.V3",
                 detail = "This is a very long description telling more details about this message",
             });
-            var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await client.PostAsync($"https://api.elmah.io/v3/messages/{logId}?api_key={apiKey}", stringContent);
 
             var location = response.Headers.Location;

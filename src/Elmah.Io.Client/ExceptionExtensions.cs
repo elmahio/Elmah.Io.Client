@@ -46,7 +46,7 @@ namespace Elmah.Io.Client
             var dataItems = new List<Item>(result.Items)
             {
                 new Item("X-ELMAHIO-EXCEPTIONINSPECTOR", JsonConvert.SerializeObject(result.Exception)),
-#if NETSTANDARD1_1 || NETSTANDARD1_1_OR_GREATER
+#if NETSTANDARD1_1 || NETSTANDARD1_1_OR_GREATER || NET8_0
                 new Item("X-ELMAHIO-FRAMEWORKDESCRIPTION", System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription)
 #endif
             };
@@ -61,7 +61,7 @@ namespace Elmah.Io.Client
             var exceptionModel = new ExceptionModel();
             exceptionModel.Message = exception.Message;
             exceptionModel.Type = exception.GetType().FullName;
-#if NETSTANDARD2_0 || NETSTANDARD2_0_OR_GREATER || NET45 || NET46 || NET461
+#if NETSTANDARD2_0 || NETSTANDARD2_0_OR_GREATER || NET45 || NET46 || NET461 || NET8_0
             exceptionModel.TargetSite = exception.TargetSite?.ToString();
 #endif
             exceptionModel.Source = exception.Source;
@@ -154,7 +154,7 @@ namespace Elmah.Io.Client
                     result.Add(new Item { Key = bife.ItemName(nameof(bife.FileName)), Value = bife.FileName });
                     ex.ExceptionSpecific.Add(new KeyValuePair<string, string>(nameof(bife.FileName), bife.FileName));
                 }
-#if NETSTANDARD2_0 || NET45 || NET46 || NET461
+#if NETSTANDARD2_0 || NET45 || NET46 || NET461 || NET8_0
                 if (!string.IsNullOrWhiteSpace(bife.FusionLog))
                 {
                     result.Add(new Item { Key = bife.ItemName(nameof(bife.FusionLog)), Value = bife.FusionLog });
@@ -179,7 +179,7 @@ namespace Elmah.Io.Client
                     result.Add(new Item { Key = fnfe.ItemName(nameof(fnfe.FileName)), Value = fnfe.FileName });
                     ex.ExceptionSpecific.Add(new KeyValuePair<string, string>(nameof(fnfe.FileName), fnfe.FileName));
                 }
-#if NETSTANDARD2_0 || NET45 || NET46 || NET461
+#if NETSTANDARD2_0 || NET45 || NET46 || NET461 || NET8_0
                 if (!string.IsNullOrWhiteSpace(fnfe.FusionLog))
                 {
                     result.Add(new Item { Key = fnfe.ItemName(nameof(fnfe.FusionLog)), Value = fnfe.FusionLog });
@@ -188,19 +188,19 @@ namespace Elmah.Io.Client
 #endif
             }
 
-#if NETSTANDARD1_4 || NETSTANDARD2_0 || NET45 || NET46 || NET461
+#if NETSTANDARD1_4 || NETSTANDARD2_0 || NET45 || NET46 || NET461 || NET8_0
             if (e is System.Net.Sockets.SocketException se)
             {
                 result.Add(new Item { Key = se.ItemName(nameof(se.SocketErrorCode)), Value = se.SocketErrorCode.ToString() });
                 ex.ExceptionSpecific.Add(new KeyValuePair<string, string>(nameof(se.SocketErrorCode), se.SocketErrorCode.ToString()));
-#if NETSTANDARD2_0 || NET45 || NET46 || NET461
+#if NETSTANDARD2_0 || NET45 || NET46 || NET461 || NET8_0
                 result.Add(new Item { Key = se.ItemName(nameof(se.ErrorCode)), Value = se.ErrorCode.ToString() });
                 ex.ExceptionSpecific.Add(new KeyValuePair<string, string>(nameof(se.ErrorCode), se.ErrorCode.ToString()));
 #endif
             }
 #endif
 
-#if NETSTANDARD2_0 || NET45 || NET46 || NET461
+#if NETSTANDARD2_0 || NET45 || NET46 || NET461 || NET8_0
             if (e is System.Net.WebException we)
             {
                 result.Add(new Item { Key = we.ItemName(nameof(we.Status)), Value = we.Status.ToString() });
