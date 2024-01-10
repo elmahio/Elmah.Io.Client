@@ -5,9 +5,9 @@ using System.Net;
 
 namespace Elmah.Io.Client.Console
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var apiKey = "API_KEY";
             var logId = new Guid("LOG_ID");
@@ -47,13 +47,13 @@ namespace Elmah.Io.Client.Console
                 Severity = Severity.Error.ToString(),
                 Data = new List<Item>
                 {
-                    new Item {Key = "Username", Value = "Man in black"}
+                    new() {Key = "Username", Value = "Man in black"}
                 },
                 Form = new List<Item>
                 {
-                    new Item {Key = "Password", Value = "SecretPassword"},
-                    new Item {Key = "pwd", Value = "Other secret value"},
-                    new Item {Key = "visible form item", Value = "With a value"}
+                    new() {Key = "Password", Value = "SecretPassword"},
+                    new() {Key = "pwd", Value = "Other secret value"},
+                    new() {Key = "visible form item", Value = "With a value"}
                 }
             });
 
@@ -89,9 +89,9 @@ namespace Elmah.Io.Client.Console
                 Title = "Hello World",
                 Form = new List<Item>
                 {
-                    new Item { Key = "Password", Value = "SecretPassword" },
-                    new Item { Key = "pwd", Value = "Other secret value" },
-                    new Item { Key = "visible form item", Value = "Now this is obfuscated too" }
+                    new() { Key = "Password", Value = "SecretPassword" },
+                    new() { Key = "pwd", Value = "Other secret value" },
+                    new() { Key = "visible form item", Value = "Now this is obfuscated too" }
                 }
             });
         }

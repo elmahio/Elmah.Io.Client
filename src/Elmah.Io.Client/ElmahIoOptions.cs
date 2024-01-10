@@ -39,11 +39,11 @@ namespace Elmah.Io.Client
         /// </summary>
         public ElmahIoOptions()
         {
-            FormKeysToObfuscate = new List<string>
-            {
+            FormKeysToObfuscate =
+            [
                 "password",
                 "pwd"
-            };
+            ];
             Timeout = TimeSpan.FromSeconds(5);
         }
     }

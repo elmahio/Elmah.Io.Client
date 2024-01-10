@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace Elmah.Io.Client.ApiClient
 {
-    public class Program
+    public static class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
             const string apiKey = "API_KEY";
             const string logId = "LOG_ID";
@@ -30,8 +30,10 @@ namespace Elmah.Io.Client.ApiClient
             Console.WriteLine($"Successfully logged: {location}");
             Console.WriteLine("Loading the error...");
 
-            var request = new HttpRequestMessage();
-            request.RequestUri = location;
+            var request = new HttpRequestMessage
+            {
+                RequestUri = location
+            };
             // API key can also be added as a header
             request.Headers.Add("api_key", apiKey);
             response = await client.SendAsync(request);

@@ -36,14 +36,16 @@ namespace Elmah.Io.Client.Test
         public void CanGenerateDataListWithHelpLink()
         {
             // Arrange
-            var exception = new Exception();
-            exception.HelpLink = "http://localhost";
+            var exception = new Exception
+            {
+                HelpLink = "http://localhost"
+            };
 
             // Act
             var result = exception.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "Exception.HelpLink" && d.Value == "http://localhost"));
+            Assert.That(result.Exists(d => d.Key == "Exception.HelpLink" && d.Value == "http://localhost"));
         }
 
         [Test]
@@ -56,7 +58,7 @@ namespace Elmah.Io.Client.Test
             var result = argumentException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "ArgumentException.ParamName" && d.Value == "paramName"));
+            Assert.That(result.Exists(d => d.Key == "ArgumentException.ParamName" && d.Value == "paramName"));
         }
 
         [Test]
@@ -69,7 +71,7 @@ namespace Elmah.Io.Client.Test
             var result = argumentNullException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "ArgumentNullException.ParamName" && d.Value == "paramName"));
+            Assert.That(result.Exists(d => d.Key == "ArgumentNullException.ParamName" && d.Value == "paramName"));
         }
 
         [Test]
@@ -82,7 +84,7 @@ namespace Elmah.Io.Client.Test
             var result = argumentOutOfRangeException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "ArgumentOutOfRangeException.ParamName" && d.Value == "paramName"));
+            Assert.That(result.Exists(d => d.Key == "ArgumentOutOfRangeException.ParamName" && d.Value == "paramName"));
         }
 
         [Test]
@@ -95,8 +97,8 @@ namespace Elmah.Io.Client.Test
             var result = socketException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "SocketException.SocketErrorCode" && d.Value == "100"));
-            Assert.That(result.Any(d => d.Key == "SocketException.ErrorCode" && d.Value == "100"));
+            Assert.That(result.Exists(d => d.Key == "SocketException.SocketErrorCode" && d.Value == "100"));
+            Assert.That(result.Exists(d => d.Key == "SocketException.ErrorCode" && d.Value == "100"));
         }
 
         [Test]
@@ -109,7 +111,7 @@ namespace Elmah.Io.Client.Test
             var result = badImageFormatException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "BadImageFormatException.FileName" && d.Value == "fileName"));
+            Assert.That(result.Exists(d => d.Key == "BadImageFormatException.FileName" && d.Value == "fileName"));
         }
 
         [Test]
@@ -122,7 +124,7 @@ namespace Elmah.Io.Client.Test
             var result = fileNotFoundException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "FileNotFoundException.FileName" && d.Value == "fileName"));
+            Assert.That(result.Exists(d => d.Key == "FileNotFoundException.FileName" && d.Value == "fileName"));
         }
 
         [Test]
@@ -135,7 +137,7 @@ namespace Elmah.Io.Client.Test
             var result = webException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "WebException.Status" && d.Value == "ProtocolError"));
+            Assert.That(result.Exists(d => d.Key == "WebException.Status" && d.Value == "ProtocolError"));
         }
 
         [Test]
@@ -149,7 +151,7 @@ namespace Elmah.Io.Client.Test
             var result = taskCanceledException.ToDataList();
 
             // Assert
-            Assert.That(!result.Any(d => d.Key.StartsWith("TaskCanceledException")));
+            Assert.That(!result.Exists(d => d.Key.StartsWith("TaskCanceledException")));
         }
 
 #if NETCOREAPP3_1_OR_GREATER
@@ -164,7 +166,7 @@ namespace Elmah.Io.Client.Test
             var result = taskCanceledException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(d => d.Key == "TaskCanceledException.IsCancellationRequested" && d.Value == "True"));
+            Assert.That(result.Exists(d => d.Key == "TaskCanceledException.IsCancellationRequested" && d.Value == "True"));
         }
 #endif
 
@@ -181,8 +183,8 @@ namespace Elmah.Io.Client.Test
             var result = outerException.ToDataList();
 
             // Assert
-            Assert.That(result.Any(r => r.Key == "Exception.inner-key" && r.Value == "inner-value"));
-            Assert.That(result.Any(r => r.Key == "Exception.outer-key" && r.Value == "outer-value"));
+            Assert.That(result.Exists(r => r.Key == "Exception.inner-key" && r.Value == "inner-value"));
+            Assert.That(result.Exists(r => r.Key == "Exception.outer-key" && r.Value == "outer-value"));
         }
 
         [Test]
@@ -207,19 +209,19 @@ namespace Elmah.Io.Client.Test
             var result = aggregateException3.ToDataList();
 
             // Assert
-            Assert.That(result.Any(r => r.Key == "Exception.inner-key1" && r.Value == "inner-value1"));
-            Assert.That(result.Any(r => r.Key == "Exception.inner-key2" && r.Value == "inner-value2"));
-            Assert.That(result.Any(r => r.Key == "Exception.inner-key3" && r.Value == "inner-value3"));
-            Assert.That(result.Any(r => r.Key == "AggregateException.outer-key1" && r.Value == "outer-value1"));
-            Assert.That(result.Any(r => r.Key == "AggregateException.outer-key2" && r.Value == "outer-value2"));
-            Assert.That(result.Any(r => r.Key == "AggregateException.outer-key3" && r.Value == "outer-value3"));
+            Assert.That(result.Exists(r => r.Key == "Exception.inner-key1" && r.Value == "inner-value1"));
+            Assert.That(result.Exists(r => r.Key == "Exception.inner-key2" && r.Value == "inner-value2"));
+            Assert.That(result.Exists(r => r.Key == "Exception.inner-key3" && r.Value == "inner-value3"));
+            Assert.That(result.Exists(r => r.Key == "AggregateException.outer-key1" && r.Value == "outer-value1"));
+            Assert.That(result.Exists(r => r.Key == "AggregateException.outer-key2" && r.Value == "outer-value2"));
+            Assert.That(result.Exists(r => r.Key == "AggregateException.outer-key3" && r.Value == "outer-value3"));
         }
 
         [Test]
         public void CanHandleNoData() => Assert.That(new Exception().ToDataList(), Is.Not.Null);
 
         [Test]
-        public void CanHandleNullException() => Assert.That(((Exception)null).ToDataList(), Is.Null);
+        public void CanHandleNullException() => Assert.That(((Exception)null).ToDataList().Count == 0, Is.True);
 
         [Test]
         public void CanGenererateExceptionInspector()
@@ -228,7 +230,7 @@ namespace Elmah.Io.Client.Test
             ApplicationException applicationException = null;
             try
             {
-                new ExceptionThrower().Throw();
+                ExceptionThrower.Throw();
             }
             catch (ApplicationException e)
             {
@@ -244,7 +246,7 @@ namespace Elmah.Io.Client.Test
             var result = aggregateException.ToDataList();
 
             // Assert
-            var inspector = result.FirstOrDefault(r => r.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR");
+            var inspector = result.Find(r => r.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR");
             Assert.That(inspector, Is.Not.Null);
             var value = inspector.Value;
             Assert.That(!string.IsNullOrWhiteSpace(value));
@@ -278,16 +280,16 @@ namespace Elmah.Io.Client.Test
             var result = exception.ToDataList();
 
             // Assert
-            var inspector = result.FirstOrDefault(x => x.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR");
+            var inspector = result.Find(x => x.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR");
             Assert.That(inspector, Is.Not.Null);
             var value = inspector.Value;
             Assert.That(value.Contains("\"Message\":\"1\""));
             Assert.That(!value.Contains("\"Message\":\"11\""));
         }
 
-        private class ExceptionThrower
+        private static class ExceptionThrower
         {
-            public void Throw()
+            public static void Throw()
             {
                 throw new ApplicationException("Test");
             }

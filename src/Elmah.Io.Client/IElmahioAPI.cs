@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-
-namespace Elmah.Io.Client
+﻿namespace Elmah.Io.Client
 {
     /// <summary>
     /// A single type to make it easy to keep all clients in a single location.

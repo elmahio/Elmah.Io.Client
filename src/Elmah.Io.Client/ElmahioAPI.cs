@@ -69,8 +69,10 @@ namespace Elmah.Io.Client
         public static IElmahioAPI Create(string apiKey, ElmahIoOptions options)
         {
             var clientHandler = HttpClientHandlerFactory.GetHttpClientHandler(options);
-            var httpClient = new HttpClient(clientHandler);
-            httpClient.Timeout = options.Timeout;
+            var httpClient = new HttpClient(clientHandler)
+            {
+                Timeout = options.Timeout
+            };
             return Create(apiKey, options, httpClient);
         }
 
@@ -88,7 +90,7 @@ namespace Elmah.Io.Client
             sb.Append(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.Client", $"{typeof(ElmahioAPI).GetTypeInfo().Assembly.GetName().Version}")).ToString());
             if (!string.IsNullOrWhiteSpace(options.UserAgent))
             {
-                sb.Append(" ").Append(options.UserAgent);
+                sb.Append(' ').Append(options.UserAgent);
             }
 
             return sb.ToString();

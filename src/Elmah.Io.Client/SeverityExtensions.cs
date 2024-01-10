@@ -12,23 +12,16 @@ namespace Elmah.Io.Client
         /// </summary>
         public static string AsString(this Severity severity)
         {
-            switch (severity)
+            return severity switch
             {
-                case Severity.Verbose:
-                    return "Verbose";
-                case Severity.Debug:
-                    return "Debug";
-                case Severity.Information:
-                    return "Information";
-                case Severity.Warning:
-                    return "Warning";
-                case Severity.Error:
-                    return "Error";
-                case Severity.Fatal:
-                    return "Fatal";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(severity), severity, null);
-            }
+                Severity.Verbose => "Verbose",
+                Severity.Debug => "Debug",
+                Severity.Information => "Information",
+                Severity.Warning => "Warning",
+                Severity.Error => "Error",
+                Severity.Fatal => "Fatal",
+                _ => throw new ArgumentOutOfRangeException(nameof(severity), severity, null),
+            };
         }
     }
 }
