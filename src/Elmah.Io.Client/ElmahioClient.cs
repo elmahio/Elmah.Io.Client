@@ -4129,25 +4129,25 @@ namespace Elmah.Io.Client
         /// The date and time in UTC of the breadcrumb. If no date and time is provided, we will use the current date and time in UTC.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DateTime { get; set; } = dateTime;
+        public System.DateTimeOffset? DateTime { get; set; }
 
         /// <summary>
         /// An enum value representing the severity of this breadcrumb. The following values are allowed: Verbose, Debug, Information, Warning, Error, Fatal.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Severity { get; set; } = severity;
+        public string Severity { get; set; }
 
         /// <summary>
         /// An action representing the breadcrumb. You can set a custom action or use one of the built-in: click, submit, navigation, request, error.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Action { get; set; } = action;
+        public string Action { get; set; }
 
         /// <summary>
         /// A message representing the breadcrumb. This should elaborate on the action.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Message { get; set; } = message;
+        public string Message { get; set; }
 
         public string ToJson()
         {
@@ -4669,13 +4669,13 @@ namespace Elmah.Io.Client
         /// The key of the item.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Key { get; set; } = key;
+        public string Key { get; set; }
 
         /// <summary>
         /// The value of the item.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Value { get; set; } = value;
+        public string Value { get; set; }
 
         public string ToJson()
         {
