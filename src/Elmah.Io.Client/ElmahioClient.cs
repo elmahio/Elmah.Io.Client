@@ -4164,6 +4164,51 @@ namespace Elmah.Io.Client
 
     }
 
+    /// <summary>
+    /// A check represent one of many checks included in a heartbeat.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.20.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Check
+    {
+        /// <summary>
+        /// The name of the check.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Optional long for specifying how many milliseconds it took to execute the check.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("took", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Took { get; set; }
+
+        /// <summary>
+        /// The result of this check. Can be "Healthy, "Degraded", or "Unhealthy". Defaults to "Healthy"
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Result { get; set; }
+
+        /// <summary>
+        /// If result is "Degraded" or "Unhealthy" you can use this property to specify why.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Reason { get; set; }
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static Check FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Check>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.20.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CreateBulkMessageResult
     {
@@ -4313,6 +4358,12 @@ namespace Elmah.Io.Client
         /// </summary>
         [Newtonsoft.Json.JsonProperty("took", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? Took { get; set; }
+
+        /// <summary>
+        /// A list of checks in this heartbeat.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("checks", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Check> Checks { get; set; }
 
         public string ToJson()
         {
