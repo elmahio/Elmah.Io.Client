@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,31 +25,31 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Logs a healthy heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        void Healthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null);
+        void Healthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null);
 
         /// <summary>
         /// Logs a healthy heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default);
+        Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Logs a degraded heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        void Degraded(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null);
+        void Degraded(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null);
 
         /// <summary>
         /// Logs a degraded heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default);
+        Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Logs a unhealthy heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        void Unhealthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null);
+        void Unhealthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null);
 
         /// <summary>
         /// Logs a unhealthy heartbeat in the specified log on the specified heartbeat.
         /// </summary>
-        Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, CancellationToken cancellationToken = default);
+        Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null, CancellationToken cancellationToken = default);
     }
 }
