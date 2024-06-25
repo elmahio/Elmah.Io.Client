@@ -137,6 +137,22 @@ namespace Elmah.Io.Client.Test
             Thread.Sleep(5000);
 
             Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
+
+            // Filter
+
+            api.Messages.OnMessageFilter += (sender, args) =>
+            {
+                args.Filter = true;
+            };
+
+            api.Messages.CreateAndNotify(new Guid(log.Id), new CreateMessage
+            {
+                Title = now
+            });
+
+            Thread.Sleep(2000);
+
+            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
         }
     }
 }

@@ -23,6 +23,13 @@ namespace Elmah.Io.Client
         event EventHandler<FailEventArgs> OnMessageFail;
 
         /// <summary>
+        /// By subscribing to the OnMessageFilter event, you can implement logic that will filter/ignore messages
+        /// being sent to the elmah.io API. The event is called just before the OnMessage event. Setting the
+        /// Filter bool property on MessageFilterEventArgs to true will cause the message to be ignored.
+        /// </summary>
+        event EventHandler<MessageFilterEventArgs> OnMessageFilter;
+
+        /// <summary>
         /// Write a log message with the Verbose severity.
         /// </summary>
         void Verbose(Guid logId, string messageTemplate, params object[] propertyValues);

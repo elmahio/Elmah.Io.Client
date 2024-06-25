@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 
 namespace Elmah.Io.Client.Console
 {
@@ -45,16 +42,16 @@ namespace Elmah.Io.Client.Console
                 Application = "Elmah.Io.Client sample",
                 Detail = "This is a long description of the error. Maybe even a stacktrace",
                 Severity = Severity.Error.ToString(),
-                Data = new List<Item>
-                {
+                Data =
+                [
                     new() {Key = "Username", Value = "Man in black"}
-                },
-                Form = new List<Item>
-                {
+                ],
+                Form =
+                [
                     new() {Key = "Password", Value = "SecretPassword"},
                     new() {Key = "pwd", Value = "Other secret value"},
                     new() {Key = "visible form item", Value = "With a value"}
-                }
+                ]
             });
 
             // Example of creating a log message from an exception and enriching it
@@ -66,11 +63,11 @@ namespace Elmah.Io.Client.Console
             client.Messages.CreateAndNotify(logId, createMessage);
 
             // Example of using the bulk endpoint to store multiple log messages in a single request
-            client.Messages.CreateBulkAndNotify(logId, new[]
-            {
+            client.Messages.CreateBulkAndNotify(logId,
+            [
                 new CreateMessage { Title = "This is a bulk message" },
                 new CreateMessage { Title = "This is another bulk message" },
-            }.ToList());
+            ]);
 
             // Example of using structured logging
             client.Messages.CreateAndNotify(logId, new CreateMessage
@@ -87,13 +84,21 @@ namespace Elmah.Io.Client.Console
             client2.Messages.CreateAndNotify(logId, new CreateMessage
             {
                 Title = "Hello World",
-                Form = new List<Item>
-                {
+                Form =
+                [
                     new() { Key = "Password", Value = "SecretPassword" },
                     new() { Key = "pwd", Value = "Other secret value" },
                     new() { Key = "visible form item", Value = "Now this is obfuscated too" }
-                }
+                ]
             });
+
+            // Example of filtering undesired messages
+            client2.Messages.OnMessageFilter += (sender, eventArgs) =>
+            {
+                eventArgs.Filter = eventArgs.Message.Title.Contains("foo", StringComparison.InvariantCultureIgnoreCase);
+            };
+
+            client2.Messages.Error(logId, "Foo Bar");
         }
     }
 }

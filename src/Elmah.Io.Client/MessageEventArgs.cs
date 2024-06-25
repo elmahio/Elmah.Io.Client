@@ -11,7 +11,6 @@ namespace Elmah.Io.Client
     /// <param name="message">The created log messages</param>
     public class MessageEventArgs(CreateMessage message) : EventArgs
     {
-
         /// <summary>
         /// The created log message.
         /// </summary>

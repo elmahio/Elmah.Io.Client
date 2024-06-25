@@ -20,6 +20,8 @@ namespace Elmah.Io.Client
             Options = options;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance rules", "CA1822", Justification = "Method is not static in auto-generated class with this partial method")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "This is needed")]
         partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
         {
             settings.Formatting = Formatting.Indented;
@@ -27,7 +29,7 @@ namespace Elmah.Io.Client
             settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             settings.NullValueHandling = NullValueHandling.Ignore;
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            settings.Converters = new List<JsonConverter>();
+            settings.Converters = [];
         }
 
         /// <summary>
@@ -41,6 +43,9 @@ namespace Elmah.Io.Client
 
         /// <inheritdoc/>
         public event EventHandler<FailEventArgs> OnMessageFail;
+
+        /// <inheritdoc/>
+        public event EventHandler<MessageFilterEventArgs> OnMessageFilter;
 
         /// <inheritdoc/>
         public void Verbose(Guid logId, string messageTemplate, params object[] propertyValues)
@@ -134,14 +139,18 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1168:Empty arrays and collections should be returned instead of null", Justification = "Keep returning null for backward compatibility")]
         public ICollection<CreateBulkMessageResult> CreateBulkAndNotify(Guid logId, IList<CreateMessage> messages)
         {
             var obfuscated = new List<CreateMessage>();
             foreach (var message in messages)
             {
+                if (ShouldFilter(message)) continue;
                 OnMessage?.Invoke(this, new MessageEventArgs(message));
                 obfuscated.Add(Obfuscate(message));
             }
+
+            if (obfuscated.Count == 0) return null;
 
             messages = obfuscated;
 
@@ -165,9 +174,12 @@ namespace Elmah.Io.Client
             var obfuscated = new List<CreateMessage>();
             foreach (var message in messages)
             {
+                if (ShouldFilter(message)) continue;
                 OnMessage?.Invoke(this, new MessageEventArgs(message));
                 obfuscated.Add(Obfuscate(message));
             }
+
+            if (obfuscated.Count == 0) return [];
 
             messages = obfuscated;
 
@@ -188,6 +200,7 @@ namespace Elmah.Io.Client
         /// <inheritdoc/>
         public Message CreateAndNotify(Guid logId, CreateMessage message)
         {
+            if (ShouldFilter(message)) return null;
             OnMessage?.Invoke(this, new MessageEventArgs(message));
             message = Obfuscate(message);
             try
@@ -205,6 +218,7 @@ namespace Elmah.Io.Client
         /// <inheritdoc/>
         public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message, CancellationToken cancellationToken = default)
         {
+            if (ShouldFilter(message)) return null;
             OnMessage?.Invoke(this, new MessageEventArgs(message));
             message = Obfuscate(message);
             try
@@ -222,7 +236,7 @@ namespace Elmah.Io.Client
         private CreateMessage Obfuscate(CreateMessage message)
         {
             if (message == null) return message;
-            if (message.Form == null || !message.Form.Any()) return message;
+            if (message.Form == null || message.Form.Count == 0) return message;
             if (Options?.FormKeysToObfuscate == null) return message;
 
             foreach (var key in Options.FormKeysToObfuscate.Select(x => x.ToLower()))
@@ -236,10 +250,12 @@ namespace Elmah.Io.Client
             return message;
         }
 
-        private Message MessageCreated(CreateMessageResult messageResult, CreateMessage message)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code style rules", "IDE0057", Justification = "Range doesn't work with old netstandard")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "This is needed")]
+        private static Message MessageCreated(CreateMessageResult messageResult, CreateMessage message)
         {
             var location = messageResult.Location;
-            var id = location?.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
+            var id = location?.AbsolutePath.Substring(1 + location.AbsolutePath.LastIndexOf('/'));
 
             return new Message()
             {
@@ -266,6 +282,15 @@ namespace Elmah.Io.Client
                 Data = message.Data,
                 Breadcrumbs = message.Breadcrumbs,
             };
+        }
+
+        private bool ShouldFilter(CreateMessage message)
+        {
+            if (OnMessageFilter == null) return false;
+
+            var eventArgs = new MessageFilterEventArgs(message);
+            OnMessageFilter(this, eventArgs);
+            return eventArgs.Filter;
         }
     }
 }
