@@ -24,6 +24,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
+    - name: Test .NET 4.5
+      run: dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net45/Elmah.Io.Client.Test.dll
     - name: Test
       env:
         SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
