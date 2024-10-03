@@ -21,7 +21,7 @@ jobs:
           7.0.x
           8.0.x
 
-    - name: Install .NET Framework build tools
+    - name: Setup .NET Framework
       run: |
         choco install microsoft-build-tools
         choco install dotnet4.6.1  # Ensure that older frameworks are available
@@ -39,6 +39,17 @@ jobs:
         SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
         SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
       run: dotnet test --no-restore --verbosity normal
+
+    - name: Run tests for .NET Framework
+      env:
+        SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
+        SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
+        SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
+        SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
+      run: |
+        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net45/Elmah.Io.Client.Test.dll /Platform:x86
+        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net46/Elmah.Io.Client.Test.dll /Platform:x86
+        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net461/Elmah.Io.Client.Test.dll /Platform:x86
 
     - name: Pack
       run: dotnet pack --configuration Release src/Elmah.Io.Client/Elmah.Io.Client.csproj /p:Version=5.2.${{ github.run_number }}-pre
