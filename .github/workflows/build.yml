@@ -21,10 +21,10 @@ jobs:
           7.0.x
           8.0.x
 
-    - name: Setup .NET Framework
-      run: |
-        choco install microsoft-build-tools
-        choco install dotnet4.6.1  # Ensure that older frameworks are available
+    #- name: Setup .NET Framework
+    #  run: |
+    #    choco install microsoft-build-tools
+    #    choco install dotnet4.6.1  # Ensure that older frameworks are available
 
     - name: Install dependencies
       run: dotnet restore
@@ -32,7 +32,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
-    - name: Test
+    - name: Test .NET
       env:
         SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
         SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
@@ -40,16 +40,16 @@ jobs:
         SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
       run: dotnet test --no-restore --verbosity normal
 
-    - name: Run tests for .NET Framework
+    - name: Test .NET Framework
       env:
         SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
         SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
         SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
         SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
       run: |
-        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net45/Elmah.Io.Client.Test.dll /Platform:x86
-        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net46/Elmah.Io.Client.Test.dll /Platform:x86
-        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net461/Elmah.Io.Client.Test.dll /Platform:x86
+        dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net45/Elmah.Io.Client.Test.dll
+        dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net46/Elmah.Io.Client.Test.dll
+        dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net461/Elmah.Io.Client.Test.dll
 
     - name: Pack
       run: dotnet pack --configuration Release src/Elmah.Io.Client/Elmah.Io.Client.csproj /p:Version=5.2.${{ github.run_number }}-pre
