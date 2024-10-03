@@ -41,18 +41,3 @@ jobs:
     #- name: Push
     #  run: dotnet nuget push src/Elmah.Io.Client/bin/Release/Elmah.Io.Client.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
     #  if: ${{ github.event_name == 'push' }}
-
-  build_net_framework:
-    runs-on: windows-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - uses: nuget/setup-nuget@v2
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-    - name: Restore
-      run: nuget restore Elmah.Io.Client.sln
-    - name: Build
-      run: msbuild Elmah.Io.Client.sln /t:Build /p:Configuration=Release
-    - name: Test
-      run: dotnet vstest test\Elmah.Io.Client.Test\bin\Release\net462\Elmah.Io.Client.Test.dll

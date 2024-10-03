@@ -254,7 +254,7 @@ namespace Elmah.Io.Client.Test
             Assert.That(value.Contains("System.ApplicationException"));
             Assert.That(value.Contains("System.IO.FileNotFoundException"));
             Assert.That(value.Contains("System.AggregateException"));
-            Assert.That(value.Contains("ExceptionThrower.Throw()"));
+            Assert.That(value.Contains("ExceptionThrower.Throw()"), value);
             Assert.That(value.Contains("outer-key1"));
             Assert.That(value.Contains("TheFile"));
             Assert.That(value.Contains("was null"));
