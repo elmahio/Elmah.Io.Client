@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 
@@ -9,13 +10,27 @@ namespace Elmah.Io.Client.Test
 {
     public class IntegrationTest
     {
-        [Ignore("Only run manually")]
         [Test]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2925:\"Thread.Sleep\" should not be used in tests", Justification = "Making sure that data is saved")]
         public void Test()
         {
-            var api = ElmahioAPI.Create("API_KEY"); // API key must have all permissions enabled
+            var baseUrl = Environment.GetEnvironmentVariable("SECRET_BASE_URL");
+            var apiKey = Environment.GetEnvironmentVariable("SECRET_API_KEY");
+            var logId = Environment.GetEnvironmentVariable("SECRET_LOG_ID");
+            var heartbeatId = Environment.GetEnvironmentVariable("SECRET_HEARTBEAT_ID");
+
+            // Only run the test if the environment variables are specified
+            if (string.IsNullOrWhiteSpace(baseUrl)
+                || string.IsNullOrWhiteSpace(apiKey)
+                || string.IsNullOrWhiteSpace(logId)
+                || string.IsNullOrWhiteSpace(heartbeatId))
+                Assert.Ignore("Missing environment variables");
+
+            var api = ElmahioAPI.Create(apiKey, new ElmahIoOptions(), new HttpClient { BaseAddress = new Uri(baseUrl) }); // API key must have all permissions enabled
 
             var now = DateTime.UtcNow.Ticks.ToString();
+
+            #region Logs
 
             // Get all logs
             var logs = api.Logs.GetAll();
@@ -38,6 +53,28 @@ namespace Elmah.Io.Client.Test
             var log = api.Logs.Get(created.Id);
             Assert.That(log, Is.Not.Null);
 
+            // Disable log
+            api.Logs.Disable(created.Id);
+
+            Thread.Sleep(2000);
+            log = api.Logs.Get(created.Id);
+            Assert.That(log.Disabled, Is.True);
+
+            // Enable log
+            api.Logs.Enable(created.Id);
+
+            Thread.Sleep(2000);
+            log = api.Logs.Get(created.Id);
+            Assert.That(log.Disabled, Is.False);
+
+            // Diagnose
+            var result = api.Logs.Diagnose(created.Id);
+            Assert.That(result.Count, Is.EqualTo(0));
+
+            #endregion
+
+            #region SourceMaps
+
             // Create source map
             using var sourceMapStream = new MemoryStream(Encoding.UTF8.GetBytes("{ version: 3, file: \"path.min.js\", sourceRoot: \"\", sources: [\"path.js\"], names: [\"src\", mappings: \"\" }"));
             using var scriptStream = new MemoryStream(Encoding.UTF8.GetBytes("var v = 42;"));
@@ -46,6 +83,10 @@ namespace Elmah.Io.Client.Test
                 new Uri("/some/path.min.js", UriKind.Relative),
                 new FileParameter(sourceMapStream, "path.map", "application/json"),
                 new FileParameter(scriptStream, "path.min.js", "text/javascript"));
+
+            #endregion
+
+            #region Deployments
 
             // Create deployment
             api.Deployments.Create(new CreateDeployment
@@ -72,6 +113,10 @@ namespace Elmah.Io.Client.Test
 
             var deployments = api.Deployments.GetAll();
             Assert.That(deployments.All(d => d.Version != now));
+
+            #endregion
+
+            #region Messages
 
             // Create message
 
@@ -107,6 +152,15 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
+            // Fix messages
+
+            api.Messages.FixAll(log.Id, new Search
+            {
+                Query = "*:*"
+            });
+
+            Thread.Sleep(2000);
+
             // Delete messages
 
             api.Messages.Delete(message.Id, log.Id);
@@ -119,12 +173,11 @@ namespace Elmah.Io.Client.Test
 
             api
                 .Messages
-                .CreateBulk(log.Id, new[]
-                {
+                .CreateBulk(log.Id,
+                [
                     new CreateMessage {Title = now},
                     new CreateMessage {Title = now},
-                }
-                .ToList());
+                ]);
 
             Thread.Sleep(5000);
 
@@ -153,6 +206,29 @@ namespace Elmah.Io.Client.Test
             Thread.Sleep(2000);
 
             Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
+
+            #endregion
+
+            #region Heartbeats
+
+            api.Heartbeats.Create(heartbeatId, logId, new CreateHeartbeat
+            {
+                Result = "Unhealthy",
+                Reason = "To have something to look at",
+                Application = "My app",
+                Checks = [
+                    new() {
+                        Result = "Healthy",
+                        Name = "check1"
+                    },
+                    new() {
+                        Result = "Unhealthy",
+                        Name = "check2"
+                    }
+                ]
+            });
+
+            #endregion
         }
     }
 }
