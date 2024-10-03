@@ -55,4 +55,4 @@ jobs:
     - name: Build
       run: msbuild Elmah.Io.Client.sln /t:Build /p:Configuration=Release
     - name: Test
-      run: dotnet vstest test\Elmah.Io.Client.Test\bin\Release\net461\Elmah.Io.Client.Test.dll
+      run: dotnet vstest test\Elmah.Io.Client.Test\bin\Release\net462\Elmah.Io.Client.Test.dll
