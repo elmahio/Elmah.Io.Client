@@ -7,9 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-test-dotnet:
+    runs-on: ubuntu-latest
 
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        dotnet-version: [6.0.x, 7.0.x, 8.0.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -24,8 +27,6 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Test .NET 4.5
-      run: dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net45/Elmah.Io.Client.Test.dll
     - name: Test
       env:
         SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
@@ -38,3 +39,29 @@ jobs:
     - name: Push
       run: dotnet nuget push src/Elmah.Io.Client/bin/Release/Elmah.Io.Client.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
+
+  build-and-test-netframework:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        framework: [net45, net46, net461]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install .NET Framework build tools
+        run: |
+          choco install microsoft-build-tools
+          choco install dotnet4.6.1
+
+      - name: Build the project
+        run: msbuild /p:Configuration=Release
+
+      - name: Test on .NET Framework
+        env:
+          SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
+          SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
+          SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
+          SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
+        run: |
+          vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/${{ matrix.framework }}/Elmah.Io.Client.Test.dll /Platform:x86
