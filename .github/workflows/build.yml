@@ -47,9 +47,9 @@ jobs:
         SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
         SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
       run: |
-        dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net45/Elmah.Io.Client.Test.dll
-        dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net46/Elmah.Io.Client.Test.dll
-        dotnet vstest test/Elmah.Io.Client.Test/bin/Release/net461/Elmah.Io.Client.Test.dll
+        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net45/Elmah.Io.Client.Test.dll /Platform:x86
+        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net46/Elmah.Io.Client.Test.dll /Platform:x86
+        vstest.console.exe test/Elmah.Io.Client.Test/bin/Release/net461/Elmah.Io.Client.Test.dll /Platform:x86
 
     - name: Pack
       run: dotnet pack --configuration Release src/Elmah.Io.Client/Elmah.Io.Client.csproj /p:Version=5.2.${{ github.run_number }}-pre
