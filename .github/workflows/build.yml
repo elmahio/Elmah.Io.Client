@@ -21,10 +21,10 @@ jobs:
           7.0.x
           8.0.x
 
-    #- name: Setup .NET Framework
-    #  run: |
-    #    choco install microsoft-build-tools
-    #    choco install dotnet4.6.1  # Ensure that older frameworks are available
+    - name: Setup .NET Framework
+      run: |
+        choco install microsoft-build-tools
+        choco install dotnet4.6.1  # Ensure that older frameworks are available
 
     - name: Install dependencies
       run: dotnet restore
