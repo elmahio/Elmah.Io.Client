@@ -154,7 +154,6 @@ namespace Elmah.Io.Client.Test
             Assert.That(!result.Exists(d => d.Key.StartsWith("TaskCanceledException")));
         }
 
-#if NETCOREAPP3_1_OR_GREATER
         [Test]
         public void CanGenerateDataListFromTaskCanceledExceptionCanceled()
         {
@@ -168,7 +167,6 @@ namespace Elmah.Io.Client.Test
             // Assert
             Assert.That(result.Exists(d => d.Key == "TaskCanceledException.IsCancellationRequested" && d.Value == "True"));
         }
-#endif
 
         [Test]
         public void CanGenerateDataList()
