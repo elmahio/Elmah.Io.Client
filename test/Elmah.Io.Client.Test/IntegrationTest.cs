@@ -71,14 +71,6 @@ namespace Elmah.Io.Client.Test
             var result = api.Logs.Diagnose(created.Id);
             Assert.That(result.Count, Is.EqualTo(0));
 
-            // Delete
-            api.Messages.DeleteAll(created.Id, new Search { Query = "*" });
-            Thread.Sleep(2000);
-
-            api.Logs.Delete(created.Id);
-            Thread.Sleep(2000);
-            Assert.That(api.Logs.GetAll().Count == logs.Count);
-
             #endregion
 
             #region SourceMaps
@@ -237,6 +229,11 @@ namespace Elmah.Io.Client.Test
             });
 
             #endregion
+
+            // Delete
+            api.Logs.Delete(log.Id);
+            Thread.Sleep(2000);
+            Assert.That(api.Logs.GetAll().Count == logs.Count);
         }
     }
 }
