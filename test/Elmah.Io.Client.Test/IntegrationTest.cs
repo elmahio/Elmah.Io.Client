@@ -26,6 +26,12 @@ namespace Elmah.Io.Client.Test
                 || string.IsNullOrWhiteSpace(heartbeatId))
                 Assert.Ignore("Missing environment variables");
 
+            var frameworkVersion = "462";
+#if NETSTANDARD1_1_OR_GREATER || NET6_0_OR_GREATER
+            frameworkVersion = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+#endif
+            var domain = Uri.TryCreate(baseUrl, UriKind.Absolute, out Uri url) ? url.Host : "unknown";
+
             var api = ElmahioAPI.Create(apiKey, new ElmahIoOptions(), new HttpClient { BaseAddress = new Uri(baseUrl) }); // API key must have all permissions enabled
 
             var now = DateTime.UtcNow.Ticks.ToString();
@@ -36,9 +42,10 @@ namespace Elmah.Io.Client.Test
             var logs = api.Logs.GetAll();
 
             // Create log
+            var logName = $"{frameworkVersion}-{domain}-{now}";
             api.Logs.Create(new CreateLog
             {
-                Name = now
+                Name = logName,
             });
 
             Thread.Sleep(2000);
@@ -46,7 +53,7 @@ namespace Elmah.Io.Client.Test
             var logs2 = api.Logs.GetAll();
             Assert.That(logs2.Count == 1 + logs.Count);
 
-            var created = logs2.FirstOrDefault(l => l.Name == now);
+            var created = logs2.FirstOrDefault(l => l.Name == logName);
             Assert.That(created, Is.Not.Null);
 
             // Get single log
