@@ -42,14 +42,8 @@ jobs:
       run: dotnet nuget push src/Elmah.Io.Client/bin/Release/Elmah.Io.Client.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
 
-    - name: Create Release
-      if: ${{ github.event_name == 'push' }}
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: 5.2.${{ github.run_number }}
-        name: 5.2.${{ github.run_number }}
-        draft: false
-        fail_on_unmatched_files: true
-        generate_release_notes: true
-        prerelease: true
-        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create tag
+      uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
+        with:
+          tag: 5.2.${{ github.run_number }}
