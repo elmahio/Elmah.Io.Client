@@ -176,7 +176,7 @@ namespace Elmah.Io.Client
             settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             settings.NullValueHandling = NullValueHandling.Ignore;
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            settings.Converters = new List<JsonConverter>();
+            settings.Converters = [];
         }
     }
 }

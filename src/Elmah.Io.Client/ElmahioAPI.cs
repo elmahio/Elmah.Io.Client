@@ -7,6 +7,7 @@ using System.Text;
 namespace Elmah.Io.Client
 {
     ///<inheritdoc/>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Backwards compatibility")]
     public class ElmahioAPI : IElmahioAPI
     {
         ///<inheritdoc/>
@@ -51,11 +52,12 @@ namespace Elmah.Io.Client
         /// and timeout settings on the ElmahIoOptions object will be ignored. The HttpClient should be configured to
         /// use the proxy manually before provided to this method.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "We don't want to allow other base addresses for now.")]
         public static IElmahioAPI Create(string apiKey, ElmahIoOptions options, HttpClient httpClient)
         {
             if (string.IsNullOrWhiteSpace(apiKey)) throw new ArgumentNullException(nameof(apiKey));
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
-            if (options == null) options = new ElmahIoOptions();
+            options ??= new ElmahIoOptions();
             httpClient.DefaultRequestHeaders.Add("api_key", apiKey);
             httpClient.DefaultRequestHeaders.UserAgent.Clear();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent(options));

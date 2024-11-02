@@ -3,6 +3,7 @@
     /// <summary>
     /// A single type to make it easy to keep all clients in a single location.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Backwards compatibility")]
     public interface IElmahioAPI
     {
         /// <summary>

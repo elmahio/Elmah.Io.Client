@@ -8,7 +8,7 @@ namespace Elmah.Io.Client
     {
         private static HttpClientHandler _instance = null;
         private static DateTime _initTime = DateTime.MinValue;
-        private static TimeSpan _lifeTime = TimeSpan.FromHours(24);
+        private static readonly TimeSpan _lifeTime = TimeSpan.FromHours(24);
 
         public static HttpClientHandler GetHttpClientHandler(ElmahIoOptions options)
         {
