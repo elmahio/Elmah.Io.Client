@@ -37,6 +37,11 @@
         ISourceMapsClient SourceMaps { get; }
 
         /// <summary>
+        /// Gets the ISourceMapsClient.
+        /// </summary>
+        IInstallationsClient Installations { get; }
+
+        /// <summary>
         /// The options to use for this client.
         /// </summary>
         ElmahIoOptions Options { get; }

@@ -29,6 +29,9 @@ namespace Elmah.Io.Client
         public ISourceMapsClient SourceMaps { get; }
 
         ///<inheritdoc/>
+        public IInstallationsClient Installations { get; }
+
+        ///<inheritdoc/>
         public ElmahIoOptions Options { get; }
 
         /// <summary>
@@ -43,6 +46,7 @@ namespace Elmah.Io.Client
             Messages = new MessagesClient(baseUrl, httpClient, options);
             UptimeChecks = new UptimeChecksClient(baseUrl, httpClient);
             SourceMaps = new SourceMapsClient(baseUrl, httpClient);
+            Installations = new InstallationsClient(baseUrl, httpClient);
         }
 
         /// <summary>
