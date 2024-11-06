@@ -27,10 +27,10 @@ namespace Elmah.Io.Client
                 return "aspnetcore";
             else if (assemblies.Exists(a => a.FullName.StartsWith("System.Windows.Forms") || a.FullName.StartsWith("PresentationCore") || a.FullName.StartsWith("WindowsBase")))
                 return "windowsapp";
-            else if (!Environment.UserInteractive)
-                return "service";
             else if (Console.OpenStandardInput() != Stream.Null)
                 return "console";
+            else if (!Environment.UserInteractive)
+                return "service";
 #endif
 
             return null;
