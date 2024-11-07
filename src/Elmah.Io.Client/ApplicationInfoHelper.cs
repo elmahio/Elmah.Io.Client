@@ -19,14 +19,14 @@ namespace Elmah.Io.Client
 #if NETSTANDARD2_0_OR_GREATER || NET45_OR_GREATER || NETCOREAPP2_0_OR_GREATER
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
             var processName = Process.GetCurrentProcess().ProcessName;
-            if (assemblies.Exists(a => a.FullName.StartsWith("System.Web")) && (processName == "w3wp" || processName == "iisexpress"))
-                return "aspnet";
-            else if (assemblies.Exists(a => a.FullName.StartsWith("Microsoft.Azure.Functions") || a.FullName.StartsWith("Microsoft.Azure.WebJobs")))
+            if (assemblies.Exists(a => a.FullName.StartsWith("Microsoft.Azure.Functions") || a.FullName.StartsWith("Microsoft.Azure.WebJobs")))
                 return "azurefunction";
             else if (assemblies.Exists(a => a.FullName.StartsWith("Microsoft.AspNetCore")))
                 return "aspnetcore";
             else if (assemblies.Exists(a => a.FullName.StartsWith("System.Windows.Forms") || a.FullName.StartsWith("PresentationCore") || a.FullName.StartsWith("WindowsBase")))
                 return "windowsapp";
+            if (assemblies.Exists(a => a.FullName.StartsWith("System.Web")) && (processName == "w3wp" || processName == "iisexpress"))
+                return "aspnet";
             else if (Console.OpenStandardInput() != Stream.Null)
                 return "console";
             else if (!Environment.UserInteractive)
