@@ -8,6 +8,7 @@ using System.Threading;
 
 namespace Elmah.Io.Client.Test
 {
+    [SingleThreaded]
     public class IntegrationTest
     {
         [Test]
