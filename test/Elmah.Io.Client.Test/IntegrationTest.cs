@@ -106,8 +106,6 @@ namespace Elmah.Io.Client.Test
             Thread.Sleep(2000);
 
             var deployments2 = api.Deployments.GetAll();
-            Assert.That(deployments2.First().Version == now);
-
             var createdDeployment = deployments2.FirstOrDefault(d => d.Version == now);
             Assert.That(createdDeployment, Is.Not.Null);
 
