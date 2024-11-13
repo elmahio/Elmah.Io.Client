@@ -34,7 +34,7 @@ jobs:
         SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
         SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
         SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal --parallel none
 
     - name: Pack
       run: dotnet pack --configuration Release src/Elmah.Io.Client/Elmah.Io.Client.csproj /p:Version=5.2.${{ github.run_number }}-pre
