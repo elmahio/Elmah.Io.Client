@@ -49,7 +49,7 @@ namespace Elmah.Io.Client.Test
                 Name = logName,
             });
 
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             var logs2 = api.Logs.GetAll();
             Assert.That(logs2.Count == 1 + logs.Count);
