@@ -8,7 +8,6 @@ using System.Threading;
 
 namespace Elmah.Io.Client.Test
 {
-    [SingleThreaded]
     public class IntegrationTest
     {
         [Test]
@@ -39,20 +38,22 @@ namespace Elmah.Io.Client.Test
 
             #region Logs
 
+            var logName = $"{frameworkVersion}-{domain}-{now}";
+
             // Get all logs
             var logs = api.Logs.GetAll();
+            Assert.That(logs.All(l => l.Name != logName));
 
             // Create log
-            var logName = $"{frameworkVersion}-{domain}-{now}";
             api.Logs.Create(new CreateLog
             {
                 Name = logName,
             });
 
-            Thread.Sleep(5000);
+            Thread.Sleep(2000);
 
             var logs2 = api.Logs.GetAll();
-            Assert.That(logs2.Count == 1 + logs.Count);
+            Assert.That(logs2.Any(l => l.Name == logName));
 
             var created = logs2.FirstOrDefault(l => l.Name == logName);
             Assert.That(created, Is.Not.Null);
@@ -241,7 +242,7 @@ namespace Elmah.Io.Client.Test
             // Delete
             api.Logs.Delete(log.Id);
             Thread.Sleep(2000);
-            Assert.That(api.Logs.GetAll().Count == logs.Count);
+            Assert.That(api.Logs.GetAll().All(l => l.Id != log.Id));
         }
     }
 }
