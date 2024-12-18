@@ -43,8 +43,8 @@ jobs:
       run: dotnet nuget push src/Elmah.Io.Client/bin/Release/Elmah.Io.Client.5.2.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
 
-    - name: Create tag
-      uses: rickstaa/action-create-tag@v1
-      id: "tag_create"
+    - name: Create Tag
+      uses: negz/create-tag@v1
       with:
-        tag: 5.2.${{ github.run_number }}
+        version: 5.2.${{ github.run_number }}
+        token: ${{ secrets.GITHUB_TOKEN }}
