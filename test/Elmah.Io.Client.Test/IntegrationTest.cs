@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Polly;
 using System;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Elmah.Io.Client.Test
     {
         [Test]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2925:\"Thread.Sleep\" should not be used in tests", Justification = "Making sure that data is saved")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Assignment can be updated inside #if")]
         public void Test()
         {
             var baseUrl = Environment.GetEnvironmentVariable("SECRET_BASE_URL");
@@ -134,11 +136,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
-            // Get all messages
-            var messages = api.Messages.GetAll(log.Id);
-            Assert.That(messages, Is.Not.Null);
-            Assert.That(messages.Total, Is.EqualTo(1));
-            Assert.That(messages.Messages.Count, Is.EqualTo(1));
+            var messages = AssertMessageCount(log.Id, api, 1);
 
             var message = messages.Messages.First();
 
@@ -174,7 +172,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
-            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
+            AssertMessageCount(log.Id, api, 0);
 
             // Create bulk
 
@@ -188,7 +186,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(5000);
 
-            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(2));
+            AssertMessageCount(log.Id, api, 2);
 
             // Delete bulk
 
@@ -196,7 +194,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(5000);
 
-            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
+            AssertMessageCount(log.Id, api, 0);
 
             // Filter
 
@@ -212,7 +210,7 @@ namespace Elmah.Io.Client.Test
 
             Thread.Sleep(2000);
 
-            Assert.That(api.Messages.GetAll(log.Id).Total, Is.EqualTo(0));
+            AssertMessageCount(log.Id, api, 0);
 
             #endregion
 
@@ -241,6 +239,18 @@ namespace Elmah.Io.Client.Test
             api.Logs.Delete(log.Id);
             Thread.Sleep(2000);
             Assert.That(api.Logs.GetAll().All(l => l.Id != log.Id));
+        }
+
+        private static MessagesResult AssertMessageCount(string logId, IElmahioAPI api, int expectedMessageCount)
+        {
+            var messages = Policy
+                .HandleResult<MessagesResult>(result => result == null || result.Messages == null || result.Total != expectedMessageCount)
+                .WaitAndRetry(3, r => TimeSpan.FromSeconds(r * 1))
+                .Execute(() => api.Messages.GetAll(logId));
+            Assert.That(messages, Is.Not.Null);
+            Assert.That(messages.Total, Is.EqualTo(expectedMessageCount));
+            Assert.That(messages.Messages.Count, Is.EqualTo(expectedMessageCount));
+            return messages;
         }
     }
 }
