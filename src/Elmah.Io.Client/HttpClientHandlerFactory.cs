@@ -12,10 +12,8 @@ namespace Elmah.Io.Client
 
         public static HttpClientHandler GetHttpClientHandler(ElmahIoOptions options)
         {
-            if (DateTime.Now.Subtract(_initTime) > _lifeTime || _instance == null)
+            if (DateTime.UtcNow.Subtract(_initTime) > _lifeTime || _instance == null)
             {
-                TryDispose(_instance);
-
                 if (options.WebProxy != null)
                 {
                     _instance = new HttpClientHandler
@@ -32,22 +30,9 @@ namespace Elmah.Io.Client
                     };
                 }
 
-                _initTime = DateTime.Now;
+                _initTime = DateTime.UtcNow;
             }
             return _instance;
-        }
-
-        private static void TryDispose(HttpClientHandler instance)
-        {
-            try
-            {
-                instance?.Dispose();
-            }
-            catch
-            {
-                // We have no way of logging any errors during dispose here. There will be a new
-                // instance of HttpClientHandler created in a bit that will replace this object.
-            }
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
