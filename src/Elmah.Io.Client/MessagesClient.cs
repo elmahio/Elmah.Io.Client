@@ -22,7 +22,7 @@ namespace Elmah.Io.Client
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance rules", "CA1822", Justification = "Method is not static in auto-generated class with this partial method")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "This is needed")]
-        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
         {
             settings.Formatting = Formatting.Indented;
             settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;

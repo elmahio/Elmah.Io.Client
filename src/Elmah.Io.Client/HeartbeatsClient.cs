@@ -169,7 +169,7 @@ namespace Elmah.Io.Client
                 .ConfigureAwait(false);
         }
 
-        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
         {
             settings.Formatting = Formatting.Indented;
             settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;

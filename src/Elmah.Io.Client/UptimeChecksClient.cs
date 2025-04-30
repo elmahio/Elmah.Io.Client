@@ -6,7 +6,7 @@ namespace Elmah.Io.Client
     /// <inheritdoc/>
     partial class UptimeChecksClient
     {
-        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
         {
             settings.Formatting = Formatting.Indented;
             settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
