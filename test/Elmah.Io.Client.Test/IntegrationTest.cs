@@ -235,6 +235,32 @@ namespace Elmah.Io.Client.Test
 
             #endregion
 
+            #region Installations
+
+            api.Installations.Create(log.Id, new CreateInstallation
+            {
+                Name = "IntegrationTest",
+                Type = "service",
+                Loggers =
+                [
+                    new LoggerInfo
+                    {
+                        Type = "Serilog.Sinks.ElmahIo",
+                        Properties =
+                        [
+                            new Item("foo", "bar"),
+                        ],
+                        ConfigFiles = [],
+                        Assemblies =
+                        [
+                            new AssemblyInfo { Name = "Elmah.Io.Client.Test", Version = "1.0.0" },
+                        ],
+                    }
+                ]
+            });
+
+            #endregion
+
             // Delete
             api.Logs.Delete(log.Id);
             Thread.Sleep(2000);
