@@ -237,7 +237,12 @@ namespace Elmah.Io.Client.Test
 
             #region Installations
 
-            api.Installations.Create(log.Id, new CreateInstallation
+            var onInstallationCalled = false;
+            api.Installations.OnInstallation += (sender, args) =>
+            {
+                onInstallationCalled = true;
+            };
+            api.Installations.CreateAndNotify(new Guid(log.Id), new CreateInstallation
             {
                 Name = "IntegrationTest",
                 Type = "service",
@@ -255,9 +260,15 @@ namespace Elmah.Io.Client.Test
                         [
                             new AssemblyInfo { Name = "Elmah.Io.Client.Test", Version = "1.0.0" },
                         ],
+                        EnvironmentVariables =
+                        [
+                            new Item("key", "value"),
+                        ]
                     }
                 ]
             });
+
+            Assert.That(onInstallationCalled, Is.True);
 
             #endregion
 
