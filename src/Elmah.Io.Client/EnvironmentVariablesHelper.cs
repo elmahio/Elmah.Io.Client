@@ -11,7 +11,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Try to get an environment variable value from one or more names.
         /// </summary>
-        public static bool TryGetEnvironmentVariable(string[] keys, out string outputValue)
+        public static string? GetEnvironmentVariable(params string[] keys)
         {
 #if !NETSTANDARD1_1
             foreach (var key in keys)
@@ -19,65 +19,77 @@ namespace Elmah.Io.Client
                 var value = Environment.GetEnvironmentVariable(key);
                 if (!string.IsNullOrWhiteSpace(value))
                 {
-                    outputValue = value;
-                    return true;
+                    return value;
                 }
             }
 #endif
 
-            outputValue = null;
-            return false;
+            return null;
         }
 
         /// <summary>
         /// Try to get elmah.io specific environment variables based on the format ElmahIo:* and ElmahIo__*.
         /// </summary>
-        public static bool TryGetElmahIoAppSettingsEnvironmentVariables(out List<Item> variables)
+        public static List<Item> GetElmahIoAppSettingsEnvironmentVariables()
         {
-            variables = [];
-            if (TryGetEnvironmentVariable(["ElmahIo:LogId", "ElmahIo__LogId"], out string logIdEnv)) variables.Add(new Item("ElmahIo:LogId", logIdEnv));
-            if (TryGetEnvironmentVariable(["ElmahIo.ApiKey", "ElmahIo__ApiKey"], out string apiKeyEnv)) variables.Add(new Item("ElmahIo:ApiKey", apiKeyEnv));
+            var variables = new List<Item>();
+            if (GetEnvironmentVariable("ElmahIo:LogId", "ElmahIo__LogId") is string logIdEnv) variables.Add(new Item("ElmahIo:LogId", logIdEnv));
+            if (GetEnvironmentVariable("ElmahIo.ApiKey", "ElmahIo__ApiKey") is string apiKeyEnv) variables.Add(new Item("ElmahIo:ApiKey", apiKeyEnv));
 
-            return variables.Count > 0;
+            return variables;
         }
 
         /// <summary>
         /// Try to get Azure specific environment variables.
         /// </summary>
-        public static bool TryGetAzureEnvironmentVariables(out List<Item> variables)
+        public static List<Item> GetAzureEnvironmentVariables()
         {
-            variables = [];
-            if (TryGetEnvironmentVariable(["WEBSITE_SITE_NAME"], out string websiteSiteName)) variables.Add(new Item("WEBSITE_SITE_NAME", websiteSiteName));
-            if (TryGetEnvironmentVariable(["WEBSITE_RESOURCE_GROUP"], out string websiteResourceGroup)) variables.Add(new Item("WEBSITE_RESOURCE_GROUP", websiteResourceGroup));
-            if (TryGetEnvironmentVariable(["WEBSITE_OWNER_NAME"], out string websiteOwnerName)) variables.Add(new Item("WEBSITE_OWNER_NAME", websiteOwnerName));
-            if (TryGetEnvironmentVariable(["REGION_NAME"], out string regionName)) variables.Add(new Item("REGION_NAME", regionName));
-            if (TryGetEnvironmentVariable(["WEBSITE_SKU"], out string websiteSku)) variables.Add(new Item("WEBSITE_SKU", websiteSku));
+            var variables = new List<Item>();
+            if (GetEnvironmentVariable("WEBSITE_SITE_NAME") is string websiteSiteName) variables.Add(new Item("WEBSITE_SITE_NAME", websiteSiteName));
+            if (GetEnvironmentVariable("WEBSITE_RESOURCE_GROUP") is string websiteResourceGroup) variables.Add(new Item("WEBSITE_RESOURCE_GROUP", websiteResourceGroup));
+            if (GetEnvironmentVariable("WEBSITE_OWNER_NAME") is string websiteOwnerName) variables.Add(new Item("WEBSITE_OWNER_NAME", websiteOwnerName));
+            if (GetEnvironmentVariable("REGION_NAME") is string regionName) variables.Add(new Item("REGION_NAME", regionName));
+            if (GetEnvironmentVariable("WEBSITE_SKU") is string websiteSku) variables.Add(new Item("WEBSITE_SKU", websiteSku));
 
-            return variables.Count > 0;
+            return variables;
         }
 
         /// <summary>
         /// Try to get ASP.NET Core specific environment variables.
         /// </summary>
-        public static bool TryGetAspNetCoreEnvironmentVariables(out List<Item> variables)
+        public static List<Item> GetAspNetCoreEnvironmentVariables()
         {
-            variables = [];
-            if (TryGetEnvironmentVariable(["ASPNETCORE_ENVIRONMENT"], out string aspNetCoreEnvironment)) variables.Add(new Item("ASPNETCORE_ENVIRONMENT", aspNetCoreEnvironment));
+            var variables = new List<Item>();
+            if (GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is string aspNetCoreEnvironment) variables.Add(new Item("ASPNETCORE_ENVIRONMENT", aspNetCoreEnvironment));
 
-            return variables.Count > 0;
+            return variables;
         }
 
         /// <summary>
         /// Try to get .NET specific environment variables.
         /// </summary>
-        public static bool TryGetDotNetEnvironmentVariables(out List<Item> variables)
+        public static List<Item> GetDotNetEnvironmentVariables()
         {
-            variables = [];
-            if (TryGetEnvironmentVariable(["DOTNET_ENVIRONMENT"], out string dotNetEnvironment)) variables.Add(new Item("DOTNET_ENVIRONMENT", dotNetEnvironment));
-            if (TryGetEnvironmentVariable(["DOTNET_VERSION"], out string dotNetVersion)) variables.Add(new Item("DOTNET_VERSION", dotNetVersion));
-            if (TryGetEnvironmentVariable(["PROCESSOR_ARCHITECTURE"], out string processorArchitecture)) variables.Add(new Item("PROCESSOR_ARCHITECTURE", processorArchitecture));
+            var variables = new List<Item>();
+            if (GetEnvironmentVariable("DOTNET_ENVIRONMENT") is string dotNetEnvironment) variables.Add(new Item("DOTNET_ENVIRONMENT", dotNetEnvironment));
+            if (GetEnvironmentVariable("DOTNET_VERSION") is string dotNetVersion) variables.Add(new Item("DOTNET_VERSION", dotNetVersion));
+            if (GetEnvironmentVariable("PROCESSOR_ARCHITECTURE") is string processorArchitecture) variables.Add(new Item("PROCESSOR_ARCHITECTURE", processorArchitecture));
 
-            return variables.Count > 0;
+            return variables;
+        }
+
+        /// <summary>
+        /// Try to get Azure Functions specific environment variables.
+        /// </summary>
+        public static List<Item> TryGetAzureFunctionsEnvironmentVariables()
+        {
+            var variables = new List<Item>();
+            if (GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") is string azureFunctionsEnvironment) variables.Add(new Item("AZURE_FUNCTIONS_ENVIRONMENT", azureFunctionsEnvironment));
+            if (GetEnvironmentVariable("FUNCTIONS_WORKER_RUNTIME") is string functionsWorkerRuntime) variables.Add(new Item("FUNCTIONS_WORKER_RUNTIME", functionsWorkerRuntime));
+            if (GetEnvironmentVariable("FUNCTIONS_EXTENSION_VERSION") is string functionsExtensionVersion) variables.Add(new Item("FUNCTIONS_EXTENSION_VERSION", functionsExtensionVersion));
+            if (GetEnvironmentVariable("WEBSITE_SLOT_NAME") is string websiteSlotName) variables.Add(new Item("WEBSITE_SLOT_NAME", websiteSlotName));
+
+            return variables;
         }
     }
 }
