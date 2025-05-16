@@ -81,7 +81,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Try to get Azure Functions specific environment variables.
         /// </summary>
-        public static List<Item> TryGetAzureFunctionsEnvironmentVariables()
+        public static List<Item> GetAzureFunctionsEnvironmentVariables()
         {
             var variables = new List<Item>();
             if (GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") is string azureFunctionsEnvironment) variables.Add(new Item("AZURE_FUNCTIONS_ENVIRONMENT", azureFunctionsEnvironment));
