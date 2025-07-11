@@ -50,9 +50,12 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Refresh Bugster
+      shell: pwsh
       run: |
-        REPO_NAME=$(basename "${{ github.repository }}")
-        curl --fail-with-body -X POST \
-             -H "Content-Type: application/json" \
-             -d "{\"repository\": \"$REPO_NAME\"}" \
-             "${{ secrets.FUNCTION_APP_URL }}"
+        Write-Host "Starting step for $env:GITHUB_REPOSITORY"
+        $repoName = ($env:GITHUB_REPOSITORY -split '/')[1]
+        $json = @{ repository = $repoName } | ConvertTo-Json -Compress
+        curl --fail-with-body -X POST `
+             -H "Content-Type: application/json" `
+             -d "$json" `
+             $env:FUNCTION_APP_URL
