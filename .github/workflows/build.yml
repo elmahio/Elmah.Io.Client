@@ -36,19 +36,6 @@ jobs:
         SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
       run: dotnet test --no-restore --verbosity normal
 
-    - name: Refresh Bugster
-      shell: pwsh
-      env:
-        FUNCTION_APP_URL: ${{ secrets.FUNCTION_APP_URL }}
-      run: |
-        Write-Host "Starting step for $env:GITHUB_REPOSITORY"
-        $repoName = ($env:GITHUB_REPOSITORY -split '/')[1]
-        $json = @{ repository = $repoName } | ConvertTo-Json -Compress
-        curl --fail-with-body -X POST `
-             -H "Content-Type: application/json" `
-             -d "$json" `
-             $env:FUNCTION_APP_URL
-
     - name: Pack
       run: dotnet pack --configuration Release src/Elmah.Io.Client/Elmah.Io.Client.csproj /p:Version=5.3.${{ github.run_number }}-pre
 
@@ -61,3 +48,15 @@ jobs:
       with:
         version: 5.3.${{ github.run_number }}-pre
         token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Refresh Bugster
+      shell: pwsh
+      env:
+        FUNCTION_APP_URL: ${{ secrets.FUNCTION_APP_URL }}
+      run: |
+        $repoName = ($env:GITHUB_REPOSITORY -split '/')[1]
+        $json = @{ repository = $repoName } | ConvertTo-Json -Compress
+        curl --fail-with-body -X POST `
+             -H "Content-Type: application/json" `
+             -d "$json" `
+             $env:FUNCTION_APP_URL
