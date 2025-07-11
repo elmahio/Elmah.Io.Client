@@ -48,3 +48,11 @@ jobs:
       with:
         version: 5.3.${{ github.run_number }}-pre
         token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Refresh Bugster
+      run: |
+        REPO_NAME=$(basename "${{ github.repository }}")
+        curl --fail-with-body -X POST \
+             -H "Content-Type: application/json" \
+             -d "{\"repository\": \"$REPO_NAME\"}" \
+             "${{ secrets.FUNCTION_APP_URL }}"
