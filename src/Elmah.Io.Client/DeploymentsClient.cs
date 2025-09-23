@@ -1,19 +1,18 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Elmah.Io.Client
 {
     /// <inheritdoc/>
     partial class DeploymentsClient
     {
-        static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        static partial void UpdateJsonSerializerSettings(JsonSerializerOptions settings)
         {
-            settings.Formatting = Formatting.Indented;
-            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            settings.NullValueHandling = NullValueHandling.Ignore;
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            settings.Converters = [];
+            settings.WriteIndented = true;
+#if !NET462
+            settings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+#endif
+            settings.Converters.Add(new JsonStringEnumConverter());
         }
     }
 }

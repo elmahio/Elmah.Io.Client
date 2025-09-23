@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,21 +16,18 @@ namespace Elmah.Io.Client
         /// Create a new instances of the MessagesClient class using the provider options.
         /// This should typically not be called by any client. Use the ElmahioAPI.Create method instead.
         /// </summary>
-        public MessagesClient(string baseUrl, HttpClient httpClient, ElmahIoOptions options) : this(baseUrl, httpClient)
+        public MessagesClient(HttpClient httpClient, ElmahIoOptions options) : this(httpClient)
         {
             Options = options;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance rules", "CA1822", Justification = "Method is not static in auto-generated class with this partial method")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "This is needed")]
-        static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        static partial void UpdateJsonSerializerSettings(JsonSerializerOptions settings)
         {
-            settings.Formatting = Formatting.Indented;
-            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            settings.NullValueHandling = NullValueHandling.Ignore;
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            settings.Converters = [];
+            settings.WriteIndented = true;
+#if !NET462
+            settings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+#endif
+            settings.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <summary>
@@ -54,7 +52,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Verbose(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
+        public void Verbose(Guid logId, Exception? exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Verbose, messageTemplate, propertyValues);
         }
@@ -66,7 +64,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Debug(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
+        public void Debug(Guid logId, Exception? exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Debug, messageTemplate, propertyValues);
         }
@@ -78,7 +76,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Information(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
+        public void Information(Guid logId, Exception? exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Information, messageTemplate, propertyValues);
         }
@@ -90,7 +88,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Warning(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
+        public void Warning(Guid logId, Exception? exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Warning, messageTemplate, propertyValues);
         }
@@ -102,7 +100,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Error(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
+        public void Error(Guid logId, Exception? exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Error, messageTemplate, propertyValues);
         }
@@ -114,17 +112,17 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Fatal(Guid logId, Exception exception, string messageTemplate, params object[] propertyValues)
+        public void Fatal(Guid logId, Exception? exception, string messageTemplate, params object[] propertyValues)
         {
             Log(logId, exception, Severity.Fatal, messageTemplate, propertyValues);
         }
 
         /// <inheritdoc/>
-        public void Log(Guid logId, Exception exception, Severity severity, string messageTemplate, params object[] propertyValues)
+        public void Log(Guid logId, Exception? exception, Severity severity, string messageTemplate, params object[] propertyValues)
         {
             var message = new CreateMessage
             {
-                DateTime = DateTime.UtcNow,
+                DateTime = DateTimeOffset.UtcNow,
                 Title = string.Format(messageTemplate, propertyValues),
                 Severity = severity.AsString(),
             };
@@ -139,7 +137,6 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1168:Empty arrays and collections should be returned instead of null", Justification = "Keep returning null for backward compatibility")]
         public ICollection<CreateBulkMessageResult> CreateBulkAndNotify(Guid logId, IList<CreateMessage> messages)
         {
             var obfuscated = new List<CreateMessage>();
@@ -150,7 +147,7 @@ namespace Elmah.Io.Client
                 obfuscated.Add(Obfuscate(message));
             }
 
-            if (obfuscated.Count == 0) return null;
+            if (obfuscated.Count == 0) return [];
 
             messages = obfuscated;
 
@@ -164,7 +161,7 @@ namespace Elmah.Io.Client
                 {
                     OnMessageFail?.Invoke(this, new FailEventArgs(msg, e));
                 }
-                return null;
+                return [];
             }
         }
 
@@ -193,12 +190,12 @@ namespace Elmah.Io.Client
                 {
                     OnMessageFail?.Invoke(this, new FailEventArgs(msg, e));
                 }
-                return null;
+                return [];
             }
         }
 
         /// <inheritdoc/>
-        public Message CreateAndNotify(Guid logId, CreateMessage message)
+        public Message? CreateAndNotify(Guid logId, CreateMessage message)
         {
             if (ShouldFilter(message)) return null;
             OnMessage?.Invoke(this, new MessageEventArgs(message));
@@ -216,7 +213,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task<Message> CreateAndNotifyAsync(Guid logId, CreateMessage message, CancellationToken cancellationToken = default)
+        public async Task<Message?> CreateAndNotifyAsync(Guid logId, CreateMessage message, CancellationToken cancellationToken = default)
         {
             if (ShouldFilter(message)) return null;
             OnMessage?.Invoke(this, new MessageEventArgs(message));
@@ -267,7 +264,7 @@ namespace Elmah.Io.Client
                 TitleTemplate = message.TitleTemplate,
                 Source = message.Source,
                 StatusCode = message.StatusCode,
-                DateTime = message.DateTime,
+                DateTime = message.DateTime ?? DateTimeOffset.UtcNow,
                 Type = message.Type,
                 User = message.User,
                 Severity = message.Severity,

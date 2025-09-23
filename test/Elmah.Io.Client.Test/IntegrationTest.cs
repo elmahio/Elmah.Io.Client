@@ -36,7 +36,7 @@ namespace Elmah.Io.Client.Test
 
             var api = ElmahioAPI.Create(apiKey, new ElmahIoOptions(), new HttpClient { BaseAddress = new Uri(baseUrl) }); // API key must have all permissions enabled
 
-            var now = DateTime.UtcNow.Ticks.ToString();
+            var now = DateTimeOffset.UtcNow.Ticks.ToString();
 
             #region Logs
 

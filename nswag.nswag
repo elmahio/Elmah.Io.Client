@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://api.elmah.io/swagger/docs/v3",
+      "url": "https://v4.api.elmah.io/openapi.json",
       "output": null,
       "newLineBehavior": "Auto"
     }
@@ -13,7 +13,9 @@
       "clientBaseClass": null,
       "configurationClass": null,
       "generateClientClasses": true,
+      "suppressClientClassesOutput": false,
       "generateClientInterfaces": true,
+      "suppressClientInterfacesOutput": false,
       "clientBaseInterface": null,
       "injectHttpClient": true,
       "disposeHttpClient": true,
@@ -31,6 +33,9 @@
       "exposeJsonSerializerSettings": true,
       "clientClassAccessModifier": "public",
       "typeAccessModifier": "public",
+      "propertySetterAccessModifier": "",
+      "generateNativeRecords": false,
+      "useRequiredKeyword": false,
       "generateContractsOutput": false,
       "contractsNamespace": null,
       "contractsOutputFilePath": null,
@@ -70,7 +75,8 @@
       "arrayBaseType": "System.Collections.ObjectModel.Collection",
       "dictionaryBaseType": "System.Collections.Generic.Dictionary",
       "classStyle": "Poco",
-      "jsonLibrary": "NewtonsoftJson",
+      "jsonLibrary": "SystemTextJson",
+      "jsonPolymorphicSerializationStyle": "NJsonSchema",
       "generateDefaultValues": true,
       "generateDataAnnotations": false,
       "excludedTypeNames": [],
@@ -87,9 +93,6 @@
       "generateOptionalPropertiesAsNullable": false,
       "generateNullableReferenceTypes": false,
       "templateDirectory": null,
-      "typeNameGeneratorType": null,
-      "propertyNameGeneratorType": null,
-      "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
       "output": "src/Elmah.Io.Client/ElmahioClient.cs",

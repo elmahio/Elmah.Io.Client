@@ -27,11 +27,6 @@
         IMessagesClient Messages { get; }
 
         /// <summary>
-        /// Gets the IUptimeChecks.
-        /// </summary>
-        IUptimeChecksClient UptimeChecks { get; }
-
-        /// <summary>
         /// Gets the ISourceMapsClient.
         /// </summary>
         ISourceMapsClient SourceMaps { get; }

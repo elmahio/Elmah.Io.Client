@@ -19,7 +19,7 @@ namespace Elmah.Io.Client
         /// be provided on the options when calling the ElmahioAPI.Create method. Once the client has been
         /// initialized, setting a proxy in this property will no longer have any effect.
         /// </summary>
-        public IWebProxy WebProxy { get; set; }
+        public IWebProxy? WebProxy { get; set; }
 
         /// <summary>
         /// Modify the default timeout of 5 seconds when communicating with the elmah.io API.
@@ -32,7 +32,7 @@ namespace Elmah.Io.Client
         /// a good way to identify who you are. User agents should be on the form name/version.
         /// Example: PiedPiper/1.0.0.0
         /// </summary>
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
 
         /// <summary>
         /// Create a new instance with default options.

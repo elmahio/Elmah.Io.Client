@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,10 +15,10 @@ namespace Elmah.Io.Client
         private const string UnhealthyResult = "Unhealthy";
 
         /// <inheritdoc/>
-        public void Check(Func<bool> func, Guid logId, string heartbeatId, string application = null, string version = null)
+        public void Check(Func<bool> func, Guid logId, string heartbeatId, string? application = null, string? version = null)
         {
             var result = HealthyResult;
-            string reason = null;
+            string? reason = null;
             try
             {
                 if (!func()) result = UnhealthyResult;
@@ -38,10 +39,10 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string application = null, string version = null, CancellationToken cancellationToken = default)
+        public async Task CheckAsync(Func<Task<bool>> func, Guid logId, string heartbeatId, string? application = null, string? version = null, CancellationToken cancellationToken = default)
         {
             var result = HealthyResult;
-            string reason = null;
+            string? reason = null;
             try
             {
                 if (!await func().ConfigureAwait(false)) result = UnhealthyResult;
@@ -68,7 +69,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Healthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null)
+        public void Healthy(Guid logId, string heartbeatId, string? reason = null, string? application = null, string? version = null, long? took = null, List<Check>? checks = null)
         {
             Create(heartbeatId, logId.ToString(), new CreateHeartbeat
             {
@@ -82,7 +83,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task HealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null, CancellationToken cancellationToken = default)
+        public async Task HealthyAsync(Guid logId, string heartbeatId, string? reason = null, string? application = null, string? version = null, long? took = null, List<Check>? checks = null, CancellationToken cancellationToken = default)
         {
             await
                 CreateAsync(
@@ -102,7 +103,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Degraded(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null)
+        public void Degraded(Guid logId, string heartbeatId, string? reason = null, string? application = null, string? version = null, long? took = null, List<Check>? checks = null)
         {
             Create(heartbeatId, logId.ToString(), new CreateHeartbeat
             {
@@ -116,7 +117,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task DegradedAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null, CancellationToken cancellationToken = default)
+        public async Task DegradedAsync(Guid logId, string heartbeatId, string? reason = null, string? application = null, string? version = null, long? took = null, List<Check>? checks = null, CancellationToken cancellationToken = default)
         {
             await
                 CreateAsync(
@@ -136,7 +137,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public void Unhealthy(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null)
+        public void Unhealthy(Guid logId, string heartbeatId, string? reason = null, string ?application = null, string? version = null, long? took = null, List<Check>? checks = null)
         {
             Create(heartbeatId, logId.ToString(), new CreateHeartbeat
             {
@@ -150,7 +151,7 @@ namespace Elmah.Io.Client
         }
 
         /// <inheritdoc/>
-        public async Task UnhealthyAsync(Guid logId, string heartbeatId, string reason = null, string application = null, string version = null, long? took = null, List<Check> checks = null, CancellationToken cancellationToken = default)
+        public async Task UnhealthyAsync(Guid logId, string heartbeatId, string? reason = null, string? application = null, string? version = null, long? took = null, List<Check>? checks = null, CancellationToken cancellationToken = default)
         {
             await
                 CreateAsync(
@@ -169,14 +170,13 @@ namespace Elmah.Io.Client
                 .ConfigureAwait(false);
         }
 
-        static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        static partial void UpdateJsonSerializerSettings(JsonSerializerOptions settings)
         {
-            settings.Formatting = Formatting.Indented;
-            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            settings.NullValueHandling = NullValueHandling.Ignore;
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            settings.Converters = [];
+            settings.WriteIndented = true;
+#if !NET462
+            settings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+#endif
+            settings.Converters.Add(new JsonStringEnumConverter());
         }
     }
 }

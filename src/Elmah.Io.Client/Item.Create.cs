@@ -10,7 +10,7 @@ namespace Elmah.Io.Client
         /// <summary>
         /// Create a new item with the specified key and value.
         /// </summary>
-        public Item(string key = default, string value = default)
+        public Item(string? key = default, string? value = default)
         {
             Key = key;
             Value = value;

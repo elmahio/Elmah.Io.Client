@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -248,7 +248,7 @@ namespace Elmah.Io.Client.Test
             Assert.That(inspector, Is.Not.Null);
             var value = inspector.Value;
             Assert.That(!string.IsNullOrWhiteSpace(value));
-            Assert.DoesNotThrow(() => JsonConvert.DeserializeObject(value));
+            Assert.DoesNotThrow(() => JsonSerializer.Deserialize<dynamic>(value));
             Assert.That(value.Contains("System.ApplicationException"));
             Assert.That(value.Contains("System.IO.FileNotFoundException"));
             Assert.That(value.Contains("System.AggregateException"));

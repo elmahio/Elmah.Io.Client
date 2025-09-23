@@ -23,7 +23,7 @@ namespace Elmah.Io.Client.ApiClient
                 detail = "This is a very long description telling more details about this message",
             });
             var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"https://api.elmah.io/v3/messages/{logId}?api_key={apiKey}", stringContent);
+            var response = await client.PostAsync($"https://v4.api.elmah.io/messages/{logId}?api_key={apiKey}", stringContent);
 
             var location = response.Headers.Location;
 
@@ -43,7 +43,7 @@ namespace Elmah.Io.Client.ApiClient
             Console.WriteLine($"Successfully loaded: {fullErrorJson}");
 
             Console.WriteLine("Loading errors...");
-            response = await client.GetAsync($"https://api.elmah.io/v3/messages/{logId}?api_key={apiKey}");
+            response = await client.GetAsync($"https://v4.api.elmah.io/messages/{logId}?api_key={apiKey}");
 
             string errorsJson = await response.Content.ReadAsStringAsync();
 

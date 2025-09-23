@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,17 +15,23 @@ namespace Elmah.Io.Client
     /// </summary>
     public static class ExceptionExtensions
     {
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        };
+
         /// <summary>
         /// Generate a CreateMessage object from an exception. This object can used as a template
         /// and decorated with additional properties before sent to the CreateAndNotify method.
         /// </summary>
-        public static CreateMessage ToMessage(this Exception exception)
+        public static CreateMessage? ToMessage(this Exception exception)
         {
             if (exception == null) return null;
 
             var message = new CreateMessage
             {
-                DateTime = DateTime.UtcNow,
+                DateTime = DateTimeOffset.UtcNow,
                 Title = exception.Message,
                 Severity = "Error",
                 Detail = exception.ToString(),
@@ -43,24 +50,39 @@ namespace Elmah.Io.Client
             if (exception == null) return [];
 
             var result = exception.Iterate();
-            var dataItems = new List<Item>(result.Items)
-            {
-                new("X-ELMAHIO-EXCEPTIONINSPECTOR", JsonConvert.SerializeObject(result.Exception)),
+
+            var items = result?.Items ?? [];
+            var dataItems = new List<Item>(items.Count + 2);
+            dataItems.AddRange(items);
+
+            if (result?.Exception is not null && TrySerialize(result.Exception, out var json)) dataItems.Add(new("X-ELMAHIO-EXCEPTIONINSPECTOR", json));
 #if NETSTANDARD1_1_OR_GREATER || NET6_0_OR_GREATER
-                new("X-ELMAHIO-FRAMEWORKDESCRIPTION", System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription)
+            dataItems.Add(new("X-ELMAHIO-FRAMEWORKDESCRIPTION", System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription));
 #endif
-            };
             return dataItems;
         }
 
-        private static IterateExceptionResult Iterate(this Exception exception, int level = 1)
+        private static bool TrySerialize(object obj, out string json)
+        {
+            try
+            {
+                json = JsonSerializer.Serialize(obj, JsonSerializerOptions);
+                return true;
+            }
+            catch
+            {
+                json = string.Empty;
+                return false;
+            }
+        }
+
+        private static IterateExceptionResult? Iterate(this Exception exception, int level = 1)
         {
             // Don't iterate more than 10 nested exceptions
             if (level > 10) return null;
 
-            var exceptionModel = new ExceptionModel
+            var exceptionModel = new ExceptionModel(exception.Message)
             {
-                Message = exception.Message,
                 Type = exception.GetType().FullName,
 #if NETSTANDARD2_0_OR_GREATER || NET45_OR_GREATER || NET6_0_OR_GREATER
                 TargetSite = exception.TargetSite?.ToString(),
@@ -74,15 +96,14 @@ namespace Elmah.Io.Client
             var input = exception
                 .Data
                 .Keys
-                .Cast<object>()
-                .Where(k => !string.IsNullOrWhiteSpace(k.ToString()));
+                .Cast<object?>()
+                .Select(k => (key: k, name: k?.ToString()))
+                .Where(x => !string.IsNullOrWhiteSpace(x.name));
 
             if (input.Any())
             {
-                exceptionModel.Data = input.Select(i => new KeyValuePair<string, string>(i.ToString(), Value(exception.Data, i))).ToList();
-                result.AddRange(input
-                    .Select(k => new Item { Key = exception.ItemName(k.ToString()), Value = Value(exception.Data, k) })
-                    .ToList());
+                exceptionModel.Data = [.. input.Select(i => new KeyValuePair<string, string>(i.name!, Value(exception.Data, i.key!)))];
+                result.AddRange([.. input.Select(k => new Item { Key = exception.ItemName(k.name!), Value = Value(exception.Data, k.key!) })]);
             }
 
             if (!string.IsNullOrWhiteSpace(exception.HelpLink))
@@ -102,7 +123,7 @@ namespace Elmah.Io.Client
                 foreach (var innerException in ae.InnerExceptions)
                 {
                     var innerResult = innerException.Iterate(1 + level);
-                    if (innerResult?.Items.Count > 0)
+                    if (innerResult?.Items?.Count > 0)
                     {
                         result.AddRange(innerResult.Items);
                     }
@@ -116,7 +137,7 @@ namespace Elmah.Io.Client
             else if (exception.InnerException != null)
             {
                 var innerResult = exception.InnerException.Iterate(1 + level);
-                if (innerResult?.Items.Count > 0)
+                if (innerResult?.Items?.Count > 0)
                 {
                     result.AddRange(innerResult.Items);
                 }
@@ -219,18 +240,18 @@ namespace Elmah.Io.Client
         {
             var value = data[key];
             if (value == null) return string.Empty;
-            return value.ToString();
+            return value.ToString() ?? string.Empty;
         }
 
-        private sealed class ExceptionModel
+        private sealed class ExceptionModel(string message)
         {
-            public string Type { get; set; }
-            public string Message { get; set; }
-            public string StackTrace { get; set; }
-            public string HelpLink { get; set; }
+            public string? Type { get; set; }
+            public string Message { get; set; } = message;
+            public string? StackTrace { get; set; }
+            public string? HelpLink { get; set; }
             public int HResult { get; set; }
-            public string TargetSite { get; set; }
-            public string Source { get; set; }
+            public string? TargetSite { get; set; }
+            public string? Source { get; set; }
             public List<ExceptionModel> Inners { get; set; } = [];
             public List<KeyValuePair<string, string>> Data { get; set; } = [];
             public List<KeyValuePair<string, string>> ExceptionSpecific { get; set; } = [];
@@ -238,8 +259,8 @@ namespace Elmah.Io.Client
 
         private sealed class IterateExceptionResult
         {
-            public ExceptionModel Exception { get; set; }
-            public List<Item> Items { get; set; }
+            public ExceptionModel? Exception { get; set; }
+            public List<Item>? Items { get; set; }
         }
     }
 }

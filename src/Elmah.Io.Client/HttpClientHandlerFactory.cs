@@ -6,13 +6,13 @@ namespace Elmah.Io.Client
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class HttpClientHandlerFactory
     {
-        private static HttpClientHandler _instance = null;
-        private static DateTime _initTime = DateTime.MinValue;
+        private static HttpClientHandler? _instance = null;
+        private static DateTimeOffset _initTime = DateTimeOffset.MinValue;
         private static readonly TimeSpan _lifeTime = TimeSpan.FromHours(24);
 
         public static HttpClientHandler GetHttpClientHandler(ElmahIoOptions options)
         {
-            if (DateTime.UtcNow.Subtract(_initTime) > _lifeTime || _instance == null)
+            if (DateTimeOffset.UtcNow.Subtract(_initTime) > _lifeTime || _instance == null)
             {
                 if (options.WebProxy != null)
                 {
@@ -30,7 +30,7 @@ namespace Elmah.Io.Client
                     };
                 }
 
-                _initTime = DateTime.UtcNow;
+                _initTime = DateTimeOffset.UtcNow;
             }
             return _instance;
         }

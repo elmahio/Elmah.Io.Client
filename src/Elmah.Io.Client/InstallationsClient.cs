@@ -1,23 +1,21 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
+﻿using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Elmah.Io.Client
 {
     /// <inheritdoc/>
     public partial class InstallationsClient : IInstallationsClient
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance rules", "CA1822", Justification = "Method is not static in auto-generated class with this partial method")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "This is needed")]
-        static partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        static partial void UpdateJsonSerializerSettings(JsonSerializerOptions settings)
         {
-            settings.Formatting = Formatting.Indented;
-            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            settings.NullValueHandling = NullValueHandling.Ignore;
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            settings.Converters = [];
+            settings.WriteIndented = true;
+#if !NET462
+            settings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+#endif
+            settings.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <inheritdoc/>
