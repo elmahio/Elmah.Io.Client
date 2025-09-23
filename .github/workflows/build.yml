@@ -27,11 +27,11 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Test
-      env:
-        SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
-        SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
-        SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
-        SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
+      # env:
+      #   SECRET_BASE_URL: ${{ secrets.SECRET_BASE_URL }}
+      #   SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
+      #   SECRET_LOG_ID: ${{ secrets.SECRET_LOG_ID }}
+      #   SECRET_HEARTBEAT_ID: ${{ secrets.SECRET_HEARTBEAT_ID }}
       run: dotnet test --no-restore --verbosity normal
 
     - name: Pack

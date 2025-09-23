@@ -11,7 +11,7 @@ namespace Elmah.Io.Client.Test
 {
     public class IntegrationTest
     {
-        [Test]
+        [Test, Ignore("Waiting until changes are merged to main")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2925:\"Thread.Sleep\" should not be used in tests", Justification = "Making sure that data is saved")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "Assignment can be updated inside #if")]
         public void Test()
