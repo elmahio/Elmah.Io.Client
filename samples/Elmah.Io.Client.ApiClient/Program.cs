@@ -19,7 +19,7 @@ namespace Elmah.Io.Client.ApiClient
             var json = JsonConvert.SerializeObject(new
             {
                 title = "This is a test message",
-                application = "ApiClient.V3",
+                application = "ApiClient.V4",
                 detail = "This is a very long description telling more details about this message",
             });
             var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
