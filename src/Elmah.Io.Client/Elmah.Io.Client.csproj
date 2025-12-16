@@ -3,24 +3,23 @@
   <PropertyGroup>
     <Description>.NET client for communicating with the elmah.io REST API</Description>
     <Authors>elmah.io</Authors>
-    <TargetFrameworks>netstandard2.0;net462;net60;net70;net80;net90</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net8.0;net9.0;net10.0</TargetFrameworks>
     <AssemblyName>Elmah.Io.Client</AssemblyName>
     <PackageId>Elmah.Io.Client</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing</PackageTags>
-    <PackageIconUrl>https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=64</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://elmah.io</PackageProjectUrl>
     <RepositoryUrl>https://github.com/elmahio/Elmah.Io.Client</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.1' ">$(PackageTargetFallback);portable-net45+wp80+win8+wpa81+dnxcore50</PackageTargetFallback>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <LangVersion>12.0</LangVersion>
+    <LangVersion>14.0</LangVersion>
     <Nullable>enable</Nullable>
+    <GITHUB_ACTIONS Condition="'$(GITHUB_ACTIONS)' == ''">false</GITHUB_ACTIONS>
     <!-- SourceLink -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -33,14 +32,21 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="System.Text.Json" Version="9.0.9" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="System.Text.Json" Version="10.0.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net10.0' AND '$(TargetFramework)' != 'net9.0'">
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net462'">
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
