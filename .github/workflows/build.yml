@@ -11,6 +11,7 @@ jobs:
     runs-on: windows-2025
     permissions:
       id-token: write
+      contents: write
     steps:
     - name: Checkout
       uses: actions/checkout@v7
