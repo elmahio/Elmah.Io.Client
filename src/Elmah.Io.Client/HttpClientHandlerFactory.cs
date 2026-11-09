@@ -14,6 +14,13 @@ namespace Elmah.Io.Client
         {
             if (DateTimeOffset.UtcNow.Subtract(_initTime) > _lifeTime || _instance == null)
             {
+#if NETFRAMEWORK
+                // .NET Framework's default SecurityProtocol can be limited to TLS 1.0/1.1 depending on the
+                // consuming app's <httpRuntime targetFramework> and OS defaults, which the elmah.io API rejects.
+                // Explicitly opt in to TLS 1.2 so this doesn't silently fail to connect.
+                System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
+#endif
+
                 if (options.WebProxy != null)
                 {
                     _instance = new HttpClientHandler
